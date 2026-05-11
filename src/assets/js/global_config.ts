@@ -6,6 +6,5 @@ export const global_pointer: any = Object.freeze({
   news_addr_ws: "wss://report.zulon.ai/",
   
   system: "Zulon AI", // "Zambeel" or "MOSAIC SPOT"
-  googleKey: "[REMOVED_API_KEY]", //[REMOVED_API_KEY] // AIzaSyC5TtmtsimEOR5hgpzvbQ75J_v4S1SiYgM
   _link: "",
 });
