@@ -1,0 +1,337 @@
+<!--///// News Header //////-->
+
+<app-news-header></app-news-header>
+
+<!-- ///// News Header End ///// -->
+<!-- Back button  -->
+<!-- <div class="back-button container-big pd-layout no-border d-flex align-items-center cg-8 mt-3 position-relatice">
+    <i class="fa-solid fa-arrow-left fade-text f-22"></i>
+    <p class="fade-text f-20 fw-600">Back</p>
+</div> -->
+<!-- News Details Body -->
+<div class="container-big pd-32">
+  <div class="news-details-body newsPage-gradient position-relative pd-32">
+    <img
+      class="news-ribbon"
+      src="../../../../../assets/news-img/youtube-detail-ribbon.png"
+      alt=""
+    />
+    <div
+      class="np-head d-flex flex-column align-items-center w-65 ms-auto me-auto"
+    >
+      <h1 class="f-48 fw-700 text-black spaceGrotesk text-center">
+        {{ youtubeData.title }}
+      </h1>
+      <div class="np-subHead d-flex justify-content-between w-100">
+        <div class="d-flex cg-16 align-items-center">
+          <div class="d-flex cg-8 align-items-center">
+            <img
+              [src]="youtubeData.profile_image_url"
+              onerror='this.src="../../../../../assets/news-img/reuters-logo.png"'
+              alt=""
+            />
+            <p
+              class="text-black f-24 manrope fw-700 text-opacity3 text-capitalize"
+            >
+              {{ youtubeData.channel_handle }}
+            </p>
+          </div>
+          <div class="d-flex cg-8 align-items-center">
+            <span class="big-dot"></span>
+            <p class="text-black f-18 fw-600 manrope text-opacity3">
+              {{ youtubeData.published_date }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex cg-8 align-items-center">
+          <button class="summaryBtn" (click)="getSummarydata()">Summary</button>
+
+          <img src="../../../../../assets/news-img/printer-icon.png" alt="" />
+          <p class="text-black f-16 fw-600 manrope text-opacity3">Print News</p>
+        </div>
+      </div>
+    </div>
+    <div class="np-body d-flex cg-16 mt-5">
+      <div class="np-left w-25 d-flex flex-column rg-16">
+        <div class="m2m d-flex align-center justify-content-center hl-head">
+          <p class="m-0 f-22 fw-700 text-center">Related Videos</p>
+        </div>
+        <div
+          class="npr-body d-flex flex-column rg-16 scrollbar-news"
+          [style]="
+            !is_loading.related &&
+            !relatedArray.length &&
+            'height: max-content;'
+          "
+        >
+          <ng-container *ngIf="is_loading.related && !relatedArray.length">
+            <div
+              class="placeholder-glow mb-1"
+              *ngFor="let l of [1, 1, 1, 1, 1, 1]"
+            >
+              <div class="placeholder col-12 bg-light rounded-3 p-2">
+                <div class="d-flex align-items-center gap-3">
+                  <div
+                    class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                    style="width: 41px; height: 41px"
+                  ></div>
+                  <div class="d-flex flex-column w-full">
+                    <div
+                      class="placeholder col-5 bg-secondary p-0 m-0"
+                      style="min-height: 10px"
+                    ></div>
+                    <div
+                      class="placeholder col-4 bg-secondary p-0 mt-1"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                </div>
+                <div class="mt-1 d-flex flex-column gap-2">
+                  <div
+                    class="placeholder col-12 p-0 bg-secondary"
+                    style="min-height: 8px"
+                  ></div>
+                  <div
+                    class="d-flex justify-content-between gap-1 overflow-hidden"
+                  >
+                    <div
+                      class="placeholder col-10 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                    <div
+                      class="placeholder col-2 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <div
+                      class="placeholder col-4 p-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <p
+            *ngIf="!relatedArray.length && !is_loading.playlist"
+            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+          >
+            No Data Found
+          </p>
+          <div
+            class="sm-news-card d-flex flex-column mouse"
+            *ngFor="let play of relatedArray"
+          >
+            <!-- <iframe width="100%" height="180" (click)="changeVideo(rel)"
+                        src="https://www.youtube.com/embed/tgbNymZ7vqY">
+                        </iframe> -->
+            <img
+              [src]="'https://img.youtube.com/vi/' + play.video_id + '/0.jpg'"
+              (click)="changeVideo(play.id)"
+            />
+            <p style="font-size: 12px">{{ play.title.slice(0, 73) + "..." }}</p>
+          </div>
+        </div>
+        <div class="npl-head f-16 manrope fw-800 text-black">Keywords</div>
+        <div
+          class="d-flex flex-wrap rg-8 cg-8 scrollbar-news overflow-y-auto"
+          style="max-height: 12rem"
+        >
+          <p
+            *ngIf="!youtubeData?.keywords?.length"
+            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+          >
+            No Tag Found
+          </p>
+          <div
+            class="border border-dark f-14 fw-400 manrope rounded-5 px-3 py-2 mouse text-truncate"
+            style="max-width: 10rem"
+            [title]="keyword"
+            data-toggle="tooltip"
+            *ngFor="let keyword of youtubeData?.keywords"
+            (click)="readMore('/tag-details', keyword)"
+          >
+            {{ keyword }}
+          </div>
+        </div>
+      </div>
+      <div class="np-mid w-50 d-flex flex-column rg-16 scrollbar-news mt-4">
+        <div class="d-flex cg-8 align-items-center mouse">
+          <iframe width="800" height="500" id="f_id" [src]="trustedURL">
+          </iframe>
+        </div>
+        <p
+          class="big-description text-black manrope f-20 fw-400 text-justify"
+          [innerHTML]="youtubeData.desc"
+          *ngIf="youtubeData.desc"
+        ></p>
+      </div>
+      <div class="np-right w-25 d-flex flex-column rg-16">
+        <div class="m2m d-flex align-center justify-content-center hl-head">
+          <p class="m-0 f-22 fw-700 text-center">Playlist</p>
+        </div>
+        <div
+          class="npr-body d-flex flex-column rg-16 scrollbar-news"
+          [style]="
+            !is_loading.playlist &&
+            !playlistArray.length &&
+            'height: max-content;'
+          "
+        >
+          <ng-container *ngIf="is_loading.playlist && !playlistArray.length">
+            <div
+              class="placeholder-glow mb-1"
+              *ngFor="let l of [1, 1, 1, 1, 1, 1]"
+            >
+              <div class="placeholder col-12 bg-light rounded-3 p-2">
+                <div class="d-flex align-items-center gap-3">
+                  <div
+                    class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                    style="width: 41px; height: 41px"
+                  ></div>
+                  <div class="d-flex flex-column w-full">
+                    <div
+                      class="placeholder col-5 bg-secondary p-0 m-0"
+                      style="min-height: 10px"
+                    ></div>
+                    <div
+                      class="placeholder col-4 bg-secondary p-0 mt-1"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                </div>
+                <div class="mt-1 d-flex flex-column gap-2">
+                  <div
+                    class="placeholder col-12 p-0 bg-secondary"
+                    style="min-height: 8px"
+                  ></div>
+                  <div
+                    class="d-flex justify-content-between gap-1 overflow-hidden"
+                  >
+                    <div
+                      class="placeholder col-10 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                    <div
+                      class="placeholder col-2 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <div
+                      class="placeholder col-4 p-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <p
+            *ngIf="!playlistArray.length && !is_loading.playlist"
+            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+          >
+            No Data Found
+          </p>
+          <div
+            class="sm-news-card d-flex flex-column mouse"
+            *ngFor="let play of playlistArray"
+          >
+            <!-- <iframe width="100%" height="180" (click)="changeVideo(rel)"
+                        src="https://www.youtube.com/embed/tgbNymZ7vqY">
+                        </iframe> -->
+            <img
+              [src]="'https://img.youtube.com/vi/' + play.video_id + '/0.jpg'"
+              (click)="changeVideo(play.id)"
+            />
+            <p style="font-size: 12px">{{ play.title.slice(0, 73) + "..." }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" [class.modal-show]="modalVisiblity">
+    <div class="modal-dialog" role="document" cdkDrag>
+      <div class="modal-content">
+        <div class="modal-header" cdkDragHandle>
+          <h5 class="modal-title" id="exampleModalLabel">Summary</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="showModal()"
+          >
+            <img
+              src="../../../../../assets/images/modal_closeIcon.png"
+              alt="Close"
+              style="width: 32px; height: 32px"
+            />
+          </button>
+        </div>
+        <div class="modal-body scrollbar-news scrollbar-news-2">
+          <ngx-ui-loader
+            fgsColor="transparent"
+            bgsColor="red"
+            bgsPosition="bottom-center"
+            logoPosition="center-center"
+            [logoSize]="160"
+            [gap]="20"
+            logoUrl="../../../../../assets/images/zulonIconAnimation.gif"
+            [attr.bgsOpacity]="0"
+          ></ngx-ui-loader>
+
+          <ul *ngIf="summary && summaryObj['bulletPoints'].length">
+            <li *ngFor="let bulletPoint of summaryObj['bulletPoints']">
+              {{ bulletPoint }}
+            </li>
+          </ul>
+
+          <div *ngIf="summary && summaryObj['keyAreas'].length">
+            <b>Key Areas: </b>
+            <ul>
+              <li *ngFor="let bulletPoint of summaryObj['keyAreas']">
+                {{ bulletPoint }}
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="summary && summaryObj['keyPeople'].length">
+            <b>Key People: </b>
+            <ul>
+              <li *ngFor="let bulletPoint of summaryObj['keyPeople']">
+                {{ bulletPoint }}
+              </li>
+            </ul>
+          </div>
+
+          <div
+            *ngIf="
+              summaryObj['errors'] &&
+              !summaryObj['bulletPoints'].length &&
+              !summaryObj['keyPeople'].length &&
+              !summaryObj['keyAreas'].length
+            "
+          >
+            <p>{{ summaryObj["errors"] }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- loader -->
+<ngx-ui-loader
+  fgsColor="transparent"
+  bgsColor="red"
+  bgsPosition="bottom-center"
+  logoPosition="center-center"
+  [logoSize]="160"
+  [gap]="20"
+  logoUrl="/assets/news-img/main-logo-gif.gif"
+  [attr.bgsOpacity]="0"
+></ngx-ui-loader>

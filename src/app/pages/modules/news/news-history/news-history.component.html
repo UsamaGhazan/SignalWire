@@ -1,0 +1,84 @@
+<!--///// News Header //////-->
+
+
+<app-news-header></app-news-header>
+
+
+<!-- ///// News Header End ///// -->
+
+
+
+<!-- sections head -->
+<div class="section-head-nav d-flex justify-content-center align-items-center w-100 mt-3 z-index2">
+    <div class="sn-left text-center hl-mid">
+        <h1 class="f-48 fw-700 text-white m-0 spaceGrotesk text-center uppercase px-8">News History</h1>
+    </div>
+</div>
+<div class="mt-2 d-flex container-big pinki-gradient p-5">
+    <!-- Top stories -->
+    <section class="w-full top-stories position-relative z-index2">
+        <div class="card-wraper4 d-flex align-items-center w-100">
+            <!-- MIL card -->
+            <div class="card1 story-card w-full skini-gradient no-border-e pd-16">
+                <div class="shashka-top position-relative d-flex align-items-center justify-content-center">
+                    <!-- <img class="w-100" src="../../../../../assets/news-img/mil-head.png" alt="">
+                    <img class="position-absolute head-badge" src="../../../../../assets/news-img/mil-icon.svg" alt=""> -->
+                    <p class="f-28 fw-700 spaceGrotesk text-center text-white m-0 py-3 w-full rounded-3" 
+                        style="background: rgba(200, 79, 231, 1);">NEWS</p>
+                </div>
+                <p *ngIf="!NewsList.length && loader_flag.news"
+                        class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4">No Data Found</p>
+                <div class="shashka-bottom news-history-grid mt-2 scrollbar-news overflow-y-auto gap-3">
+                    <!-- custom loader -->
+                    <ng-container *ngIf="!NewsList.length && !loader_flag.news">
+                        <div class="placeholder-glow h-max" *ngFor="let l of Array(20)">
+                            <div class="placeholder col-12 bg-light rounded-3 p-2">
+                                <div class="placeholder col-5 bg-secondary p-0 m-0" style="min-height: 10px;"></div>
+                                <div class="mt-1 d-flex flex-column gap-2">
+                                    <div class="placeholder col-12 py-0 bg-secondary" style="min-height: 8px;"></div>
+                                    <div class="placeholder col-10 py-0 bg-secondary" style="min-height: 8px;"></div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <div class="placeholder col-4 p-0 bg-secondary" style="min-height: 9px;"></div>
+                                        <div class="placeholder col-3 p-0 bg-secondary" style="min-height: 9px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngFor="let news of NewsList">
+                        <div class="twitter-card p-12 d-flex flex-column rg-8 pd-10">
+                            <a [href]="news.news_link" target="_blank" style="text-decoration: none;">
+                                <div class="tt-cardTop d-flex cg-12 align-items-center">
+                                    <div class="sm-profile">
+                                        <p class="manrope-xbold f-16 fw-800 text-black">{{news.title}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="tt-cardMid">
+                                <a [href]="news.news_link" target="_blank" style="text-decoration: none;">
+                                <p class="manrope f-14 fw-500 text-black truncate-text3" [innerHTML]="news.description">
+                                </p>
+                            </a>
+                            </div>
+                            <div class="tt-cardBottom d-flex justify-content-between gap-2">
+                                <p class="manrope f-9 fw-700 text-black text-opacity">{{news.published_date}}</p>
+                                <p class="manrope f-9 fw-700 text-black text-opacity">{{news.source}}</p>
+                                <!-- <img src="../../../../../assets/news-img/link-black.png" alt="" class="mouse" (click)="gotoLink(news.news_link)"> -->
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+    
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+
+
+
+<!-- loader -->
+<ngx-ui-loader fgsColor="transparent" bgsColor="red" bgsPosition="bottom-center" logoPosition="center-center" [logoSize]="160" [gap]="20"
+    logoUrl="/assets/news-img/.gif" [attr.bgsOpacity]="0"></ngx-ui-loader>

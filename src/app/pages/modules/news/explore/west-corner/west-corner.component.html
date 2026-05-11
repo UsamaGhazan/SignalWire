@@ -1,0 +1,5 @@
+<app-afghanistan
+  *ngIf="!data.getCurrentWestTab()"
+  (categoryChange)="onCategoryChange($event)"
+></app-afghanistan>
+<app-iran *ngIf="data.getCurrentWestTab()"></app-iran>

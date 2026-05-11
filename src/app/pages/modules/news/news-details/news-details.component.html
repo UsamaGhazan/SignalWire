@@ -1,0 +1,577 @@
+<!--///// News Header //////-->
+
+<app-news-header></app-news-header>
+
+<!-- ///// News Header End ///// -->
+<!-- Back button  -->
+<!-- <div class="back-button container-big pd-layout d-flex align-items-center cg-8 mt-3">
+    <i class="fa-solid fa-arrow-left fade-text f-22"></i>
+    <p class="fade-text f-20 fw-600">Back</p>
+</div> -->
+<!-- News Details Body -->
+<div class="container-big pd-32">
+  <div class="news-details-body newsPage-gradient position-relative pd-32">
+    <img
+      class="news-ribbon"
+      src="../../../../../assets/news-img/news-detail-ribbon.png"
+      alt=""
+    />
+    <div
+      class="np-head d-flex flex-column align-items-center w-65 ms-auto me-auto"
+    >
+      <h1
+        class="f-48 fw-700 text-black spaceGrotesk text-center"
+        [innerHTML]="EastNewsList.title"
+      ></h1>
+      <div class="np-subHead d-flex justify-content-between w-100">
+        <div class="d-flex cg-16 align-items-center flex-wrap gap-2">
+          <div class="d-flex cg-8 align-items-center">
+            <img src="../../../../../assets/news-img/reuters-logo.png" alt="" />
+            <p
+              class="text-black f-24 manrope fw-700 text-opacity3 text-capitalize"
+            >
+              {{ EastNewsList.source }}
+            </p>
+          </div>
+          <div class="d-flex cg-8 align-items-center">
+            <span class="big-dot"></span>
+            <p class="text-black f-18 fw-600 manrope text-opacity3">
+              {{ EastNewsList.published_date }}
+            </p>
+          </div>
+        </div>
+        <div class="d-flex align-items-center gap-1">
+          <button class="summaryBtn" (click)="getSummarydata()">Summary</button>
+          <div
+            class="source-link mouse d-flex flex-nowrap align-items-center"
+            title="visit link"
+            data-toggle="tooltip"
+            (click)="data.gotoLink(EastNewsList.news_link)"
+          >
+            <p class="text-nowrap">Source</p>
+            <img
+              src="../../../../../assets/news-img/link-icon.png"
+              alt=""
+              class="redirect-img mouse"
+            />
+          </div>
+          <button
+            class="d-flex cg-8 align-items-center pinki-gradient news-history-btn btn py-2 px-3"
+            (click)="
+              showHistory = !showHistory; data.navigate('history_scroll')
+            "
+          >
+            <i class="fa fa-history"></i>
+            <p class="viewHistoryBtn f-16 fw-600 text-nowrap manrope">
+              {{ showHistory ? "Hide History" : "History" }}
+            </p>
+          </button>
+          <!-- <button class="summary-button" data-toggle="tooltip" data-placement="top" title="News Summary" 
+                    (click)="summaryFlag=true;getSummary(EastNewsList.id, progress)">
+                    <a class="no-underline text-black" href="#summarized">
+                        <img src="../../../../../assets/news-img/Summarizer.png" alt=""></a>
+                </button> -->
+        </div>
+        <!-- <div class="d-flex cg-8 align-items-center">
+                    <img src="../../../../../assets/news-img/printer-icon.png" alt="">
+                    <p class="text-black f-16 fw-600 manrope text-opacity3">Print News</p>
+                </div> -->
+      </div>
+    </div>
+    <div class="np-body d-flex cg-16 mt-3">
+      <div class="np-left w-25 d-flex flex-column rg-16">
+        <div class="m2m d-flex align-center justify-content-center hl-head">
+          <p class="m-0 f-22 fw-700 text-center">Similar News</p>
+        </div>
+        <div
+          class="npl-body d-flex flex-column rg-16 scrollbar-news"
+          [ngClass]="showHistory ? 'adjusta-height' : ''"
+          [style]="
+            !is_loading.news && similarNewsList.length <= 4
+              ? 'height: max-content;'
+              : ''
+          "
+        >
+          <ng-container *ngIf="is_loading.news && !similarNewsList.length">
+            <div class="placeholder-glow" *ngFor="let l of [1, 1, 1, 1, 1]">
+              <div class="npl-image">
+                <img
+                  class="npl-img placeholder bg-secondary border-none rounded-3"
+                  src="../../../../../assets/images/noimg.png"
+                  alt=""
+                />
+              </div>
+              <div class="mt-1">
+                <div
+                  class="placeholder bg-secondary col-12 p-0"
+                  style="min-height: 10px"
+                ></div>
+                <div class="mt-2 d-flex flex-column gap-2">
+                  <div
+                    class="placeholder col-12 p-0 bg-secondary"
+                    style="min-height: 8px"
+                  ></div>
+                  <div
+                    class="d-flex justify-content-between gap-1 overflow-hidden"
+                  >
+                    <div
+                      class="placeholder col-10 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                    <div
+                      class="placeholder col-2 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <div
+                      class="placeholder col-3 p-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <p
+            *ngIf="!similarNewsList.length && !is_loading.news"
+            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+          >
+            No Data Found
+          </p>
+
+          <div
+            class="sm-news-card d-flex flex-column"
+            (click)="newsDetails(sm.id)"
+            *ngFor="let sm of similarNewsList"
+          >
+            <div class="npl-image">
+              <img
+                class="npl-img"
+                [src]="sm.image"
+                onerror='this.src="../../../../../assets/images/noimg.png"'
+                alt=""
+              />
+            </div>
+            <div class="npl-main d-flex flex-column">
+              <h3
+                class="text-black f-16 manrope fw-700 truncate-text2 mt-2"
+                [innerHTML]="sm.title"
+                style="line-height: 1.8"
+              ></h3>
+              <div class="d-flex align-items-end">
+                <p
+                  class="text-grey f-14 truncate-text2 manrope fw-400 text-opacity3"
+                  [innerHTML]="sm.description"
+                  style="line-height: 1.8"
+                ></p>
+                <p
+                  href=""
+                  class="no-underline text-black f-12 manrope fw-600 text-nowrap mouse"
+                  (click)="gotoLink(sm.news_link, $event)"
+                >
+                  Read More
+                </p>
+              </div>
+              <div
+                class="date-time d-flex align-items-center text-opacity3 align-self-end"
+              >
+                <p class="color-black manrope f-10 fw-700 text-right">
+                  {{ sm.published_date }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showHistory">
+          <div
+            class="m2m d-flex align-center justify-content-center hl-head mt-3"
+            id="history_scroll"
+          >
+            <p class="m-0 f-22 fw-700 text-center">History News</p>
+          </div>
+          <div
+            class="npl-body d-flex flex-column rg-16 scrollbar-news"
+            [style]="
+              !is_loading.history && NewsHistoryList.length <= 4
+                ? 'height: max-content'
+                : 'height: 50rem;'
+            "
+          >
+            <ng-container *ngIf="is_loading.history && !NewsHistoryList.length">
+              <div class="placeholder-glow" *ngFor="let l of [1, 1, 1, 1, 1]">
+                <div class="npl-image">
+                  <img
+                    class="npl-img placeholder bg-secondary border-none rounded-3"
+                    src="../../../../../assets/images/noimg.png"
+                    alt=""
+                  />
+                </div>
+                <div class="mt-1">
+                  <div
+                    class="placeholder bg-secondary col-12 p-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div class="mt-2 d-flex flex-column gap-2">
+                    <div
+                      class="placeholder col-12 p-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                    <div
+                      class="d-flex justify-content-between gap-1 overflow-hidden"
+                    >
+                      <div
+                        class="placeholder col-10 py-0 bg-secondary"
+                        style="min-height: 8px"
+                      ></div>
+                      <div
+                        class="placeholder col-2 py-0 bg-secondary"
+                        style="min-height: 8px"
+                      ></div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <div
+                        class="placeholder col-3 p-0 bg-secondary"
+                        style="min-height: 8px"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <p
+              *ngIf="!NewsHistoryList.length && !is_loading.history"
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+            >
+              No Data Found
+            </p>
+            <div
+              class="sm-news-card d-flex flex-column"
+              (click)="data.gotoLink(rel.news_link)"
+              *ngFor="let rel of NewsHistoryList"
+            >
+              <!-- <div class="npl-image">
+                                <img class="npl-img" [src]="rel.image" onerror='this.src="../../../../../assets/images/noimg.png"' alt="">
+                            </div> -->
+              <div class="npl-main d-flex flex-column">
+                <h3
+                  class="text-black f-16 manrope fw-700 truncate-text2 mt-2"
+                  [innerHTML]="rel.title"
+                  style="line-height: 1.8"
+                ></h3>
+                <div class="d-flex align-items-end">
+                  <p
+                    class="text-grey f-14 truncate-text2 manrope fw-400 text-opacity3 mouse"
+                    [innerHTML]="rel.description"
+                    style="line-height: 1.8"
+                  ></p>
+                  <p
+                    href=""
+                    class="no-underline text-black f-12 manrope fw-600 text-nowrap mouse"
+                    (click)="gotoLink(rel.news_link, $event)"
+                  >
+                    Read More
+                  </p>
+                </div>
+                <div
+                  class="date-time d-flex align-items-center text-opacity3 align-self-end"
+                >
+                  <p class="color-black manrope f-10 fw-700 text-right">
+                    {{ rel.published_date }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="np-mid w-50 d-flex flex-column rg-16 scrollbar-news position-relative"
+      >
+        <img
+          class="big-news-card"
+          [src]="EastNewsList.image"
+          onerror='this.src="../../../../../assets/images/noimg.png"'
+          alt=""
+        />
+        <!-- <img  src="../../../../../assets/news-img/link-icon.png" alt="" class="redirect-img mouse position-absolute" (click)="data.gotoLink(EastNewsList.news_link)"> -->
+        <p
+          class="sm-description text-black manrope f-16 fw-300 text-opacity3"
+          [innerHTML]="EastNewsList.title"
+        ></p>
+        <div
+          class="big-description text-black manrope f-20 fw-400 text-justify"
+          [innerHTML]="EastNewsList.description"
+        ></div>
+
+        <!--***** Text Summary ***** -->
+
+        <div class="summarized-text" [ngClass]="summaryFlag ? '' : 'd-none'">
+          <div class="d-flex gap-2 align-items-center">
+            <p class="f-25 fw-700 spaceGrotesk text-black" id="summarized">
+              Summary
+            </p>
+            <div class="progress w-100 progress-container d-none">
+              <div
+                #progress
+                class="progress-bar progressbar-custom progress-bar-striped"
+                role="progressbar"
+                [style]="'width:' + pwith + '% !important'"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ pwith + "%" }}
+              </div>
+            </div>
+          </div>
+
+          <p
+            class="big-description text-black manrope f-20 fw-400 mt-2 text-justify"
+          >
+            {{ summary }}
+          </p>
+        </div>
+      </div>
+
+      <div class="np-right w-25 d-flex flex-column rg-16">
+        <!-- Summary ############### -->
+        <div
+          class="npl-head f-16 manrope fw-800 text-black"
+          *ngIf="summary?.length && summaryShow"
+        >
+          Summary
+        </div>
+        <!-- <div
+          class="d-flex flex-wrap rg-8 cg-8 scrollbar-news overflow-y-auto"
+          style="max-height: 12rem"
+        > -->
+        <!-- <pre
+            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 newsSummary"
+            *ngIf="summary?.length && summaryShow"
+          >
+            {{ summary }}
+          </pre> -->
+
+        <!-- </div> -->
+
+        <!-- Related News ######################## -->
+        <div class="m2m d-flex align-center justify-content-center hl-head">
+          <p class="m-0 f-22 fw-700 text-center">
+            {{ EastNewsList.sub_cat_hits }}
+          </p>
+        </div>
+        <div
+          class="npr-body d-flex flex-column rg-16 scrollbar-newsX scrollbar-news"
+          [style]="
+            !is_loading.related && relatedNewsList.length <= 4
+              ? 'height: max-content;'
+              : ''
+          "
+        >
+          <ng-container *ngIf="is_loading.related && !relatedNewsList.length">
+            <div class="placeholder-glow" *ngFor="let l of [1, 1, 1, 1, 1]">
+              <div class="npl-image">
+                <img
+                  class="npl-img placeholder bg-secondary border-none rounded-3"
+                  src="../../../../../assets/images/noimg.png"
+                  alt=""
+                />
+              </div>
+              <div class="mt-1">
+                <div
+                  class="placeholder bg-secondary col-12 p-0"
+                  style="min-height: 10px"
+                ></div>
+                <div class="mt-2 d-flex flex-column gap-2">
+                  <div
+                    class="placeholder col-12 p-0 bg-secondary"
+                    style="min-height: 8px"
+                  ></div>
+                  <div
+                    class="d-flex justify-content-between gap-1 overflow-hidden"
+                  >
+                    <div
+                      class="placeholder col-10 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                    <div
+                      class="placeholder col-2 py-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <div
+                      class="placeholder col-3 p-0 bg-secondary"
+                      style="min-height: 8px"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <p
+            *ngIf="!relatedNewsList.length && !is_loading.related"
+            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+          >
+            No Data Found
+          </p>
+          <div
+            class="sm-news-card d-flex flex-column"
+            (click)="newsDetails(rel.id)"
+            *ngFor="let rel of relatedNewsList"
+          >
+            <div class="npl-image">
+              <img
+                class="npl-img"
+                [src]="rel.image"
+                onerror='this.src="../../../../../assets/images/noimg.png"'
+                alt=""
+              />
+            </div>
+            <div class="npl-main d-flex flex-column">
+              <h3
+                class="text-black f-16 manrope fw-700 truncate-text2 mt-2"
+                [innerHTML]="rel.title"
+                style="line-height: 1.8"
+              ></h3>
+              <div class="d-flex align-items-end">
+                <p
+                  class="text-grey f-14 truncate-text2 manrope fw-400 text-opacity3"
+                  [innerHTML]="rel.description"
+                  style="line-height: 1.8"
+                ></p>
+                <p
+                  href=""
+                  class="no-underline text-black f-12 manrope fw-600 text-nowrap mouse"
+                  (click)="gotoLink(rel.news_link, $event)"
+                >
+                  Read More
+                </p>
+              </div>
+              <div
+                class="date-time d-flex align-items-center text-opacity3 align-self-end"
+              >
+                <p class="color-black manrope f-10 fw-700 text-right">
+                  {{ rel.published_date }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" [class.modal-show]="modalVisiblity">
+    <div class="modal-dialog" role="document" cdkDrag>
+      <div class="modal-content">
+        <div class="modal-header" cdkDragHandle>
+          <div class="header">
+            <h5 class="modal-title" id="exampleModalLabel">Summary</h5>
+            <div class="audio">
+              <div class="imgBox"  (click)="selectOption('Asian Female')">
+                <img src="../../../../../assets/images/audio.svg" alt="" />
+
+              </div>
+              <div class="custom-dropdown">
+                <button class="dropdown-btn" (click)="toggleDropdown();">
+                  <div class="leftWrap">
+                    {{ selectedOption  }}
+                  </div>
+                    <img [ngClass]="{'show':isDropdownOpen}" src="../../../../../assets/images/downIcon.svg" alt="" />
+                </button>
+                <div class="dropdown-options" *ngIf="isDropdownOpen">
+                  <!-- <div class="dropdown-option"></div> -->
+                  <div
+                    *ngFor="let option of dropdownOptions"
+                    class="dropdown-option"
+                    (click)="selectOption(option);"
+                  >
+                    {{ option }}
+                  </div>
+                </div>
+              </div>
+
+              
+            </div>
+          </div>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="toggleModal()"
+          >
+            <img
+              src="../../../../../assets/images/modal_closeIcon.png"
+              alt="Close"
+              style="width: 32px; height: 32px"
+            />
+          </button>
+        </div>
+        <div class="modal-body scrollbar-news scrollbar-news-2">
+          <ngx-ui-loader
+            fgsColor="transparent"
+            bgsColor="red"
+            bgsPosition="bottom-center"
+            logoPosition="center-center"
+            [logoSize]="160"
+            [gap]="20"
+            logoUrl="../../../../../assets/images/zulonIconAnimation.gif"
+            [attr.bgsOpacity]="0"
+          ></ngx-ui-loader>
+
+          <ul *ngIf="summary && summaryObj['bulletPoints'].length">
+            <li *ngFor="let bulletPoint of summaryObj['bulletPoints']">
+              {{ bulletPoint }}
+            </li>
+          </ul>
+
+          <div *ngIf="summary && summaryObj['keyAreas'].length">
+            <b>Key Areas: </b>
+            <ul>
+              <li *ngFor="let bulletPoint of summaryObj['keyAreas']">
+                {{ bulletPoint }}
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="summary && summaryObj['keyPeople'].length">
+            <b>Key People: </b>
+            <ul>
+              <li *ngFor="let bulletPoint of summaryObj['keyPeople']">
+                {{ bulletPoint }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      <div class="footer" *ngIf="audioPath || isAudioLoading">
+  <div class="audioWrap">
+
+    <!-- Loader -->
+    <div class="audio-loader" *ngIf="isAudioLoading">
+      <span class="spinner"></span>
+      <p>Loading audio…</p>
+    </div>
+
+    <!-- Audio -->
+    <audio
+      *ngIf="audioPath"
+      [src]="audioPath"
+      controls
+      class="custom-audio"
+      autoplay
+      (canplay)="isAudioLoading = false"
+      (error)="isAudioLoading = false"
+    ></audio>
+
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+  <!-- <app-summary-modal [origin]="origin" [id]="id"  *ngIf="modalVisiblity"></app-summary-modal> -->
+</div>

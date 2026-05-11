@@ -1,0 +1,93 @@
+<!--///// News Header //////-->
+
+<app-news-header></app-news-header>
+
+
+<!-- ///// News Header End ///// -->
+
+<div class="container-big news-body position-relative z-index0 scrollbar-news overflow-visible">
+<section class="general-search  pd-32 w-100">
+    <div class="m2m-card card-type1 w-100 pd-10" style="min-width: 600px;">
+        <div class="d-flex justify-content-center w-100 mb-2" *ngIf="initial_state">
+            <div class="d-flex gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 8rem; height: 4rem;">
+                    <!-- 'Search' Text with Different Colors for Each Letter -->
+                    <text x="0" y="60" font-family="Arial, sans-serif" font-size="36" fill="#DB4437" letter-spacing="-6">S</text>
+                    <text x="24" y="60" font-family="Arial, sans-serif" font-size="36" fill="#4285F4" letter-spacing="-5">e</text>
+                    <text x="44" y="60" font-family="Arial, sans-serif" font-size="36" fill="#0F9D58" letter-spacing="-4">a</text>
+                    <text x="66" y="60" font-family="Arial, sans-serif" font-size="36" fill="#F4B400" letter-spacing="-5">r</text>
+                    <text x="80" y="60" font-family="Arial, sans-serif" font-size="36" fill="#DB4437" letter-spacing="-6">c</text>
+                    <text x="100" y="60" font-family="Arial, sans-serif" font-size="36" fill="#4285F4" letter-spacing="-5">h</text>
+                </svg>
+                <!-- <h1 class="p-2 fs-1 m-0" style="font-size: 3.1rem;">
+                    Search
+                </h1> -->
+            </div>
+        </div>
+        <div class="mcard-head d-flex cg-16 align-items-center w-100">
+            <div class="search search-google d-flex align-items-center ps-3 header-search-yen">
+                <input class="header-search f-16 w-100" type="text" placeholder="Search" [(ngModel)]="text" #gensearch (keyup.enter)="this.newsGeneralSearch()">
+                <img class="hs-image" src="../../../../../assets/news-img/search-icon.svg" alt="" (click)="this.newsGeneralSearch()">
+            </div>
+        </div>
+        <div class="mcard-body mt-4 d-flex flex-column rg-16 overflow-y-auto scrollbar-news">
+            <!-- custom loader -->
+            <ng-container *ngIf="!NewsList.length && loader_flag">
+                    <div class="placeholder-glow mb-2 w-100" *ngFor="let a of [1,1,1,1,1,1,1]">
+                        <div class="d-flex gap-3 px-2 py-3 placeholder rounded-3" 
+                            style="background-color: #b1b1b1;">
+                            <div class="col-3 placeholder bg-secondary p-0 rounded-3" style="height: 5rem;"></div>
+                            <div class="w-full d-flex flex-column">
+                                <div class="placeholder bg-secondary rounded p-0" style="height: 1.5rem;"></div>
+                                <div class="placeholder bg-secondary mt-2 rounded p-0" style="min-height: 0.6rem;"></div>
+                                <div class="placeholder bg-secondary mt-1 rounded p-0" style="min-height: 0.6rem;"></div>
+                            </div>
+                        </div>
+                    </div>
+            </ng-container>
+            <ng-container *ngFor="let news of NewsList">
+                <div #news_div class="mm-card d-flex cg-12 pd-8">
+                    <div class="mm-left pdy-2">
+                        <img class="mm-profile category-news-image" [src]="news.img"
+                            onerror="this.src='/assets/images/noimg-small.png'" alt="">
+                    </div>
+                    <div class="mm-right">
+                        <div class="mm-top d-flex gap-2 align-items-start justify-content-between">
+                            <p class="text-black w-full f-18 fw-700 spaceGrotesk text-truncate2">{{news.title}}</p>
+                            <div class="icons-set d-flex align-items-center gap-3">
+                                <i src="/assets/news-img/link-icon.png"
+                                    alt="" class="mouse fa fs-6 fa-arrow-up-right-from-square" 
+                                    style="font-size: 0.9rem !important;"
+                                    (click)="gotoLink(news.link)"></i>
+                                <i class="fa fs-6 fa-plus mouse" (click)="this.api.genContext($event,news_div,{
+                                    id: news?.id,
+                                    title: news?.title,
+                                    corner: origin,
+                                    content: news,
+                                    cat: 'gen',
+                                    subCat: news?.sub_cat,
+                                    type: 'gen'
+                                })"></i>
+                            </div>
+                        </div>
+                        <div class="mm-bottom mt-1 d-flex align-items-center justify-content-between">
+                            <p class="text-black manrope f-16 fw-500 text-opacity2 text-truncate2">{{news.desc}}</p>
+                            <!-- <button class="d-flex cg-8 mm-button mt-2 border-rounded pd-5">
+                                    <i class="fa-solid fa-chevron-right chevron-only text-white align-items-center justify-content-center"></i>
+                                </button> -->
+            
+                        </div>
+                        <p class="manrope  f-12 fw-700 text-black">{{news.date_text}}</p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</section>
+
+</div>
+
+
+<!-- loader -->
+<ngx-ui-loader fgsColor="transparent" bgsColor="red" bgsPosition="bottom-center" logoPosition="center-center" [logoSize]="160" [gap]="20"
+    logoUrl="/assets/news-img/main-logo-gif.gif" [attr.bgsOpacity]="0"></ngx-ui-loader>

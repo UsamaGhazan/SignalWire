@@ -1,0 +1,53 @@
+
+<!-- Modal  -->
+
+<!-- <div class="modal fade map-modal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content p-0 border-0"> 
+-->
+      <div class="modal-header d-flex align-items-center justify-content-between p-3" *ngIf="!update_flag">
+        <div class="d-flex justify-content-center align-items-center text-bold">
+          <h5 class="text-white manrope-xbold f-22 ">{{update_flag?'Update User Info':'Enter User Info'}}</h5>
+        </div>
+      </div>
+      <div [classList]="'modal-body p-3'+' '+(!update_flag?'border':' ')">
+        <div class="row rg-10">
+          <div class="col-md-6">
+            <label for="exampleInputEmail1" class="form-label">Name</label>
+            <input type="email" class="form-control" [(ngModel)]="user.name">
+            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+          </div>
+          <div class="col-md-6">
+            <label for="exampleInputEmail1" class="form-label">Password</label>
+            <input type="email" class="form-control" [(ngModel)]="user.pass">
+          </div>
+          
+          <div class="col-md-6">
+            <label for="exampleInputEmail1" class="form-label">Category</label>
+            <select class="form-select form-select-sm p-2 border-0 border-color-select"
+              style="border: 1px solid #cbc9c9 !important;" aria-label=".form-select-sm example" [(ngModel)]="user.cat">
+              <option value="" selected>All</option>
+              <ng-container *ngFor="let cat of category; index as i">
+                <option [value]="cat">{{cat}}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="exampleInputEmail1" class="form-label">Remarks</label>
+            <input type="text" class="form-control" [(ngModel)]="user.remarks">
+          </div>
+          
+        </div>
+        <div class="button-wrapper w-25 m-auto mt-4">
+          <div class="row justify-content-end">
+            <div class="" (click)="addUser()">
+              <button type="submit" class="btn btn-primary w-100 fw-bold">{{update_flag?'Update':'+ Add'}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- </div>
+  </div>
+</div> -->
+    

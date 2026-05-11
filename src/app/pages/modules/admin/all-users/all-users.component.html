@@ -1,0 +1,259 @@
+<div class="col-12 mb-2 px-0">
+  <div class="row d-flex justify-content-between m-0 rg-16">
+    <div class="col-md-3 p-0">
+      <input
+        type="text"
+        class="form-control rounded blured-text-grp"
+        placeholder="Search"
+        [(ngModel)]="searchtext"
+        aria-label="text"
+        aria-describedby="search-addon"
+      />
+    </div>
+    <div class="col-md-3 p-0" style="display: flex; align-items: center; gap: 8px;">
+      <a
+      class="dashboard-nav-dropdown-item"
+      (click)="downloadCSV()"
+      ><button type="submit" class="btn btn-primary w-100 fw-bold">
+        Download CSV
+      </button></a
+    >
+      <a
+        class="dashboard-nav-dropdown-item"
+        routerLink="/admin/adduser"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><button type="submit" class="btn btn-primary w-100 fw-bold">
+          + Add User
+        </button></a
+      >
+    </div>
+  </div>
+</div>
+<div class="tableContainer">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Password</th>
+        <th scope="col">Category</th>
+        <th scope="col" (click)="sortData()" style="cursor: pointer;">
+          Last Login<img
+            src="../../assets/images/sorticon.png" style="height: 24px; width: 24px; cursor: pointer; margin-left: 6px;" 
+            alt=""
+            
+          />
+        </th>
+        <th scope="col" style="display: flex; cursor: pointer; align-items: center;" (click)="sortDataby24hrs()">Last 24hrs Act ({{logCount}}) <img
+          src="../../assets/images/sorticon.png" style="height: 24px; width: 24px; cursor: pointer; margin-left: 6px;" 
+          alt=""
+          
+        /></th>
+        <th scope="col">Remarks</th>
+        <th scope="col">Action</th>
+        <th scope="col">OTP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let userx of allusersList | filter : searchtext; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ userx.uname }}</td>
+        <td>{{ userx.pass }}</td>
+        <td>{{ userx.utype }}</td>
+        <td>{{ formatDate(userx.last_login_time_stamp) }}</td>
+        <td>{{ userx.log_count }}</td>
+        <td>{{ userx.remarks }}</td>
+        <td class="d-flex">
+          <i
+            class="fas fa-clock-rotate-left px-2 mouse text-secondary"
+            data-bs-toggle="modal"
+            data-bs-target="#activity-modal"
+            (click)="getLogsoffset(userx)"
+          ></i>
+          <i
+            class="fas fa-edit px-1 mouse text-primary"
+            (click)="updateUser(userx)"
+          ></i>
+          <i
+            class="fas fa-trash px-2 mouse text-danger"
+            (click)="deleteUser(userx.id)"
+          ></i>
+          <div _ngcontent-dxc-c50="" class="form-check form-switch">
+            <input
+              _ngcontent-dxc-c50=""
+              (change)="toggleUserStatus($event, userx.id)"
+              type="checkbox"
+              id="'flexSwitch'+i"
+              class="form-check-input mt-0 ctb_"
+              [checked]="userx.profile_status === 1"
+            /><label
+              _ngcontent-dxc-c50=""
+              for="'flexSwitch'+i"
+              class="form-check-label"
+            ></label>
+          </div>
+        </td>
+        <td>
+          <div _ngcontent-dxc-c50="" class="form-check form-switch">
+            <input
+              _ngcontent-dxc-c50=""
+              (change)="updateOTPStatus($event, userx.id)"
+              type="checkbox"
+              id="'flexSwitch'+i"
+              class="form-check-input mt-0 ctb_"
+              [checked]="userx.otp_status === 1"
+            /><label
+              _ngcontent-dxc-c50=""
+              for="'flexSwitch'+i"
+              class="form-check-label"
+            ></label>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- The Modal -->
+<div
+  class="modal fade map-modal"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content p-0 border-0">
+      <div
+        class="modal-header d-flex align-items-center justify-content-between p-3"
+      >
+        <div class="d-flex justify-content-center align-items-center text-bold">
+          <h5 class="text-white manrope-xbold f-22">
+            {{ edit_flag ? "Update User Info" : "Enter User Info" }}
+          </h5>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body p-3">
+        <app-add-user
+          [receivedata]="modalList"
+          *ngIf="modalList.length && edit_flag"
+        ></app-add-user>
+      </div>
+      <!-- Modal footer -->
+      <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    >Create</button>
+            </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div
+  class="modal fade map-modal"
+  id="activity-modal"
+  tabindex="-1"
+  aria-labelledby="activity-modalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog activity-modal modal-dialog-scrollable modal-xl modal-dialog-centered"
+  >
+    <div class="modal-content p-0 border-0">
+      <div
+        class="modal-header d-flex align-items-center justify-content-between p-3"
+      >
+        <div
+          class="d-flex justify-content-between align-items-center text-bold w-full"
+        >
+          <h5 class="text-white manrope-xbold f-22">
+            User Activity (<small>{{ logsData.user?.uname }}</small
+            >)
+          </h5>
+          <button class="btn btn-primary mr-5" (click)="getLogs()">
+            Generate PDF
+          </button>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <span
+        *ngIf="!logs_flag && !logsData.activity?.length"
+        class="text-center mt-5"
+        >No Data Found</span
+      >
+      <div
+        class="modal-body p-3 checkheight"
+        #table
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="onscrolllog()"
+      >
+        <table class="table table-striped" *ngIf="logsData.activity?.length">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Time</th>
+              <th scope="col">Page</th>
+              <th scope="col">Category</th>
+              <th scope="col">Action</th>
+              <th scope="col">Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logsData.activity; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ log.timestamp }}</td>
+              <td>{{ log.message.page }}</td>
+              <td>{{ log.message.category || "--" }}</td>
+              <td>
+                {{
+                  log.message?.id
+                    ? log.message?.id?.includes(" ") ||
+                      log.message?.id?.length < 19 ||
+                      log.message?.id?.length < 19
+                      ? log.message?.id
+                      : "Visit Link"
+                    : "--"
+                }}
+              </td>
+              <td>
+                <a [href]="log.message.path" target="_blank">
+                  {{
+                    log.message.path?.slice(0, 25) +
+                      (log.message.path?.length > 25 ? ".." : "")
+                  }}
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div
+          class="placeholder-glow"
+          *ngIf="logs_flag && !logsData.activity?.length"
+        >
+          <div class="col-12 placeholder-secondary placeholder"></div>
+          <div class="col-12 placeholder-secondary placeholder"></div>
+          <div class="col-12 placeholder-secondary placeholder"></div>
+          <div class="col-12 placeholder-secondary placeholder"></div>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    >Create</button>
+            </div> -->
+    </div>
+  </div>
+</div>
+
+<ngx-ui-loader></ngx-ui-loader>

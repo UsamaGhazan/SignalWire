@@ -1,0 +1,9 @@
+@media (max-width: 700px) {
+  .footer-mid ul {
+    flex-wrap: wrap;
+  }
+}
+
+/* #footer {
+  transform: translate(0, 300px);
+} */

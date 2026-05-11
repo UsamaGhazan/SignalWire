@@ -1,0 +1,90 @@
+#myTab{
+    width: 100%;
+    flex-wrap: nowrap;
+    gap: 4px;
+}
+#myTab > li{
+    width: 100%;
+}
+#myTab > li button{
+    width: 100%;
+    color: black;
+    background: rgba(218, 219, 231, 0.79);
+    height:100%;
+}
+#myTab > li button.active {
+    background: red;
+    color: white;
+    font-weight: 600;
+    outline: 3px solid rgba(0, 0, 0, 0.10);
+}
+
+.author-card{
+    max-height: 50vh;
+    overflow: auto;
+}
+
+.sources-list {
+    max-height: 6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.sources-list span {
+    font-size: 12px;
+    padding: 4px 8px;
+    line-height: 1;
+    border-radius: 20px;
+    display: flex;
+    border: 1px solid rgba(15, 15, 15, 0.15);
+    align-items: center;
+    justify-content: center;
+}
+
+
+.sorting-icon{
+    color: rgba(0, 0, 0, 0.362) !important;
+    font-size: 11px;
+}
+.sorting-icon.active{
+    color: black !important;
+    font-size: 11px;
+}
+
+
+@media (max-width:700px){
+    .sources-list span{
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+    .table-text{
+        font-size: 13px;
+    }
+    #myTab > li button {
+        font-size: 14px;
+    }
+}
+@media (max-width:500px){
+    .table-text{
+        font-size: 11px;
+        word-break: break-all;
+    }
+    .tsnumbers{
+        width: 5% !important;
+        font-size: 11px;
+    }
+    .tsnames{
+        width: 20% !important;
+        font-size: 11px;
+    }
+    .tsauthor{
+        width: 60% !important;
+        font-size: 11px;
+    }
+    .tscount{
+        width: 15% !important;
+        font-size: 11px;
+    }
+}

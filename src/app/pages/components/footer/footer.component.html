@@ -1,0 +1,71 @@
+<div class="container-big pd-32 bluish-gradient" id="footer">
+  <footer>
+    <div class="footer-body d-flex justify-content-between align-items-center">
+      <div class="footer-left">
+        <img
+          height="50px"
+          width="50px"
+          [src]="
+            system == 'Zulon AI'
+              ? '../../../../../assets/images/ZULON-Logo-Icon.svg'
+              : '../../../../../assets/nimages/ZULON-Logo-Icon.svg'
+          "
+          alt=""
+        />
+      </div>
+      <div class="footer-mid">
+        <ul class="list-style-none d-flex cg-24 m-0">
+          <li>
+            <a class="text-black f-14 marnope fw-600 text-center" href=""
+              >Legal Stuff</a
+            >
+          </li>
+          <li>
+            <a class="text-black f-14 marnope fw-600 text-center" href=""
+              >Privacy Policy</a
+            >
+          </li>
+          <li>
+            <a class="text-black f-14 marnope fw-600 text-center" href=""
+              >Security</a
+            >
+          </li>
+          <li>
+            <a class="text-black f-14 marnope fw-600 text-center" href=""
+              >Web Accessibility</a
+            >
+          </li>
+          <li>
+            <a class="text-black f-14 marnope fw-600 text-center" href=""
+              >Manage Cookies</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="footer-right d-flex flex-column align-items-end">
+        <p
+          class="right-text manrope f-22 fw-600 text-danger"
+          *ngIf="system == 'Zulon AI'"
+        >
+          News
+        </p>
+        <p
+          class="right-text manrope-xBold f-28 fw-600 text-black"
+          *ngIf="system == 'Zulon AI'"
+        >
+          {{ system }}
+        </p>
+        <img
+          class="login-zambeel"
+          src="../../../../../assets/news-img/musaictext.png"
+          style="width: 39%"
+          alt=""
+          *ngIf="system != 'Zulon AI'"
+        />
+        <p class="right-text manrope f-14 fw-400 text-black">
+          All rights reserved © {{ year }}
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>

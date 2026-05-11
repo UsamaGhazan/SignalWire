@@ -1,0 +1,21 @@
+<div class="w-100 h-100 position-relative">
+    <!-- map -->
+    <div id="news_map_container" style="height: 75vh;width: 100%;"></div>
+    <!-- loader -->
+    <div class="loader w-100 h-100 position-absolute left-0 top-0" *ngIf="loading"></div>
+    <!-- pin-popup -->
+    <div class="pin-popup d-flex flex-column position-absolute top-0 right-0 pb-2 h-100" 
+        style="max-width: 400px;background: linear-gradient(90deg, transparent, #9DB1BC, #9DB1BC)" 
+        *ngIf="api.pin_popup">
+        <div class="d-flex my-2 me-1 rounded-2 align-items-center text-dark text-bold py-1 px-2 justify-content-between"
+            style="background-color: rgba(255,255,255,0.72);">
+            <div>News from <span class="text-capitalize">{{pin_context}}</span></div>
+            <i class="fa fa-times f-22 mouse" (click)="api.pin_popup=false"></i>
+        </div>
+        <div class="h-100 me-1 scrollbar-news overflow-y-auto d-flex flex-column gap-1">
+            <ng-container *ngFor="let news of pin_news;">
+                <app-mm-card [cat]="cat" [corner]="corner" [news]="news" buttonStyle="round" [disableContext]="true"></app-mm-card>
+            </ng-container>
+        </div>
+    </div>
+</div>

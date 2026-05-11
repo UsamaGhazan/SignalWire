@@ -1,0 +1,343 @@
+<div class="homepageContainer">
+  <!-- For the header / nav#################################### -->
+  <header>
+    <div class="searchField" #searchField>
+      <input
+        type="text"
+        placeholder="Search Here ..."
+        [(ngModel)]="text"
+        #gensearch
+        (keyup.enter)="this.newsGeneralSearch($event)"
+      />
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        (click)="this.newsGeneralSearch($event)"
+      >
+        <path
+          d="M19.6 21L13.3 14.7C12.8 15.1 12.225 15.4167 11.575 15.65C10.925 15.8833 10.2333 16 9.5 16C7.68333 16 6.14583 15.3708 4.8875 14.1125C3.62917 12.8542 3 11.3167 3 9.5C3 7.68333 3.62917 6.14583 4.8875 4.8875C6.14583 3.62917 7.68333 3 9.5 3C11.3167 3 12.8542 3.62917 14.1125 4.8875C15.3708 6.14583 16 7.68333 16 9.5C16 10.2333 15.8833 10.925 15.65 11.575C15.4167 12.225 15.1 12.8 14.7 13.3L21 19.6L19.6 21ZM9.5 14C10.75 14 11.8125 13.5625 12.6875 12.6875C13.5625 11.8125 14 10.75 14 9.5C14 8.25 13.5625 7.1875 12.6875 6.3125C11.8125 5.4375 10.75 5 9.5 5C8.25 5 7.1875 5.4375 6.3125 6.3125C5.4375 7.1875 5 8.25 5 9.5C5 10.75 5.4375 11.8125 6.3125 12.6875C7.1875 13.5625 8.25 14 9.5 14Z"
+          fill="black"
+        />
+      </svg>
+
+      <div
+        class="searchFieldDropdown scrollbar-news"
+        *ngIf="showSearchDropdown"
+        #dropdownContainer
+      >
+        <div
+          class="mcard-body mt-4 d-flex flex-column rg-16 overflow-y-auto scrollbar-news"
+        >
+          <!-- custom loader -->
+          <ng-container *ngIf="!NewsList.length && newsLoading">
+            <div
+              class="placeholder-glow mb-2 w-100"
+              *ngFor="let a of [1, 1, 1, 1, 1, 1, 1]"
+            >
+              <div
+                class="d-flex gap-3 px-2 py-3 placeholder rounded-3"
+                style="background-color: #b1b1b1"
+              >
+                <div
+                  class="col-3 placeholder bg-secondary p-0 rounded-3"
+                  style="height: 5rem"
+                ></div>
+                <div class="w-full d-flex flex-column">
+                  <div
+                    class="placeholder bg-secondary rounded p-0"
+                    style="height: 1.5rem"
+                  ></div>
+                  <div
+                    class="placeholder bg-secondary mt-2 rounded p-0"
+                    style="min-height: 0.6rem"
+                  ></div>
+                  <div
+                    class="placeholder bg-secondary mt-1 rounded p-0"
+                    style="min-height: 0.6rem"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngFor="let news of NewsList">
+            <div #news_div class="mm-card d-flex cg-12 pd-8">
+              <div class="mm-left pdy-2">
+                <img
+                  class="mm-profile category-news-image"
+                  [src]="news.img"
+                  onerror="this.src='/assets/images/noimg-small.png'"
+                  alt=""
+                />
+              </div>
+              <div class="mm-right">
+                <div
+                  class="mm-top d-flex gap-2 align-items-start justify-content-between"
+                >
+                  <p
+                    class="text-black w-full f-18 fw-700 spaceGrotesk text-truncate2"
+                  >
+                    {{ news.title }}
+                  </p>
+                  <div class="icons-set d-flex align-items-center gap-3">
+                    <i
+                      src="/assets/news-img/link-icon.png"
+                      alt=""
+                      class="mouse fa fs-6 fa-arrow-up-right-from-square"
+                      style="font-size: 0.9rem !important"
+                      (click)="gotoLink(news.link)"
+                    ></i>
+                    <i
+                      class="fa fs-6 fa-plus mouse"
+                      (click)="
+                        this.api.genContext($event, news_div, {
+                          id: news?.id,
+                          title: news?.title,
+                          corner: origin,
+                          content: news,
+                          cat: 'gen',
+                          subCat: news?.sub_cat,
+                          type: 'gen'
+                        })
+                      "
+                    ></i>
+                  </div>
+                </div>
+                <div
+                  class="mm-bottom mt-1 d-flex align-items-center justify-content-between"
+                >
+                  <p
+                    class="text-black manrope f-16 fw-500 text-opacity2 text-truncate2"
+                  >
+                    {{ news.desc }}
+                  </p>
+                  <!-- <button class="d-flex cg-8 mm-button mt-2 border-rounded pd-5">
+                                  <i class="fa-solid fa-chevron-right chevron-only text-white align-items-center justify-content-center"></i>
+                              </button> -->
+                </div>
+                <p class="manrope f-12 fw-700 text-black">
+                  {{ news.date_text }}
+                </p>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-conatainer *ngIf="!NewsList.length && !newsLoading">
+            <div class="newsNotFound">
+              <p>No News Found</p>
+            </div>
+          </ng-conatainer>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo">
+      <img src="../../../../../assets/images/zulon_Logo.svg" />
+    </div>
+
+    <div class="date">
+      <div class="date-time d-flex align-items-center">
+        <span class="nl-date nldt f-16 fw-600">{{ now_d }}</span>
+        <span class="vertical-line"></span>
+        <span class="nl-time nldt f-16 fw-600">{{ now_t }}</span>
+      </div>
+      <!-- <div class="nl-kebab">
+                <i class="fa-solid fa-ellipsis-vertical f-24"></i>
+            </div> -->
+      <div class="nl-switch mouse" (click)="logout()">
+        <img
+          class="power-off"
+          src="../../../../../assets/news-img/power-off.svg"
+          alt=""
+        />
+      </div>
+    </div>
+  </header>
+
+  <!-- For the main content of the home page; -->
+  <main>
+    <div class="navigationLinks">
+      <!-- for the navigation button links -->
+      <div class="btnRow">
+        <div class="btnLink" (click)="explore('east_corner')">
+          <span> East Spotlight</span>
+
+          <div class="icon">
+            <i class="fa-solid fa-arrow-right f-16"></i>
+          </div>
+        </div>
+
+        <div class="btnLink" (click)="explore('internal_security')">
+          <span> Internal Insight</span>
+
+          <div class="icon">
+            <i class="fa-solid fa-arrow-right f-16"></i>
+          </div>
+        </div>
+
+        <div class="btnLink" (click)="explore('west_corner', 'west')">
+          <span> West View</span>
+
+          <div class="icon">
+            <i class="fa-solid fa-arrow-right f-16"></i>
+          </div>
+        </div>
+
+        <div class="btnLink" (click)="explorePremiumSources()">
+          <span> Premium Sources</span>
+
+          <div class="icon">
+            <i class="fa-solid fa-arrow-right f-16"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- for the navigation online -->
+      <div class="onlineStatus">
+        <div class="red-text">
+          <p class="mb-0 f-20 fw-800">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-exclamation-triangle"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"
+              />
+              <path
+                d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"
+              />
+            </svg>
+          </p>
+        </div>
+
+        <p>Be Aware! You are connected to the internet!</p>
+      </div>
+    </div>
+
+    <!-- for the flash news images & editorial news  -->
+    <div class="content">
+      <div class="flashNews">
+        <div
+          class="item"
+          *ngFor="let news of flashNewsList"
+          (click)="
+            navigate(
+              '/news-details',
+              news.index == 'west_corner_afghanistan'
+                ? 'west_corner'
+                : news.index,
+              news.id
+            )
+          "
+        >
+          <img
+            [src]="news.image"
+            [alt]="news.title"
+            onerror="this.src='/assets/images/noimg-small.png'"
+          />
+
+          <div class="category">
+            <p>
+              {{
+                news.index == "east_corner"
+                  ? "East Spotlight"
+                  : news.index == "internal_security"
+                  ? "Internal Insight"
+                  : "West View"
+              }}
+            </p>
+          </div>
+          <div class="title">
+            <p>{{ news.title.slice(0, 40) + "...." }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="editorialNews">
+        <h2 class="premTitle">Recent Premium Articles</h2>
+
+        <div class="cardMain">
+          <div
+            class="cardImage"
+            (click)="
+              navigate(
+                '/editorial-details',
+                'premium_editorials',
+                editorialList[0].id
+              )
+            "
+          >
+            <img
+              [src]="editorialList[0].image"
+              [alt]="editorialList[0].title"
+              onerror="this.src='/assets/images/noimg-small.png'"
+            />
+          </div>
+
+          <div class="info">
+            <h3>{{ editorialList[0].title }}</h3>
+            <p>
+              {{ editorialList[0].description.slice(0, 140) + "....." }}
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="cardNormal"
+          *ngFor="let editorial of editorialList; let i = index"
+          [class.d-none]="i == 0 || i > 3"
+          (click)="
+            navigate('/editorial-details', 'premium_editorials', editorial.id)
+          "
+        >
+          <div class="cardImage">
+            <img
+              [src]="editorial.image"
+              [alt]="editorial.title"
+              onerror="this.src='/assets/images/noimg-small.png'"
+            />
+          </div>
+
+          <div class="cardInfo">
+            <p>
+              {{ editorial.title }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="logo_sfw">
+          <img
+            src="../../../../../assets/images/ZULON-Logo-Icon.svg"
+            alt="ZULON Logo Icon"
+          />
+        </div>
+
+        <div class="links">
+          <a href=""> Legal Stuff </a>
+          <a href=""> Privacy Policy </a>
+          <a href=""> Security </a>
+          <a href=""> Web Accessibility </a>
+          <a href=""> Manage Cookies </a>
+        </div>
+
+        <div class="logo">
+          <img
+            src="../../../../../assets/images/zulon_Logo.svg"
+            alt="Zulon Logo"
+          />
+
+          <!-- <p>All Rights Reserved &copy; 2023.</p> -->
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

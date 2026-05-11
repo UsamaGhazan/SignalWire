@@ -1,0 +1,139 @@
+/* Scroll bar */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  /* width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #818181;
+  border-radius: 40px;
+}
+
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+main > .container {
+  padding: 60px 15px 0;
+}
+
+/* new layout css */
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.parent {
+  display: flex;
+  /* grid-template-columns: 15.5% 84.5%; */
+  grid-template-rows: 100%;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  /* transition: all 0.75s ease; */
+}
+
+.parent > .div1 {
+  width: 240px;
+  min-width: 240px;
+  /* transition: width 0.3s linear; */
+}
+
+.parent > .div2 {
+  width: calc(100% - 240px);
+  /* transition: width 0.3s linear; */
+}
+
+.grid-widths > .div1 {
+  width: 240px;
+}
+
+.grid-widths > .div2 {
+  width: calc(100% - 240px);
+}
+
+.grid-widths-collapsed > .div1 {
+  width: 100px;
+  min-width: auto !important;
+}
+
+.grid-widths-collapsed > .div2 {
+  width: calc(100% - 100px);
+}
+
+.parent-collapsed {
+  /* display: grid; */
+  /* grid-template-columns: 5% 95%; */
+  grid-template-rows: 100%;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+@media (max-width: 1380px) {
+  .parent > .div1 {
+    width: 200px;
+    min-width: 200px;
+    /* transition: width 0.3s linear; */
+  }
+
+  .parent > .div2 {
+    width: calc(100% - 200px);
+    /* transition: width 0.3s linear; */
+  }
+
+  .grid-widths > .div1 {
+    width: 200px;
+  }
+
+  .grid-widths > .div2 {
+    width: calc(100% - 200px);
+  }
+
+  .grid-widths-collapsed > .div1 {
+    width: 80px;
+    min-width: auto !important;
+  }
+
+  .grid-widths-collapsed > .div2 {
+    width: calc(100% - 80px);
+  }
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+
+main > .container {
+  padding: 60px 15px 0;
+}
+
+.customspinner {
+  z-index: 99999;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  left: calc(50% - 20px);
+}
+
+.d-spinner {
+  display: none !important;
+}

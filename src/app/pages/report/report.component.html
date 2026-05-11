@@ -1,0 +1,3064 @@
+<div
+  class="report d-flex w-60px customhehe"
+  style="border: 1px solid #8080801f; padding: 5px; border-radius: 7px"
+>
+  <button
+    class="report-btn position-relative d-flex flex-column align-items-center"
+    data-bs-toggle="modal"
+    data-bs-target="#report_modal"
+    (click)="getReportNews(); getReportTweets()"
+  >
+    <img
+      class="h-30px"
+      src="../../../../../assets/news-img/report-icon.png"
+      alt=""
+      title="Generate Report"
+    />
+    <p class="f-12 fw-700 manrope text-black">Report</p>
+    <ng-container>
+      <div
+        class="spinner-border text-secondary position-absolute"
+        role="status"
+        style="
+          width: 1rem;
+          height: 1rem;
+          color: #c94921 !important;
+          top: -5px;
+          right: 5px;
+          border-width: 0.18rem;
+        "
+        *ngIf="rep_flag == 'pending'"
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div
+        class="text-secondary position-absolute"
+        style="
+          width: 10px;
+          height: 10px;
+          color: #1c8b15 !important;
+          top: -5px;
+          right: 5px;
+        "
+        *ngIf="rep_flag == 'done'"
+      >
+        <span class=""
+          ><i
+            class="fa-solid fa-check f-16"
+            style="
+              -webkit-text-stroke-width: 1.5px;
+              -webkit-text-stroke-color: #1c8b15;
+            "
+          ></i
+        ></span>
+      </div>
+      <!-- <span class="position-absolute placeholder-wave placeholder bg-transparent text-secondary" 
+                style="top:-1.5rem;left:50%;transform:translateX(-50%);"></span> -->
+    </ng-container>
+  </button>
+</div>
+<!-- Modal East report -->
+<div
+  class="modal fade news-reporting"
+  id="report_modal"
+  tabindex="-1"
+  aria-labelledby="report_modalLabel"
+  aria-hidden="true"
+  *ngIf="origin == 'east_corner'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-head-bg">
+          <h1
+            class="modal-title f-20 text-white spaceGrotesk fw-700"
+            id="priority_modalLabel"
+          >
+            Report
+          </h1>
+        </div>
+        <div class="form-check">
+          <!-- <app-news-filter context="report" [date]="Dates['report']" (onChange)="changeFilter($event)"></app-news-filter> -->
+          <div class="tgl-radio-tabs d-flex justify-content-end cg-8">
+            <input
+              [id]="'report' + '_1'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == 'current'"
+              (click)="changeFilter('current')"
+            />
+            <label [attr.for]="'report' + '_1'" class="radio-inline"
+              >Latest</label
+            >
+
+            <!-- <input [id]="'report'+'_2'" type="radio" class="form-check-input tgl-radio-tab-child"
+                            [attr.name]="'report'+'_filter'" [checked]="Dates['report']=='24hour'" (click)="changeFilter('24hour')"/>
+                        <label [attr.for]="'report'+'_2'" class="radio-inline">24 Hours</label> -->
+            <input
+              [id]="'report' + '_3'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '48hour'"
+              (click)="changeFilter('48hour')"
+            />
+            <label [attr.for]="'report' + '_3'" class="radio-inline"
+              >48 Hours</label
+            >
+
+            <input
+              [id]="'report' + '_4'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '7days'"
+              (click)="changeFilter('7days')"
+            />
+            <label [attr.for]="'report' + '_4'" class="radio-inline"
+              >7 Days</label
+            >
+
+            <input
+              [id]="'report' + '_5'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '2weeks'"
+              (click)="changeFilter('2weeks')"
+            />
+            <label [attr.for]="'report' + '_5'" class="radio-inline"
+              >2 Weeks</label
+            >
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body mt-3">
+        <!-- modal content here -->
+        <ng-container *ngIf="loader_flag.report">
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          class="d-flex gap-2 border rounded newsPage-gradient"
+          *ngIf="!loader_flag.report"
+        >
+          <div class="d-flex flex-column w-50 border rounded">
+            <div>
+              <h1
+                class="spaceGrotesk f-22 text-black fw-700 text-center m-0 pd-10"
+              >
+                News
+              </h1>
+              <div class="accordion" id="accordionExample1">
+                <div class="accordion-item mil-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button mil-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">MIL</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.mil?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="mil_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'mil')"
+                          />
+                          <label class="f-18" for="mil_n">select all</label>
+                        </div>
+                        <!-- <p>MIL</p> -->
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.mil;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'miln' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'miln' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item intl-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed intl-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="collapseTwo"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">INTL</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseTwo"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.intl?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="intl_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'intl')"
+                          />
+                          <label class="f-18" for="intl_n">select all</label>
+                        </div>
+                        <!-- <p>INTL</p> -->
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.intl;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'intln' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'intln' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item iiojk-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed iiojk-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree"
+                      aria-expanded="false"
+                      aria-controls="collapseThree"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">IIOJK</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseThree"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.iiojk?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="iiojk_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'iiojk')"
+                          />
+                          <label class="f-18" for="iiojk_n">select all</label>
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.iiojk;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'iiojkn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'iiojkn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item domestic-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed domestic-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFourone"
+                      aria-expanded="false"
+                      aria-controls="collapseFourone"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        DOMESTIC
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFourone"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.domestic?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="domestic_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'domestic')"
+                          />
+                          <label class="f-18" for="domestic_n"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.domestic;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'domesticn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'domesticn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-column w-50 border rounded">
+            <h1
+              class="spaceGrotesk f-22 text-black fw-700 text-center m-0 pd-10"
+            >
+              Tweets
+            </h1>
+            <div>
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item mil-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button mil-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFive"
+                      aria-expanded="true"
+                      aria-controls="collapseFive"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">MIL</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFive"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.mil?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="mil_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'mil', 'tweet')"
+                          />
+                          <label class="f-18" for="mil_t">select all</label>
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.mil;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'mil' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'mil' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item intl-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed intl-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseSix"
+                      aria-expanded="false"
+                      aria-controls="collapseSix"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">INTL</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseSix"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.intl?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="intl_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'intl', 'tweet')"
+                          />
+                          <label class="f-18" for="intl_t">select all</label>
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.intl;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'intl' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'intl' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">
+                                    {{ tweet.data.name }}
+                                  </span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item iiojk-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed iiojk-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseSeven"
+                      aria-expanded="false"
+                      aria-controls="collapseSeven"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">IIOJK</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseSeven"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.iiojk?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="iiojk_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'iiojk', 'tweet')"
+                          />
+                          <label class="f-18" for="iiojk_t">select all</label>
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.iiojk;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'iiojk' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'iiojk' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item domestic-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed domestic-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseEight"
+                      aria-expanded="false"
+                      aria-controls="collapseEight"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        DOMESTIC
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseEight"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.domestic?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="domestic_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'domestic', 'tweet')"
+                          />
+                          <label class="f-18" for="domestic_t"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.domestic;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'domestic' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'domestic' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-footer p-0 border-0 mt-3 flex-row-reverse justify-content-between"
+      >
+      <div class="d-flex cgap">
+        <button
+          type="button"
+          class="custom-news-button-ai"
+          (click)="newsSummaryReport()"
+          data-bs-dismiss="modal"
+        >
+          AI Summarized Report
+        </button>
+        <button
+          type="button"
+          class="custom-news-button"
+          (click)="printReport()"
+          data-bs-dismiss="modal"
+        >
+          Short Report
+        </button>
+        </div>
+        <div class="report_type d-flex align-items-center cg-16">
+          <P class="f-16 manrope-xbold fw-800 m-0">Select Format</P>
+          <div class="d-flex align-items-center cg-10">
+            <input checked type="radio" hidden id="pdf1" name="formate2" value="pdf" />
+            <label
+              for="pdf1"
+              style="padding: 8px"
+              (click)="report_format = 'pdf'; anychange = true"
+              >PDF</label
+            >
+            <input
+              type="radio"
+              
+              hidden
+              id="docx2"
+              name="formate2"
+              value="docx"
+            />
+            <label
+              for="docx2"
+              style="padding: 8px"
+              (click)="report_format = 'docx'; anychange = true"
+              >Docx</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Internal report -->
+<div
+  class="modal fade news-reporting"
+  id="report_modal"
+  tabindex="-1"
+  aria-labelledby="report_modalLabel"
+  aria-hidden="true"
+  *ngIf="origin == 'internal_security'"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-head-bg">
+          <h1
+            class="modal-title f-20 text-white spaceGrotesk fw-700"
+            id="priority_modalLabel"
+          >
+            Report
+          </h1>
+        </div>
+        <div class="form-check">
+          <!-- <app-news-filter context="report" [date]="Dates['report']" (onChange)="changeFilter($event)"></app-news-filter> -->
+          <div class="tgl-radio-tabs d-flex justify-content-end cg-8">
+            <input
+              [id]="'report' + '_1'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == 'current'"
+              (click)="changeFilter('current')"
+            />
+            <label [attr.for]="'report' + '_1'" class="radio-inline"
+              >Latest</label
+            >
+
+            <!-- <input [id]="'report'+'_2'" type="radio" class="form-check-input tgl-radio-tab-child"
+                            [attr.name]="'report'+'_filter'" [checked]="Dates['report']=='24hour'" (click)="changeFilter('24hour')"/>
+                        <label [attr.for]="'report'+'_2'" class="radio-inline">24 Hours</label> -->
+
+            <input
+              [id]="'report' + '_3'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '48hour'"
+              (click)="changeFilter('48hour')"
+            />
+            <label [attr.for]="'report' + '_3'" class="radio-inline"
+              >48 Hours</label
+            >
+
+            <input
+              [id]="'report' + '_4'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '7days'"
+              (click)="changeFilter('7days')"
+            />
+            <label [attr.for]="'report' + '_4'" class="radio-inline"
+              >7 Days</label
+            >
+
+            <input
+              [id]="'report' + '_5'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '2weeks'"
+              (click)="changeFilter('2weeks')"
+            />
+            <label [attr.for]="'report' + '_5'" class="radio-inline"
+              >2 Weeks</label
+            >
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body mt-3">
+        <!-- modal content here -->
+        <ng-container *ngIf="loader_flag.report">
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          class="d-flex gap-2 border rounded newsPage-gradient"
+          *ngIf="!loader_flag.report"
+        >
+          <div class="d-flex flex-column w-50 border rounded">
+            <div>
+              <h1
+                class="spaceGrotesk f-22 text-black fw-700 text-center m-0 pd-10"
+              >
+                News
+              </h1>
+              <div class="accordion" id="accordionExample1">
+                <div class="accordion-item mil-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button mil-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">Govt</p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.govt?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="govt_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'govt')"
+                          />
+                          <label class="f-18" for="govt_n">select all</label>
+                        </div>
+                        <!-- <p>govt</p> -->
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.govt;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'govtn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'govtn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item intl-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed intl-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="collapseTwo"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        Pol Parties
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseTwo"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.polparties?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="polparties_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'polparties')"
+                          />
+                          <label class="f-18" for="polparties_n"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>polparties</p> -->
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.polparties;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'polpartiesn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'polpartiesn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item iiojk-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed iiojk-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree"
+                      aria-expanded="false"
+                      aria-controls="collapseThree"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        IS & CT
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseThree"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.is?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="is_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'is')"
+                          />
+                          <label class="f-18" for="is_n">select all</label>
+                        </div>
+                        <div
+                          *ngFor="let news of NewsList_report.is; let i = index"
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'isn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'isn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item domestic-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed domestic-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFour1"
+                      aria-expanded="false"
+                      aria-controls="collapseFour1"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        Military
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFour1"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.military?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="military_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'military')"
+                          />
+                          <label class="f-18" for="military_n"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.military;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'militaryn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'militaryn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item diplomat-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed diplomat-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFour"
+                      aria-expanded="false"
+                      aria-controls="collapseFour"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        diplomat
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFour"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report?.diplomat?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="diplomat_n"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, 'diplomat')"
+                          />
+                          <label class="f-18" for="diplomat_n"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report.diplomat;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'diplomatn' + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="'diplomatn' + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-column w-50 border rounded">
+            <h1
+              class="spaceGrotesk f-22 text-black fw-700 text-center m-0 pd-10"
+            >
+              Tweets
+            </h1>
+            <div>
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item mil-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button mil-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFive"
+                      aria-expanded="true"
+                      aria-controls="collapseFive"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        Govt & Diplo
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFive"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.govt?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="govt_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'govt', 'tweet')"
+                          />
+                          <label class="f-18" for="govt_t">select all</label>
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.govt;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'govt' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'govt' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item intl-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed intl-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseSix"
+                      aria-expanded="false"
+                      aria-controls="collapseSix"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        Polparties
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseSix"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.polparties?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="polparties_t"
+                            type="checkbox"
+                            (change)="
+                              customReport($event, 'polparties', 'tweet')
+                            "
+                          />
+                          <label class="f-18" for="polparties_t"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.polparties;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'polparties' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'polparties' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item iiojk-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed iiojk-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseSeven"
+                      aria-expanded="false"
+                      aria-controls="collapseSeven"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        IS & CT
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseSeven"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.is?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="is_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'is', 'tweet')"
+                          />
+                          <label class="f-18" for="is_t">select all</label>
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.is;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'is' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'is' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item domestic-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed domestic-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseEight"
+                      aria-expanded="false"
+                      aria-controls="collapseEight"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        Military
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseEight"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.military?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="military_t"
+                            type="checkbox"
+                            (change)="customReport($event, 'military', 'tweet')"
+                          />
+                          <label class="f-18" for="military_t"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.military;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'military' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'military' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item diplomat-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed diplomat-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseNine"
+                      aria-expanded="false"
+                      aria-controls="collapseNine"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        Anti State
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseNine"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report?.anti_state?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            id="diplomat_t"
+                            type="checkbox"
+                            (change)="
+                              customReport($event, 'anti_state', 'tweet')
+                            "
+                          />
+                          <label class="f-18" for="diplomat_t"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let tweet of tweetList_report.anti_state;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="'diplomat' + i"
+                              type="checkbox"
+                              [(ngModel)]="tweet.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 text-truncate2"
+                              [attr.for]="'diplomat' + i"
+                            >
+                              <div class="d-flex gap-2">
+                                <img
+                                  class="border rounded-circle"
+                                  [src]="tweet.data.profile_image_url"
+                                  onerror="this.src='/assets/images/noimg.png'"
+                                  style="width: 2rem; height: 2rem"
+                                />
+                                <div
+                                  class="d-flex flex-column justify-content-center"
+                                >
+                                  <span class="f-14 lh-1 text-black">{{
+                                    tweet.data.name
+                                  }}</span>
+                                  <span class="f-12" style="color: #444"
+                                    >@{{ tweet.data.screen_name }}</span
+                                  >
+                                </div>
+                              </div>
+                              <div
+                                class="f-16 mt-1"
+                                style="color: #222"
+                                [innerHTML]="tweet.data.report_desc"
+                              ></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-footer p-0 border-0 mt-3 flex-row-reverse justify-content-between"
+      >
+      <div class="d-flex cgap">
+        <button
+          type="button"
+          class="custom-news-button-ai"
+          (click)="newsSummaryReport()"
+          data-bs-dismiss="modal"
+        >
+        AI Summarized Report
+      </button>
+        <button
+          type="button"
+          class="custom-news-button"
+          (click)="printReport()"
+          data-bs-dismiss="modal"
+        >
+          Short Report
+        </button>
+        </div>
+        <div class="report_type d-flex align-items-center cg-16">
+          <P class="f-16 manrope-xbold fw-800 m-0">Select Format</P>
+          <div class="d-flex align-items-center cg-10">
+            <input type="radio" hidden id="pdf1" name="formate1" value="pdf" checked/>
+            <label
+              for="pdf1"
+              style="padding: 8px"
+              (click)="report_format = 'pdf'; anychange = true"
+              >PDF</label
+            >
+            <input
+              type="radio"
+              
+              hidden
+              id="docx2"
+              name="formate1"
+              value="docx"
+            />
+            <label
+              for="docx2"
+              style="padding: 8px"
+              (click)="report_format = 'docx'; anychange = true"
+              >Docx</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Internal report -->
+<div
+  class="modal fade news-reporting"
+  id="report_modal"
+  tabindex="-1"
+  aria-labelledby="report_modalLabel"
+  aria-hidden="true"
+  *ngIf="data.getCurrentWestTab() === 0 || data.getCurrentWestTab() === 1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-head-bg">
+          <h1
+            class="modal-title f-20 text-white spaceGrotesk fw-700"
+            id="priority_modalLabel"
+          >
+            Report
+          </h1>
+        </div>
+        <div class="form-check">
+          <!-- <app-news-filter context="report" [date]="Dates['report']" (onChange)="changeFilter($event)"></app-news-filter> -->
+          <div class="tgl-radio-tabs d-flex justify-content-end cg-8">
+            <input
+              [id]="'report' + '_1'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == 'current'"
+              (click)="changeFilter('current')"
+            />
+            <label [attr.for]="'report' + '_1'" class="radio-inline"
+              >Latest</label
+            >
+
+            <!-- <input [id]="'report'+'_2'" type="radio" class="form-check-input tgl-radio-tab-child"
+                            [attr.name]="'report'+'_filter'" [checked]="Dates['report']=='24hour'" (click)="changeFilter('24hour')"/>
+                        <label [attr.for]="'report'+'_2'" class="radio-inline">24 Hours</label> -->
+
+            <input
+              [id]="'report' + '_3'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '48hour'"
+              (click)="changeFilter('48hour')"
+            />
+            <label [attr.for]="'report' + '_3'" class="radio-inline"
+              >48 Hours</label
+            >
+
+            <input
+              [id]="'report' + '_4'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '7days'"
+              (click)="changeFilter('7days')"
+            />
+            <label [attr.for]="'report' + '_4'" class="radio-inline"
+              >7 Days</label
+            >
+
+            <input
+              [id]="'report' + '_5'"
+              type="radio"
+              class="form-check-input tgl-radio-tab-child"
+              [attr.name]="'report' + '_filter'"
+              [checked]="Dates['report'] == '2weeks'"
+              (click)="changeFilter('2weeks')"
+            />
+            <label [attr.for]="'report' + '_5'" class="radio-inline"
+              >2 Weeks</label
+            >
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body mt-3">
+        <!-- modal content here -->
+        <ng-container *ngIf="loader_flag.report">
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div
+          class="d-flex gap-2 border rounded newsPage-gradient"
+          *ngIf="!loader_flag.report"
+        >
+          <div class="d-flex flex-column w-50 border rounded">
+            <div>
+              <h1
+                class="spaceGrotesk f-22 text-black fw-700 text-center m-0 pd-10"
+              >
+                News
+              </h1>
+              <div class="accordion" id="accordionExample1">
+                <div class="accordion-item mil-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button mil-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        {{ catsArr[0] }}
+                      </p>
+                    </button>
+                  </h2>
+                  <!-- Accordian for AFG -->
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report[catsArr[0]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr[0]"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, catsArr[0])"
+                          />
+                          <label class="f-18" [for]="catsArr[0]"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>govt</p> -->
+                        <div
+                          *ngFor="
+                            let news of NewsList_report[catsArr[0]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr[0] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr[0] + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for AFG -->
+                </div>
+                <div class="accordion-item intl-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed intl-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="collapseTwo"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        {{ catsArr[1] }}
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseTwo"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report[catsArr[1]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr[1]"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, catsArr[1])"
+                          />
+                          <label class="f-18" [for]="catsArr[1]"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>X-Hairs</p> -->
+                        <div
+                          *ngFor="
+                            let news of NewsList_report[catsArr[1]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr[1] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr[1] + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item iiojk-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed iiojk-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree"
+                      aria-expanded="false"
+                      aria-controls="collapseThree"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        {{ catsArr[2] }}
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseThree"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report[catsArr[2]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr[2]"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, catsArr[2])"
+                          />
+                          <label class="f-18" [for]="catsArr[2]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report[catsArr[2]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr[2] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr[2] + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item domestic-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed domestic-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFour1"
+                      aria-expanded="false"
+                      aria-controls="collapseFour1"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        {{ catsArr[3] }}
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFour1"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report[catsArr[3]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr[3]"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, catsArr[3])"
+                          />
+                          <label class="f-18" [for]="catsArr[3]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report[catsArr[3]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr[3] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr[2] + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="accordion-item diplomat-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed diplomat-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseFour"
+                      aria-expanded="false"
+                      aria-controls="collapseFour"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        {{ catsArr[4] }}
+                      </p>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseFour"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample1"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="NewsList_report[catsArr[4]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr[4]"
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="customReport($event, catsArr[4])"
+                          />
+                          <label class="f-18" [for]="catsArr[4]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of NewsList_report[catsArr[4]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr[4] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr[4] + i"
+                              [innerHTML]="news.data.report_title"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-column w-50 border rounded">
+            <h1
+              class="spaceGrotesk f-22 text-black fw-700 text-center m-0 pd-10"
+            >
+              <!-- We are conditionally rendering tweets based on Afghanistan and Iran -->
+              <!-- We are not doing this for news section bcz subcats are same for iran and afg in news but not in tweets -->
+              Tweetsx
+            </h1>
+            <div>
+              <div class="accordion" id="accordionExample2">
+                <div class="accordion-item mil-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button mil-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseSix"
+                      aria-expanded="true"
+                      aria-controls="collapseSix"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        {{ transformName(catsArr_Afg_Temp[0]) }}
+                      </p>
+                    </button>
+                  </h2>
+                  <!-- Accordian for IRAN --Internal ENvironment  -->
+                  <div
+                    id="collapseSix"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 1"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Iran_Temp[0]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Iran_Temp[0]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport(
+                                $event,
+                                catsArr_Iran_Temp[0],
+                                'tweet'
+                              )
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Iran_Temp[0]"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>govt</p> -->
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Iran_Temp[0]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Iran_Temp[0] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Iran_Temp[0] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for IRAN --IntEnv-->
+                  <!-- Accordian for AFG--IntEnv-->
+                  <div
+                    id="collapseSix"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 0"
+                  >
+                    <div class="accordion-body text-gradient1 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Afg_Temp[0]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Afg_Temp[0]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport($event, catsArr_Afg_Temp[0], 'tweet')
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Afg_Temp[0]"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>govt</p> -->
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Afg_Temp[0]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Afg_Temp[0] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Afg_Temp[0] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for AFG--IntEnv -->
+                </div>
+                <div class="accordion-item intl-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed intl-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseSeven"
+                      aria-expanded="false"
+                      aria-controls="collapseSeven"
+                    >
+                      <p class="manrope-xbold f-16 text-white fw-800">
+                        {{ transformName(catsArr_Afg_Temp[1]) }}
+                      </p>
+                    </button>
+                  </h2>
+                  <!-- Accoridan for Iran-- DIPLO -->
+                  <div
+                    id="collapseSeven"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 1"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Iran_Temp[1]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Iran_Temp[1]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport(
+                                $event,
+                                catsArr_Iran_Temp[1],
+                                'tweet'
+                              )
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Iran_Temp[1]"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>X-Hairs</p> -->
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Iran_Temp[1]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Iran_Temp[1] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Iran_Temp[1] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accoridan for Iran-- DIPLO -->
+                  <!-- Accoridan for AFG-- DIPLO -->
+                  <div
+                    id="collapseSeven"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 0"
+                  >
+                    <div class="accordion-body text-gradient2 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Afg_Temp[1]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Afg_Temp[1]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport($event, catsArr_Afg_Temp[1], 'tweet')
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr[1]"
+                            >select all</label
+                          >
+                        </div>
+                        <!-- <p>X-Hairs</p> -->
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Afg_Temp[1]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Afg_Temp[1] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Afg_Temp[1] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accoridan for AFG-- DIPLO -->
+                </div>
+                <div class="accordion-item iiojk-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed iiojk-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseEight"
+                      aria-expanded="false"
+                      aria-controls="collapseEight"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        {{ transformName(catsArr_Afg_Temp[2]) }}
+                      </p>
+                    </button>
+                  </h2>
+                  <!-- Accordian for IRAN ---Pakistan Corner -->
+                  <div
+                    id="collapseEight"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 1"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Iran_Temp[2]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Iran_Temp[2]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport(
+                                $event,
+                                catsArr_Iran_Temp[2],
+                                'tweet'
+                              )
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Iran_Temp[2]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Iran_Temp[2]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Iran_Temp[2] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Iran_Temp[2] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for IRAN ---Pakistan Corner -->
+                  <!-- Accordian for AFG---Pakistan Corner -->
+                  <div
+                    id="collapseEight"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 0"
+                  >
+                    <div class="accordion-body text-gradient3 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Afg_Temp[2]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr[2]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport($event, catsArr_Afg_Temp[2], 'tweet')
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Afg_Temp[2]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Afg_Temp[2]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Afg_Temp[2] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Afg_Temp[2] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for AFG ---Pakistan Corner -->
+                </div>
+                <div class="accordion-item domestic-collapse">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed domestic-gradient"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseNine"
+                      aria-expanded="false"
+                      aria-controls="collapseNine"
+                    >
+                      <p class="f-16 manrope-xbold fw-800 text-white">
+                        {{ transformName(catsArr_Afg_Temp[3]) }}
+                      </p>
+                    </button>
+                  </h2>
+                  <!-- Accordian for IRAN--- India Corner -->
+                  <div
+                    id="collapseNine"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 1"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Iran_Temp[3]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Iran_Temp[3]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport(
+                                $event,
+                                catsArr_Iran_Temp[3],
+                                'tweet'
+                              )
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Iran_Temp[3]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Iran_Temp[3]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Iran_Temp[3] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Iran_Temp[2] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for IRAN--- India Corner -->
+
+                  <!-- Accordian for AFG--- India Corner -->
+                  <div
+                    id="collapseNine"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample2"
+                    *ngIf="data.getCurrentWestTab() === 0"
+                  >
+                    <div class="accordion-body text-gradient4 scrollbar-news">
+                      <div
+                        class="d-flex flex-column rg-8"
+                        *ngIf="tweetList_report[catsArr_Afg_Temp[3]]?.length"
+                      >
+                        <div
+                          class="d-flex gap-2 align-items-center position-sticky top-0"
+                          style="background-color: #ffffffa3; padding: 5px"
+                        >
+                          <input
+                            [id]="catsArr_Afg_Temp[3]"
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="
+                              customReport($event, catsArr_Afg_Temp[3], 'tweet')
+                            "
+                          />
+                          <label class="f-18" [for]="catsArr_Afg_Temp[3]"
+                            >select all</label
+                          >
+                        </div>
+                        <div
+                          *ngFor="
+                            let news of tweetList_report[catsArr_Afg_Temp[3]];
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="d-flex"
+                            style="
+                              background-color: #ffffff4d;
+                              padding: 5px;
+                              align-items: baseline;
+                              column-gap: 8px;
+                            "
+                          >
+                            <input
+                              [id]="catsArr_Afg_Temp[3] + i"
+                              type="checkbox"
+                              [(ngModel)]="news.flag"
+                              (ngModelChange)="anychange = true"
+                            />
+                            <label
+                              class="w-100 f-16 text-truncate2"
+                              [attr.for]="catsArr_Afg_Temp[2] + i"
+                              [innerHTML]="news.data.description"
+                            ></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Accordian for AFG--- India Corner -->
+                </div>
+
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-footer p-0 border-0 mt-3 flex-row-reverse justify-content-between"
+      >
+        <div class="d-flex cgap">
+          <button
+            type="button"
+            class="custom-news-button-ai"
+            (click)="newsSummaryReport()"
+            data-bs-dismiss="modal"
+          >
+          AI Summarized Report
+          </button>
+          <button
+            type="button"
+            class="custom-news-button"
+            (click)="printReport()"
+            data-bs-dismiss="modal"
+          >
+            Short Report
+          </button>
+        </div>
+        <div class="report_type d-flex align-items-center cg-16">
+          <P class="f-16 manrope-xbold fw-800 m-0">Select Format</P>
+          <div class="d-flex align-items-center cg-10">
+            <input type="radio" hidden id="pdf1" name="formate" value="pdf" checked/>
+            <label
+              for="pdf1"
+              style="padding: 8px"
+              (click)="report_format = 'pdf'; anychange = true"
+              >PDF</label
+            >
+            <input
+              type="radio"
+              hidden
+              id="docx2"
+              name="formate"
+              value="docx"
+            />
+            <label
+              for="docx2"
+              style="padding: 8px"
+              (click)="report_format = 'docx'; anychange = true"
+              >Docx</label
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

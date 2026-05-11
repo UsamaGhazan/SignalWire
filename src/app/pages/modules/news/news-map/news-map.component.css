@@ -1,0 +1,56 @@
+.loader {
+    background: url('/assets/news-img/main-logo-gif.gif') rgba(110,110,110,0.8);
+    background-size: 15%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+::ng-deep map-modal {
+	position: absolute;
+	background-color: rgba(255,255,255,0.9);
+	padding: 8px;
+	border-radius: 8px;
+	max-width: 300px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+    z-index: 9999999;
+    box-shadow: 2px 4px 14px rgba(15,15,15,0.15);
+}
+
+::ng-deep map-modal div.header {
+    display: flex;
+	justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+}
+
+::ng-deep map-modal div.header i {
+	cursor: pointer;
+}
+
+::ng-deep map-modal div.content {
+    max-height: 200px;
+	overflow-y: auto;
+    margin-bottom: 0.25rem;
+}
+
+::ng-deep map-modal div.content a {
+	display: -webkit-box;
+	max-width: 100%;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: dodgerblue;
+	font-size: 12px;
+}
+
+::ng-deep .highcharts-background {
+	fill: #9DB1BC;
+}
+
+::ng-deep .highcharts-label {
+    pointer-events: none !important;
+}

@@ -1,0 +1,53 @@
+a{
+    text-decoration: none;
+    color: white !important;
+  }
+
+  .form-control:focus, 
+  .form-select:focus {
+    border-color: rgb(16 73 95 / 0%);
+    box-shadow: 0 0 0 0.25rem rgb(16 73 95 / 53%);
+}
+  .nav-item .nav-link{
+    background: #8989893d;
+    color: rgba(0, 0, 0, 0.658);
+  }
+  .nav-item .nav-link.active{
+    background: #0d6efd;
+    color: white;
+  }
+  .table-striped tbody tr:hover{
+    background: rgb(16 73 95 / 14%);
+  }
+  .table-striped thead tr{
+    background: rgb(16 73 95);
+  }
+  .table-striped thead th{
+    color: white;
+  }
+
+  .modal-header{
+    background: rgb(16 73 95);
+   }
+  .modal-body{
+    min-height: 150px;
+  }
+  ::ng-deep .modal-backdrop.show {
+    z-index: 1044 !important;
+  }
+
+  ::ng-deep .hash-n{
+    width: 64.0625px !important;
+  }
+
+  ::ng-deep .keyword-n{
+    width: 773.812px !important;
+  }
+
+  ::ng-deep .category-n{
+    width: 200.078px !important;
+  }
+
+  ::ng-deep .action-n{
+    width: 114.047px !important;
+  }

@@ -1,0 +1,41 @@
+
+
+  /* Mobile version/ Light */
+
+  @media (max-width:700px){
+    /* explore  */
+    .row-container{
+      flex-direction: column !important;
+    }
+    .hero-left{
+      width: 100% !important;
+    }
+    .hero-right {
+      width: 100% !important;
+    }  
+    .pod-bottom .name-views{
+      flex-direction: column;
+      align-items: start !important;
+    }
+    .card-wraper4{
+      flex-direction: column;
+    }
+    .story-card{
+      width: 100% !important;
+    }
+    .eCard-wraper{
+        height: 20rem;
+    }
+    .editorial-hub::before,
+    .editorial-hub::after{
+        width: 80px;    
+    }
+    .previous-arrow{
+        left: 20px;
+        width: 35px;
+    }
+    .next-arrow{
+        right: 20px;
+        width: 35px;
+    }
+    }

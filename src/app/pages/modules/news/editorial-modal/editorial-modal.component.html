@@ -1,0 +1,163 @@
+<div class="d-flex gap-2 border rounded  w-100">
+    <div class="author-wraper w-100 d-flex flex-column gape-2 pd-8">
+    <div class="auther-head w-100 d-flex flex-row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="authors-tab" data-bs-toggle="tab" data-bs-target="#authors" type="button" role="tab" aria-controls="authors" aria-selected="true"
+                (click)="selected_tab='authors'">Author Name</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources" type="button" role="tab" aria-controls="sources" aria-selected="false"
+                (click)="selected_tab='sources'">Source Name</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="premium-tab" data-bs-toggle="tab" data-bs-target="#premium" type="button" role="tab" aria-controls="premium" aria-selected="false"
+                (click)="selected_tab='premium'">Premium Source</button>
+            </li>
+            </ul>
+    </div>
+    <div class="auther-body w-100 d-flex flex-column gap-2">
+        <!-- Author card -->
+        <!-- Tabs -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Author Name  -->
+            <div class="tab-pane fade show active" id="authors" role="tabpanel" aria-labelledby="authors-tab">
+                <div class="author-card scrollbar-news pd-8 d-flex gap-2 w-100 justify-content-between newsPage-gradient"
+                  *ngIf="authors.length && !loader.authors">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col" > 
+                              <div class="d-flex align-items-center cg-8">
+                                Name
+                                <span class="mouse d-flex flex-column">             
+                                  <i class="fa-solid fa-chevron-up sorting-icon active" (click)="sort_filter.authors='key';sortEditorial($event,'up')"> </i>
+                                  <i class="fa-solid fa-chevron-down sorting-icon" (click)="sort_filter.authors='key';sortEditorial($event,'down')"></i>
+                                </span>
+                              </div>                            
+                            </th>
+                            <!-- <th scope="col">Source</th> -->
+                            <th scope="col">
+                              <div class="d-flex align-items-center cg-8">
+                                Count
+                                <span class="mouse d-flex flex-column">                              
+                                  <i class="fa-solid fa-chevron-up sorting-icon" (click)="sort_filter.authors='doc_count';sortEditorial($event,'up')"> </i>
+                                  <i class="fa-solid fa-chevron-down sorting-icon" (click)="sort_filter.authors='doc_count';sortEditorial($event,'down')"></i>
+                                </span>
+                              </div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let auth of authors;index as i" >
+                            <th scope="row">{{i+1}}</th>
+                            <td class="mouse text-capitalize table-text" (click)="redirecttoDeatails('editorial-source','authors',auth.key)">{{auth.key}}</td>
+                            <!-- <td>{{auth.unique_source?auth.unique_source:"--"}}</td> -->
+                            <td class="table-text">{{auth.doc_count}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex align-items-center justify-content-center newsPage-gradient w-full" 
+                  *ngIf="!authors.length && !loader.authors"
+                  style="background-color: white;height:11rem;"> 
+                  <h3 class="text-black">No data found</h3>
+                </div>
+            </div>
+            <!-- Source  -->
+            <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">  
+                    <div class="author-card scrollbar-news pd-8 d-flex gap-2 w-100 justify-content-between newsPage-gradient"
+                      *ngIf="sources.length && !loader.sources">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col" class="tsnumbers">#</th>
+                                <th scope="col" class="tsnames">
+                                  <div class="d-flex align-items-center cg-8">
+                                    Name
+                                    <span class="mouse d-flex flex-column">                     
+                                      <i class="fa-solid fa-chevron-up sorting-icon active" (click)="sort_filter.sources='key';sortEditorial($event,'up')"> </i>
+                                      <i class="fa-solid fa-chevron-down sorting-icon" (click)="sort_filter.sources='key';sortEditorial($event,'down')"></i>
+                                    </span>
+                                  </div>
+                                </th>
+                                <th scope="col" class="tsauthor">Author</th>
+                                <th scope="col" class="tscount" >
+                                  <div class="d-flex align-items-center cg-8">
+                                    Count
+                                    <span class="mouse d-flex flex-column">
+                                    
+                                      <i class="fa-solid fa-chevron-up sorting-icon" (click)="sort_filter.sources='doc_count';sortEditorial($event,'up')"> </i>
+                                      <i class="fa-solid fa-chevron-down sorting-icon" (click)="sort_filter.sources='doc_count';sortEditorial($event,'down')"></i>
+                                    </span>
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let source of sources;index as i" >
+                                <th scope="row">{{i+1}}</th>
+                                <td class="mouse text-capitalize table-text" (click)="redirecttoDeatails('editorial-source','sources',source.key)">{{source.key}}</td>
+                                <td>
+                                  <div class="sources-list scrollbar-news overflow-y-auto">
+                                    <span class="mouse" *ngFor="let s of source.unique_source" (click)="redirecttoDeatails('editorial-author',s, source.key)">
+                                      {{s}}
+                                    </span>
+                                    <div *ngIf="!source.unique_source?.length">---</div>
+                                  </div>
+                                </td>
+                                <td class="table-text">{{source.doc_count}}</td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center newsPage-gradient w-full" 
+                      *ngIf="!sources.length && !loader.sources"
+                      style="background-color: white;height:11rem;"> 
+                      <h3 class="text-black">No data found</h3>
+                    </div> 
+            </div>
+            <!-- Premium Source  -->
+            <div class="tab-pane fade" id="premium" role="tabpanel" aria-labelledby="premium-tab">
+                
+                <div class="author-card scrollbar-news  pd-8 d-flex gap-2 w-100 justify-content-between newsPage-gradient"
+                  *ngIf="premium.length && !loader.premium">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">
+                              <div class="d-flex align-items-center cg-8">
+                                Name
+                                <span class="mouse d-flex flex-column">
+                                
+                                  <i class="fa-solid fa-chevron-up sorting-icon active" (click)="sort_filter.premium='key';sortEditorial($event,'up')"> </i>
+                                  <i class="fa-solid fa-chevron-down sorting-icon" (click)="sort_filter.premium='key';sortEditorial($event,'down')"></i>
+                                </span>
+                              </div>
+                            </th>
+                            <th scope="col" class="w-50">Source</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let source of premium;index as i" >
+                            <th scope="row">{{i+1}}</th>
+                            <td class="text-capitalize table-text">{{source.key}}</td>
+                            <td class="table-text" style="white-space: nowrap; text-overflow: ellipsis; overflow:hidden; max-width:1px;">
+                                <a [href]="source.url" target="_blank">{{source.url}}</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex align-items-center justify-content-center newsPage-gradient w-full" 
+                  *ngIf="!premium.length && !loader.premium"
+                  style="background-color: white;height:11rem;"> 
+                  <h3 class="text-black">No data found</h3>
+                </div> 
+            </div>
+          </div>              
+    </div>
+</div>
+</div>

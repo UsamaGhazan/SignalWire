@@ -1,0 +1,136 @@
+.container-big{
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+.login-container{
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    row-gap: 2rem;
+}
+.video-bg{
+    
+}
+.login-video-animated{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    object-fit: cover;
+    z-index: -10;
+    height: 100%;
+}
+
+.logo-port{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-gif-logo{
+    width: 140.304px;
+    height: 132.786px;
+    margin-bottom: -6px;
+}
+
+
+/* Log in form text */
+
+.gradient1-text{
+text-align: center;
+font-family: "spaceGrotesk-medium";
+font-style: normal;
+line-height: normal;
+text-transform: capitalize;
+background: var(--Gradient-Title, linear-gradient(89deg, #E9B704 1.92%, #2ACFFE 98.79%));
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.login-zambeel{
+    width: 342px;
+}
+.login-sub{
+    color: #FFF;
+text-align: center;
+font-family:"manrope-medium";
+font-style: normal;
+line-height: normal;
+}
+.login-form{
+    /* border: 2px solid #FCF797; */
+    height: 400px;
+    width: 432px;
+    /* border-image: linear-gradient(129deg, #ffc700 -83.08%, #2ACFFE 143.79%)4; */
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0px 15px 40px 15px rgba(0, 0, 0, 0.30);
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+    position: relative;
+    border-radius: 20px;
+    z-index: 1;
+    /* border-image: url('../../../../../assets/news-img/gradient-border.png'); */
+}
+.gradient-border{
+    position: absolute;
+    right: -56px;
+    bottom: -69px;
+    width: 543px;
+    height: 509px;
+    z-index:-9;
+}
+.inputs input{
+border-radius: 10px;
+font-family: "manrope-medium";
+color: #A2A2A2;
+line-height: normal;
+border: 0;
+}
+.inputs label{
+font-family: "manrope-medium";
+color: white;
+line-height: normal;
+border: 0;
+}
+.login-btn{
+    border-radius: 8px;
+background: #E99F04;
+font-family: "spaceGrotesk-medium";
+border: 0;
+}
+.forget-pass{
+    color: #FFF;
+text-align: center;
+font-family: "manrope-medium";
+font-style: normal;
+line-height: normal;
+text-decoration: none;
+}
+.sfw-logo{
+    width: 167px;
+height: 167px;
+}
+.powered{
+    color: #FFF;
+    text-align: center;
+    font-family: "manrope-light";
+    font-style: normal;
+    line-height: normal; 
+}
+.sfw{
+    color: #FFF;
+    text-align: center;
+    font-family: "manrope-bold";
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 3.068px;
+}
+
+
+
+@media screen and(max-width:600px) {
+    
+}

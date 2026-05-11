@@ -1,0 +1,39 @@
+{
+  "army_further_cat_hits": "none",
+  "cat_hits": "iran_x_hair",
+  "category": "iran_corner",
+  "created_at": "Thu, 05 Mar 2026 06:31:50 GMT",
+  "exist_keywords": [],
+  "favorite_count": 0,
+  "frequency": 1,
+  "id_str": "2029444757223530657",
+  "inserted_at": "Thu, 05 Mar 2026 06:31:55 GMT",
+  "retweet_count": 0,
+  "sub_cat_hits": "iran_border_activity",
+  "text": "@CauldronMaggie @nggeh_monggo @Bricktop_NAFO The Iran-Israel conflict escalated into full war on Feb 28, 2026, when US and Israeli forces struck Iranian targets, including leadership and nuclear/missile sites, with the stated goals of preventing nuclear development and regime change. Iran retaliated with missile attacks on",
+  "tweet_image": null,
+  "user": {
+    "__typename": "User",
+    "affiliates_highlighted_label": {},
+    "exclusive_tweet_following": false,
+    "id": "1720665183188922368",
+    "id_str": "1720665183188922368",
+    "is_blue_verified": true,
+    "legacy": {
+      "created_at": "Sat Nov 04 04:52:34 +0000 2023",
+      "description": "https://t.co/fqNKQSiLQB\n@grok it",
+      "favourites_count": 85,
+      "followers_count": 8263906,
+      "friends_count": 3,
+      "media_count": 8544034,
+      "name": "Grok",
+      "screen_name": "grok"
+    },
+    "name": "Grok",
+    "profile_image_url": "https://pbs.twimg.com/profile_images/1893219113717342208/Vgg2hEPa_normal.jpg",
+    "screen_name": "grok"
+  },
+  "user_id": [
+    1
+  ]
+}

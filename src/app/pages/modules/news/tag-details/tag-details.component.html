@@ -1,0 +1,248 @@
+<!--///// News Header //////-->
+
+
+<app-news-header></app-news-header>
+
+
+<!-- ///// News Header End ///// -->
+
+
+<div class="container-big scrollbar-news">
+    <!-- sections head -->
+    <div class="section-head-nav d-flex justify-content-center align-items-center w-100 mt-3 z-index2">
+        <div class="sn-left text-center hl-mid">
+            <h1 class="f-48 fw-700 text-white m-0 spaceGrotesk text-center uppercase px-8">{{tag}}</h1>
+        </div>
+    </div>
+    <div class="mt-2 d-flex container-big gradient-red-green pd-layout">
+        <!-- card-wraper  -->
+        <div class="card-wraper4 d-flex align-items-center w-100">
+            <!-- News section  -->
+
+            <div class="card1 story-card w-25 redish-gradient no-border-e pb-4">
+                <div class="shashka-top position-relative d-flex align-items-center justify-content-center pd-8">
+                    <!-- <img class="w-100" src="../../../../../assets/news-img/mil-head.png" alt="">
+                    <img class="position-absolute head-badge" src="../../../../../assets/news-img/mil-icon.svg" alt=""> -->
+                    <p class="f-28 fw-700 spaceGrotesk text-center text-white m-0 py-3 w-full rounded-3"
+                        style="background: linear-gradient(91deg, #CB2121 1.44%, #1D5EBE 94.66%);">NEWS</p>
+                </div>
+
+                <p *ngIf="!NewsList.length && loader_flag.news"
+                    class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4">No Data Found</p>
+                <div class="shashka-bottom card4type-height scrollbar-news overflow-y-auto pd-8"
+                    (scroll)="checkScrolled($event,'news')">
+                    <!-- custom loader -->
+                    <div class="custom-skeleton" aria-hidden="true" *ngIf="!NewsList.length && !loader_flag.news">
+                        <div class="placeholder-glow mt-2" *ngFor="let l of [1,1,1,1,1,1,1,1,1,1]">
+                            <h4 class="bg-secondary placeholder col-12 mb-0"></h4>
+                            <p class="d-flex justify-content-between col-12 p-0 mt-2">
+                                <span class="placeholder col-5 p-0" style="min-height:auto;height:8px;"></span>
+                                <span class="placeholder col-2 p-0" style="min-height:auto;height:8px;"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <ul class="shashka-list ps-0 d-flex flex-column rg-8">
+                        <ng-container *ngFor="let news of NewsList;index as i">
+                           <app-mm-card [news]="news" type="image" [corner]="origin" [disableContext]="true"></app-mm-card>
+                        </ng-container>
+                        <app-spinner *ngIf="NewsList.length && !scroll_flag.news"></app-spinner>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- X-Up section -->
+            <div class="card2 story-card w-25 bluish-gradient pb-4">
+                <div class="shashka-top position-relative d-flex align-items-center justify-content-center pd-8">
+                    <!-- <img class="w-100" src="../../../../../assets/news-img/mil-head.png" alt="">
+                    <img class="position-absolute head-badge" src="../../../../../assets/news-img/mil-icon.svg" alt=""> -->
+                    <p class="f-28 fw-700 spaceGrotesk text-center text-white m-0 py-3 w-full rounded-3"
+                        style="background: linear-gradient(180deg, #2184CB 0%, #254EE1 47.92%, #1D67BE 100%);">TWEETS
+                    </p>
+                </div>
+                <div class="shashka-mid card4type-height d-flex flex-column rg-8 scrollbar-news overflow-y-auto pd-8"
+                    (scroll)="checkScrolled($event,'tweet')">
+                    <ng-container *ngIf="!TweetList.length && !loader_flag.tweet">
+                        <div class="placeholder-glow mb-1" *ngFor="let l of [1,1,1,1]">
+                            <div class="placeholder col-12 bg-light rounded-3 p-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                                        style="width: 41px; height: 41px;"></div>
+                                    <div class="d-flex flex-column w-full">
+                                        <div class="placeholder col-5 bg-secondary p-0 m-0" style="min-height: 10px;">
+                                        </div>
+                                        <div class="placeholder col-4 bg-secondary p-0 mt-1" style="min-height: 5px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 d-flex flex-column gap-2">
+                                    <div class="placeholder col-12 p-0 bg-secondary" style="min-height: 8px;"></div>
+                                    <div class="placeholder col-11 py-0 bg-secondary" style="min-height: 8px;"></div>
+                                    <div class="placeholder col-12 py-0 bg-secondary" style="min-height: 8px;"></div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <div class="placeholder col-6 p-0 bg-secondary" style="min-height: 9px;"></div>
+                                        <div class="placeholder col-1 p-0 bg-secondary" style="min-height: 9px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <p *ngIf="!TweetList.length && loader_flag.tweet"
+                        class="custom-nodatafound text-center p-3 w-full bg-light rounded-3">No Data Found</p>
+                    <ng-container *ngFor="let tweet of TweetList">
+                        <div class="twitter-card p-12 d-flex flex-column rg-8 pd-10 " (click)="gotoLink('https://twitter.com/'+tweet.screen_name+'/status/'+tweet.id_str,$event)">
+                            <a [href]="'https://twitter.com/'+tweet.screen_name" target="_blank" onclick="event.stopPropagation();"
+                                style="text-decoration: none;">
+                                <div class="tt-cardTop d-flex cg-12 align-items-center">
+                                    <img class="sm-round" [src]="tweet.profile_image_url" alt="">
+                                    <div class="sm-profile">
+                                        <p class="manrope-xbold f-16 fw-800 text-black">{{tweet.name}}</p>
+                                        <p class="manrope f-12 fw-600 text-black text-opacity">@{{tweet.screen_name}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="tt-cardMid">
+                                <a [href]="'https://twitter.com/'+tweet.screen_name+'/status/'+tweet.id_str" onclick="event.preventDefault()"
+                                    target="_blank" style="text-decoration: none;">
+                                    <p class="manrope f-14 fw-500 text-black truncate-text3"
+                                        [innerHTML]="tweet.description">
+                                    </p>
+                                </a>
+                            </div>
+                            <div class="tt-cardBottom d-flex justify-content-between">
+                                <p class="manrope f-9 fw-700 text-black text-opacity">
+                                    {{tweet.created_at}}</p>
+                                <img src="../../../../../assets/news-img/link-black.png" alt="" class="mouse"
+                                    (click)="gotoLink('https://twitter.com/'+tweet.screen_name+'/status/'+tweet.id_str,$event)">
+                            </div>
+                        </div>
+                    </ng-container>
+                    <app-spinner *ngIf="TweetList.length && !scroll_flag.tweet"></app-spinner>
+                </div>
+            </div>
+
+            <!-- podcast and vlogs        -->
+            <div class="pod-card d-flex flex-column card1 story-card w-25 no-border-e gradient-pod1 pb-4">
+                <div class="shashka-top position-relative d-flex align-items-center justify-content-center pd-8">
+                    <!-- <img class="w-100" src="../../../../../assets/news-img/mil-head.png" alt="">
+            <img class="position-absolute head-badge" src="../../../../../assets/news-img/mil-icon.svg" alt=""> -->
+                    <p
+                        class="f-28 fw-700 spaceGrotesk text-center text-white m-0 py-3 w-full rounded-3 full-red-gradient">
+                        Vlogs & Podcasts</p>
+                </div>
+                     
+                    <p *ngIf="!prodList.length && loader_flag.podcast"
+                        class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4">No Data Found</p>
+                    <div class="shashka-bottom card4type-height scrollbar-news overflow-y-auto pd-8"
+                        (scroll)="checkScrolled($event,'podcast')">
+                        <!-- custom loader -->
+                        <div class="custom-skeleton" aria-hidden="true" *ngIf="!prodList.length && !loader_flag.podcast">
+                            <div class="placeholder-glow mt-2" *ngFor="let l of [1,1,1,1,1,1,1,1,1,1]">
+                                <h4 class="bg-secondary placeholder col-12 mb-0"></h4>
+                                <p class="d-flex justify-content-between col-12 p-0 mt-2">
+                                    <span class="placeholder col-5 p-0" style="min-height:auto;height:8px;"></span>
+                                    <span class="placeholder col-2 p-0" style="min-height:auto;height:8px;"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="shashka-list ps-0 d-flex flex-column rg-10">
+                            <ng-container *ngFor="let prod of prodList;index as i">
+                               
+                                <div [class]="' px-1 '+(i!=0?'':'mt-0')" (click)="readMore('/youtube-details',prod.id)">
+                                    <div class="pod-mid mouse position-relative">
+                                        <img [src]="'https://img.youtube.com/vi/'+prod.video_id+'/0.jpg'" />
+                                        <img class="play-button" src="../../../../../assets/news-img/Play-button.png"
+                                            alt="">
+                                    </div>
+                                    <div class="pod-bottom d-flex flex-column rg-8 mt-2 h-100">
+                                        <div class="d-flex align-items-end">
+                                            <p class="f-16 spaceGrotesk fw-500 text-capitalize text-black truncate-text2 " 
+                                                [innerHTML]="prod.title">
+                                            </p>
+                                            <img class="mouse" src="../../../../../assets/news-img/link-icon.png"
+                                            alt="" style="width: 15px;" (click)="gotoLink(prod.link,$event)">
+                                        </div>
+                                        <div class="name-views d-flex justify-content-between align-items-center mt-0">
+                                            <p class="text-white f-12 fw-800 manrope ">{{prod.channel_handle}}</p>
+                                            <p class="text-white f-12 fw-800 manrope ">{{prod.published_date}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <app-spinner *ngIf="prodList.length && !scroll_flag.podcast"></app-spinner>
+                        </ul>
+                    </div>
+            </div>
+
+            <!-- editorial section  -->
+            <div class="card1 story-card w-25 gradient-pod4 pb-4">
+                <div class="shashka-top position-relative d-flex align-items-center justify-content-center pd-8">
+                    <!-- <img class="w-100" src="../../../../../assets/news-img/mil-head.png" alt="">
+                    <img class="position-absolute head-badge" src="../../../../../assets/news-img/mil-icon.svg" alt=""> -->
+                    <p class="f-28 fw-700 spaceGrotesk text-center text-white m-0 py-3 w-full rounded-3"
+                        style="background: linear-gradient(89deg, #F13910 1.92%, #E9B704 98.79%);">Editorial Hub</p>
+                </div>
+                
+                <p *ngIf="!editorialList.length && loader_flag.editorial"
+                    class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4">No Data Found</p>
+                <div class="shashka-bottom card4type-height scrollbar-news overflow-y-auto pd-8"
+                    (scroll)="checkScrolled($event,'editorial')">
+                    <!-- custom loader -->
+                    <div class="custom-skeleton" aria-hidden="true" *ngIf="!editorialList.length && !loader_flag.editorial">
+                        <div class="placeholder-glow mt-2" *ngFor="let l of [1,1,1,1,1,1,1,1,1,1]">
+                            <h4 class="bg-secondary placeholder col-12 mb-0"></h4>
+                            <p class="d-flex justify-content-between col-12 p-0 mt-2">
+                                <span class="placeholder col-5 p-0" style="min-height:auto;height:8px;"></span>
+                                <span class="placeholder col-2 p-0" style="min-height:auto;height:8px;"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <ul class="shashka-list ps-0 d-flex flex-column rg-8">
+                        <ng-container *ngFor="let news of editorialList;index as i">
+                            <li style="list-style-type: none;">
+                                <div class="shashka-mid d-flex flex-column rg-8"
+                                    (click)="readMore('/editorial-details',news.id)">
+                                    <div class="curvy-image position-relative overflow-hidden rounded-4">
+                                        <img [src]="news.image"
+                                            onerror='this.src="../../../../../assets/images/noimg.png"' alt="">
+                                        <p class="pasted-text f-12 manrope truncate-text2 fw-700 text-white text-gradient-neutral"
+                                            [innerHTML]="news.title"></p>
+                                        <img class="link-icon mouse" src="../../../../../assets/news-img/link-icon.png"
+                                            alt="" (click)="gotoLink(news.link,$event)">
+                                        <p class="shashka-d-time f-12 manrope fw-600">{{news.published_date}}</p>
+                                        <p class="shashka-news-source f-12 manrope fw-600 ">Source: {{news.source}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ng-container>
+                        <app-spinner *ngIf="editorialList.length && !scroll_flag.editorial"></app-spinner>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-flex container-big newsPage-gradient pd-layout d-flex flex-column rg-16 pb-5"
+        *ngIf="historyList.length">
+        <div class="section-head-nav d-flex justify-content-center align-items-center w-100 mt-3 z-index2">
+            <div class="sn-left text-center hl-mid">
+                <h1 class="f-30 fw-700 text-white m-0 spaceGrotesk text-center uppercase px-8">RESUME - {{tag}}</h1>
+            </div>
+        </div>
+        <div class="h-article-wraper d-flex flex-column rg-16 mt-5 p-5">
+            <div class="history-details" *ngFor="let item of historyList">
+                <h2 class="history-title fw-800 text-black f-30 ps-0" [innerHTML]="item.key"></h2>
+                <p class="history-description manrope f-18 fw-400 text-black" [innerHTML]="item.val"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- loader -->
+<ngx-ui-loader fgsColor="transparent" bgsColor="red" bgsPosition="bottom-center" logoPosition="center-center" [logoSize]="160" [gap]="20"
+    logoUrl="/assets/news-img/main-logo-gif.gif" [attr.bgsOpacity]="0"></ngx-ui-loader>

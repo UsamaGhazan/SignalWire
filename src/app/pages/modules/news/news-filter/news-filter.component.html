@@ -1,0 +1,18 @@
+<div class="tgl-radio-tabs d-flex justify-content-end cg-8">
+    <input [id]="context+'_1'" type="radio" class="form-check-input tgl-radio-tab-child" 
+        [attr.name]="context+'_filter'" [checked]="date=='latest' || date=='48hours'" (click)="changeFilter('latest')"/>
+    <label [attr.for]="context+'_1'" class="radio-inline">Latest</label>
+
+    <input [id]="context+'_2'" type="radio" class="form-check-input tgl-radio-tab-child"
+        [attr.name]="context+'_filter'" [checked]="date=='7days'" (click)="changeFilter('7days')"/>
+    <label [attr.for]="context+'_2'" class="radio-inline">7 Days</label>
+
+    <input [id]="context+'_3'" type="radio" class="form-check-input tgl-radio-tab-child"
+        [attr.name]="context+'_filter'" [checked]="date=='2weeks'" (click)="changeFilter('2weeks')"/>
+    <label [attr.for]="context+'_3'" class="radio-inline">2 Weeks</label>
+
+    <input [id]="context+'_4'" type="radio" class="form-check-input tgl-radio-tab-child"
+        [attr.name]="context+'_filter'" [checked]="date=='1month'" (click)="changeFilter('1month')"/>
+    <label [attr.for]="context+'_4'" class="radio-inline">1 Month</label>
+</div>
+

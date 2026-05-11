@@ -1,0 +1,85 @@
+<div
+  class="twitter-card p-12 d-flex flex-column rg-8 pd-10"
+  #tweet_div
+  (click)="gotoLink('https://twitter.com/' + tweet.screen_name + '/status/' + tweet.id_str, $event)"
+  [id]="'tweet_' + tweet?.id_str"
+  (contextmenu)="
+    this.api.genContext($event, tweet_div, {
+      id: tweet?.id_str,
+      title: tweet?.description,
+      corner: corner,
+      content: tweet,
+      cat: cat,
+      subCat: subCat,
+      type: 'tweet'
+    })
+  "
+>
+  <a
+    class="w-max"
+    [href]="'https://twitter.com/' + tweet.screen_name"
+    onclick="event.stopPropagation();"
+    target="_blank"
+    style="text-decoration: none"
+  >
+    <div class="tt-cardTop d-flex cg-12 align-items-center">
+      <img
+        class="sm-round"
+        [src]="tweet.profile_image_url"
+        onerror='this.src="/assets/images/admin-avatar.png"'
+        alt=""
+      />
+      <div class="sm-profile">
+        <p class="manrope-xbold f-16 fw-800 text-black">
+          {{
+            tweet.name.length > 16
+              ? tweet.name.slice(0, 16) + "..."
+              : tweet.name
+          }}
+        </p>
+        <p class="manrope f-12 fw-600 text-black text-opacity">
+          {{ "@" + tweet.screen_name }}
+        </p>
+      </div>
+    </div>
+  </a>
+  <div class="tt-cardMid">
+    <a
+      target="_blank"
+      onclick="event.preventDefault()"
+      style="text-decoration: none"
+    >
+      <p
+        class="manrope f-14 fw-500 text-black truncate-text3"
+        [innerHTML]="tweet.description"
+      ></p>
+    </a>
+  </div>
+  <ng-container *ngIf="tweet.tweet_image || true">
+    <img
+      [src]="tweet.tweet_image"
+      class="tweet-pic w-full border"
+      onerror='this.src="/assets/images/noimg_small.jpg"'
+      alt=""
+    />
+  </ng-container>
+  <div class="tt-cardBottom d-flex justify-content-between my-1">
+    <p class="manrope f-10 fw-700 text-black text-opacity">
+      {{ tweet.created_at }}
+    </p>
+    <img
+      src="../../../../../assets/news-img/link-black.png"
+      alt=""
+      class="mouse"
+      (click)="
+        gotoLink(
+          'https://twitter.com/' +
+            tweet.screen_name +
+            '/status/' +
+            tweet.id_str,
+          $event
+        )
+      "
+    />
+  </div>
+</div>

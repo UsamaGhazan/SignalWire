@@ -1,0 +1,92 @@
+<div class="header">
+  <p class="title">Scrapper Monitoring Dashboard</p>
+  <div class="counterBox">
+    <div class="running">
+      <p>Running:</p>
+      <span> {{ runningCount }}</span>
+    </div>
+    <div class="error">
+      <p>Error:</p>
+      <span> {{ errorCount }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="filters">
+  <div class="dropDowns">
+    <div>
+      <select id="regionSelect" (change)="filterRegion($event)" #regionSelect>
+        <option value="" selected disabled>Select Region</option>
+        <!-- <option value="all">All</option> -->
+        <option value="east-corner">East</option>
+        <option value="internal">Internal</option>
+        <option value="west-Iran">West-Iran</option>
+        <option value="west-AFG">West-Afghanistan</option>
+      </select>
+    </div>
+    <div>
+      <select id="typeSelect" (change)="filterType($event)" #typeSelect>
+        <option value="" selected disabled>Select Category</option>
+        <!-- <option value="all">All</option> -->
+        <option value="news">News</option>
+        <option value="Editorial">Editorials</option>
+      </select>
+    </div>
+    <img
+      src="../../../../../assets/images/reseticon.png"
+      alt=""
+      (click)="resetFilter()"
+      title="Reset Filters"
+    />
+  </div>
+  <div class="topRight">
+    <div>
+      <label class="switch-button" for="switch">
+        <div class="switch-outer">
+          <input
+            id="switch"
+            type="checkbox"
+            (change)="onToggle($event)"
+            #switch
+            checked
+          />
+          <div class="button">
+            <span class="button-toggle"></span>
+            <span class="button-indicator"></span>
+          </div>
+        </div>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div
+  class="statusDashboard"
+  *ngIf="scrapperStatusList.length > 0; else defaultText"
+>
+  <div
+    class="statusBox"
+    *ngFor="let item of scrapperStatusList"
+    [ngStyle]="{
+      background:
+        item.status === 'error'
+          ? 'linear-gradient(345deg,rgb(217,70,70),rgb(220,40,30))'
+          : 'linear-gradient(200deg,rgb(17,153,142),rgb(56,239,125))'
+    }"
+  >
+    <div class="chanelName">
+      {{ capitalizeFirstLetter(item.channel_name) }}
+    </div>
+    <div class="bottomRow">
+      <div class="lastUpdated">Last Updated</div>
+      <div class="datetime">{{ convertDateFormat(item.last_data_insert) }}</div>
+
+    </div>
+  </div>
+</div>
+
+<ng-template #defaultText>
+  <p style="font-weight: 600; margin: auto; margin-top: 10%">
+    No Error! Scrappers are in running condition
+  </p>
+</ng-template>

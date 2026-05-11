@@ -1,0 +1,143 @@
+/* Radio tabs */
+input.tgl-radio-tab-child {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+button.priority-btn {
+  font-size: 12px;
+  background-size: 100%;
+  transition: all 0.3s ease-in-out;
+}
+button.priority-btn:hover {
+  background-size: 150%;
+}
+
+input.tgl-radio-tab-child + label {
+  border-radius: 200px;
+  background: rgba(142, 202, 223, 0.2);
+  margin-right: -1px;
+  padding: 0.5em 1em;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "manrope-medium";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* input.tgl-radio-tab-child+label:hover {
+                                background-color: #eee;
+                              } */
+
+[type="radio"]:checked + label {
+  z-index: 1;
+  border-radius: 200px;
+  background: red;
+  color: white;
+  outline: 3px solid rgba(0, 0, 0, 0.1);
+  color: #fff;
+  text-align: center;
+  font-family: "manrope-medium";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+div {
+  user-select: none;
+}
+@media only screen and (max-width: 1460px) {
+  [type="radio"]:checked + label {
+    font-size: 9px;
+  }
+  input.tgl-radio-tab-child + label {
+    font-size: 9px;
+  }
+}
+.report_type label {
+  z-index: 1;
+  border-radius: 200px;
+  background: #8f8f8f69;
+  color: #000;
+  text-align: center;
+  font-family: "manrope-medium";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  width: 50px;
+}
+
+.cgap {
+  gap: 16px;
+}
+
+.custom-news-button,
+.custom-news-button-ai {
+  border: 1px solid grey;
+  border-radius: 7px;
+  padding: 5px 25px;
+  line-height: unset;
+  background-color: #008080f2;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: "manrope-medium";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease-in-out;
+}
+.custom-news-button{
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+}
+
+.custom-news-button:hover {
+  background:linear-gradient(to right, #0f3545, #235161, #417b95);
+}
+
+.custom-news-button-ai {
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  &:hover {
+    animation: buttonanimation 0.2s ease-in ;
+    background-image: linear-gradient(144deg, #af40ff, #5b42f3 100%, #00ddeb );;
+
+  }
+}
+@keyframes buttonanimation {
+  0% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 0%, #00ddeb );
+  }9% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 9%, #00ddeb );
+  }18% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 18%, #00ddeb );
+  }27% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 27%, #00ddeb );
+  }36% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 36%, #00ddeb );
+  }45% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 45%, #00ddeb );
+  }54% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 54%, #00ddeb );
+  }63% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 63%, #00ddeb );
+  }72% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 72%, #00ddeb );
+  }81% {
+    background-image: linear-gradient(144deg, #af40ff , #5b42f3 81%, #00ddeb );
+  }
+  100% {
+    background-image: linear-gradient(144deg, #af40ff, #5b42f3 100%, #00ddeb );;
+  }
+}
+
+
+@media screen and (max-width: 1180px) and (orientation: landscape) {
+  .customhehe{
+    justify-content: center;
+  }
+ }

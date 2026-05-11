@@ -1,0 +1,478 @@
+<!--///// News Header //////-->
+
+<div class="container-big m-0 pd-32 header-papa">
+  <div class="news-header d-flex align-items-center justify-content-between">
+    <div
+      class="head-left d-flex align-items-center cg-24 justify-content-between"
+    >
+      <div class="" style="width: 64px">
+        <div>
+          <img
+            class="mouse"
+            [src]="
+              system == 'Zulon'
+                ? '../../../../../assets/images/ZULON-Logo-Icon.svg'
+                : '../../../../../assets/images/ZULON-Logo-Icon.svg'
+            "
+            alt=""
+            (click)="decideHome()"
+          />
+        </div>
+      </div>
+      <div
+        class="d-flex dropdownLogo"
+        (click)="this.drodownMainShow = !this.drodownMainShow"
+      >
+        <p class="logo-text-news f-48 fw-700 m-0 user-select-none mouse">
+          {{
+            corner == "editorial-details" ? "Premium Sources" : headerTitle()
+          }}
+        </p>
+
+        <span class="icon">&#11167;</span>
+
+        <div class="dropdown" *ngIf="drodownMainShow">
+          <p
+            (click)="decideCorner(corner)"
+            *ngFor="let corner of dropdownMainList"
+          >
+            {{ headerTitle(corner) }}
+          </p>
+        </div>
+      </div>
+      <i
+        class="fa-solid fa-bars news-burger mouse"
+        (click)="toggleMenu($event, dropMenu)"
+      ></i>
+    </div>
+    <div
+      class="drop-menu rg-10 align-items-center justify-content-between right-nav"
+      #dropMenu
+    >
+      <div
+        class="head-mid d-flex cg-10 justify-content-between align-items-center"
+        *ngIf="corner == 'east_corner'"
+      >
+        <div class="head-menu d-flex cg-24 ms-auto me-auto customgap1">
+          <div
+            [classList]="
+              'menu-card mouse' + (cat == 'mil' ? ' active mil-menu-theme' : '')
+            "
+            (click)="explore('mil')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/mil-icon.svg"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">MIL</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'intl' ? ' active intl-menu-theme' : '')
+            "
+            (click)="explore('intl')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/intl-icon.svg"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">INTL</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'iiojk' ? ' active iiojk-menu-theme' : '')
+            "
+            (click)="explore('iiojk')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/iiojk-icon.svg"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">IIOJK</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'domestic' ? ' active domestic-menu-theme' : '')
+            "
+            (click)="explore('domestic')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/domestic-icon.svg"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">DOMESTIC</p>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="head-mid d-flex cg-10 justify-content-between align-items-center"
+        *ngIf="corner == 'internal_security'"
+      >
+        <div class="head-menu d-flex cg-24 ms-auto me-auto customgap1">
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'govt' ? ' active intl-menu-theme' : '')
+            "
+            (click)="explore_('govt')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/govt-icon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">Govt</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'pol' ? ' active domestic-menu-theme' : '')
+            "
+            (click)="explore_('pol')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/pol-icon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">Pol</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'isct' ? ' active iiojk-menu-theme' : '')
+            "
+            (click)="explore_('isct')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/isct-icon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">IS & CT</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' + (cat == 'mil' ? ' active mil-menu-theme' : '')
+            "
+            (click)="explore_('mil')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/mil-icon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">Mil</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'diplo' ? ' active diplo-menu-theme' : '')
+            "
+            (click)="explore_('diplo')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/diplo-icon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">Diplo</p>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="head-mid d-flex cg-10 justify-content-between align-items-center"
+        *ngIf="corner == 'west_corner' || corner == 'west_corner_iran'"
+      >
+        <div class="head-menu d-flex cg-24 ms-auto me-auto customgap">
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'internalEnvmt' ? ' active intl-menu-theme' : '')
+            "
+            (click)="explore_west('internalEnvmt')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                [src]="
+                  !data.getCurrentWestTab()
+                    ? '../../../../../assets/images/internalEnvmt_navIcon.png'
+                    : '../../../../../assets/images/internalEvmnt_IRAN_navIcon.png'
+                "
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">{{!data.getCurrentWestTab()? 'Domestic Envmt':'Internal Envmt & IS'}}</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'diplomacy' ? ' active diplo-menu-theme' : '')
+            "
+            (click)="explore_west('diplomacy')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/news-img/diplo-icon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">{{!data.getCurrentWestTab()? 'Diplo & Eco':'Diplo & Fin'}}</p>
+            </span>
+          </div>
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'pkCorner' ? ' active iiojk-menu-theme' : '')
+            "
+            (click)="explore_west('pkCorner')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image somecustom"
+                src="../../../../../assets/images/pakIndIcon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">{{!data.getCurrentWestTab()? 'Mil / LEA':'Misc'}}</p>
+            </span>
+          </div>
+          <!-- <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'inCorner' ? ' active domestic-menu-theme' : '')
+            "
+            (click)="explore_west('inCorner')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8">
+              <img
+                class="menu-image"
+                src="../../../../../assets/images/indCorner_navIcon.png"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">Ind Corner</p>
+            </span>
+          </div> -->
+
+          <div
+            [classList]="
+              'menu-card mouse' +
+              (cat == 'xHair' ? ' active domestic-menu-theme' : '')
+            "
+            (click)="explore_west('xHair')"
+          >
+            <span class="no-underline d-flex align-items-center cg-8 flexCustom">
+              <img
+                class="menu-image"
+                src="../../../../../assets/images/xhairs_navIcon.svg"
+                alt=""
+              />
+              <p class="menu-text m-0 f-18 fw-700">{{!data.getCurrentWestTab()? 'IS / Tsm':'Terrorist Gps'}}</p>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex cg-12 align-items-end mr-5">
+        <div
+          class="globe-search w-60px d-flex flex-column align-items-center mouse"
+          style="
+            border: 1px solid #8080801f;
+            padding: 5px;
+            border-radius: 7px;
+            user-select: none;
+          "
+          (click)="readMore('/gen-search', '', 'gen-search')"
+          [class.ms-5]="corner == 'west_corner' || corner == 'west_corner_iran'"
+        >
+          <img class="h-30px" src="/assets/news-img/globe.png" alt="" />
+          <p class="f-12 fw-700 text-black manrope">Search</p>
+        </div>
+         
+        <!-- <div
+          class="globe-search w-60px d-flex flex-column align-items-center mouse"
+          style="
+            border: 1px solid #8080801f;
+            padding: 5px;
+            border-radius: 7px;
+            user-select: none;
+          "
+          (click)="readMore('/gen-search', '', 'gen-search')"
+          [class.ms-5]="corner == 'west_corner' || corner == 'west_corner_iran'"
+        >
+          <img class="h-30px" src="/assets/images/reportHistory.svg" alt="" />
+          <p class="f-12 fw-700 text-black manrope">History</p>
+        </div> -->
+        <app-report-history-modal  ></app-report-history-modal>
+        <!-- <app-report [origin]="corner" *ngIf="page=='explore'"></app-report> -->
+        <app-report [origin]="corner"></app-report>
+
+        <div
+          class="globe-search w-60px d-flex flex-column align-items-center mouse"
+          style="
+            border: 1px solid #8080801f;
+            padding: 5px;
+            border-radius: 7px;
+            user-select: none;
+          "
+          (click)="data.gotoLink('/#/admin')"
+          *ngIf="admin"
+        >
+          <img
+            class="h-30px"
+            src="/assets/images/admin-avatarx.png"
+            alt=""
+            style="border-radius: 5px"
+          />
+          <p class="f-12 fw-700 text-black manrope">Admin</p>
+        </div>
+          <div
+          class="globe-search w-60px d-flex flex-column align-items-center mouse"
+          style="
+            border: 1px solid #8080801f;
+            padding: 5px;
+            border-radius: 7px;
+            user-select: none;
+          "
+         (click)="openPasswordModal()"
+        >
+          <img class="h-30px" src="/assets/news-img/reset-password.png" alt="" />
+          <p class="f-12 fw-700 text-black manrope " style="white-space: nowrap;">Password</p>
+        </div>
+      </div>
+      <div class="head-right d-flex justify-content-between align-items-center">
+        <div
+          class="d-flex align-items-center justify-content-center fit-content cg-16"
+        >
+          <div
+            class="head-menu d-flex cg-24 ms-4 me-auto"
+            *ngIf="corner == 'west_corner'"
+          >
+            <div
+              class="tabsSwitch"
+              *ngIf="corner == 'west_corner' || corner == 'west_corner_iran'"
+            >
+              <div class="tabs">
+                <!-- <div
+        *ngFor="let tab of ['Afghanistan', 'Iran']; let i = index"
+        (click)="westTabClickHandler(i)"
+        [class.active]="i == activeWestTab"
+      >
+        <p>{{ tab }}</p>
+      </div> -->
+
+                <!-- *ngFor="let tab of ['Afghanistan', 'Iran']; let i = index" -->
+                <!-- [class.active]="i == data.getCurrentWestTab()" -->
+                <div
+                  (click)="westTabClickHandlerToggle()"
+                  class="globe-search w-60px d-flex flex-column align-items-center mouse"
+                  style="
+                    border: 1px solid #8080801f;
+                    padding: 5px;
+                    border-radius: 7px;
+                    user-select: none;
+                  "
+                >
+                  <img
+                    class="h-30px"
+                    [src]="getImageSource(data.getCurrentWestTab())"
+                    alt=""
+                    style="border-radius: 5px"
+                  />
+                  <p class="f-12 fw-700 text-black manrope">
+                    <!-- {{ tab == "Afghanistan" ? "Afghan" : tab }} -->
+                  </p>
+                </div>
+                <!-- </div>  -->
+                <!-- 
+      <input
+        type="checkbox"
+        id="switch"
+        [checked]="newState && data.getCurrentWestTab()"
+      /><label for="switch" (click)="westTabClickHandlerToggle()">Toggle</label> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="date-time d-flex align-items-center flexCustom2">
+            <span class="nl-date nldt f-16 fw-600">{{ now_d }}</span>
+            <span class="vertical-line"></span>
+            <span class="nl-time nldt f-16 fw-600">{{ now_t }}</span>
+          </div>
+          <!-- <div class="nl-kebab">
+                    <i class="fa-solid fa-ellipsis-vertical f-24"></i>
+                </div> -->
+          <div class="nl-switch mouse" (click)="logout()">
+            <img
+              class="power-off"
+              src="../../../../../assets/news-img/power-off.svg"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="w-100 d-flex justify-content-between">
+        <img class="mouse burger-logo" [src]="system=='Zambeel'?'../../../../../assets/news-img/news-icon-only.svg':'../../../../../assets/news-img/news-icon-only2.svg'" alt="" (click)="api.gotoHome()">
+        
+    </div> -->
+
+  <!-- <div class="tabsSwitch" *ngIf="corner == 'west_corner'">
+    <div class="tabs">
+      <div
+        *ngFor="let tab of ['Afghanistan', 'Iran']; let i = index"
+        (click)="westTabClickHandlerToggle()"
+        [class.active]="i == data.getCurrentWestTab()"
+        class="globe-search w-60px d-flex flex-column align-items-center mouse"
+        style="
+          border: 1px solid #8080801f;
+          padding: 5px;
+          border-radius: 7px;
+          user-select: none;
+        "
+      >
+        <img
+          class="h-30px"
+          [src]="getImageSource(tab)"
+          alt=""
+          style="border-radius: 5px"
+        />
+        <p class="f-12 fw-700 text-black manrope">
+          {{ tab == "Afghanistan" ? "Afghan" : tab }}
+        </p>
+      </div>
+    </div>
+  </div> -->
+  <!-- 
+      <input
+        type="checkbox"
+        id="switch"
+        [checked]="newState && data.getCurrentWestTab()"
+      /><label for="switch" (click)="westTabClickHandlerToggle()">Toggle</label> -->
+  <!-- ///// News Header End ///// -->
+</div>

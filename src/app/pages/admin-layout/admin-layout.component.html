@@ -1,0 +1,100 @@
+<div class="dashboard">
+  <div
+    class="dashboard-nav sidebar-gradient"
+    #header_
+    (click)="collapseMenu(header_)"
+  >
+    <header>
+      <img
+        _ngcontent-dhn-c369=""
+        class="mouse"
+        [src]="
+          system == 'Zambeel'
+            ? '../../../../../assets/news-img/zulonLogoWhite.png'
+            : './../../../../assets/images/zulonLogoWhite.png'
+        "
+        alt=""
+        (click)="api.gotoHome()"
+        style="width: 160px; margin-right: 15px"
+      />
+    </header>
+    <nav class="dashboard-nav-list">
+      <a
+        class="dashboard-nav-item"
+        routerLink="/admin"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ><i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+      <a
+        class="dashboard-nav-item"
+        routerLink="/admin/users"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><i class="fas fa-users"></i> Users
+      </a>
+      <a
+        class="dashboard-nav-item"
+        routerLink="/admin/keywords"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><i class="fas fa-pencil"></i> Keywords
+      </a>
+      <a
+        class="dashboard-nav-item"
+        routerLink="/admin/handler"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><i class="fab fa-twitter"></i> Twitter
+      </a>
+      <a
+        class="dashboard-nav-item"
+        routerLink="/admin/youtube"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><i class="fab fa-youtube"></i> Youtube
+      </a>
+      <a
+        class="dashboard-nav-item"
+        routerLink="/admin/status"
+        routerLinkActive="sidebarActive"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><i class="fas fa-chart-line"></i> Scrapper Monitoring
+      </a>
+      <div class="nav-item-divider"></div>
+      <a class="dashboard-nav-item" (click)="data.gotoLink('/')"
+        ><i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </nav>
+  </div>
+  <div class="dashboard-app">
+    <header
+      class="dashboard-toolbar flex-row-reverse sidebar-gradient justify-content-between"
+    >
+      <a href="#!" class="menu-toggle">
+        <i class="fas fa-bars text-white icon-sm-screen"></i>
+        <i class="fa-solid fa-expand text-white icon-xl-screen"></i>
+      </a>
+      <img
+        _ngcontent-dhn-c369=""
+        class="header-logo-expand"
+        src="../../../../../assets/images/zulonLogoWhite.png"
+        alt=""
+        style="width: 160px; margin-right: 15px"
+      />
+
+      <img
+        _ngcontent-dhn-c369=""
+        class="header-logo-sm"
+        src="../../../../../assets/images/zulonLogoWhite.png"
+        alt=""
+        style="width: 160px; margin-right: 15px"
+      />
+    </header>
+    <div class="dashboard-content">
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

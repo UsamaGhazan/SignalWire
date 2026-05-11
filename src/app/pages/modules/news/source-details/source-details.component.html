@@ -1,0 +1,100 @@
+<div class="container-big scrollbar-news" infiniteScroll [scrollWindow]="false" (scrolled)="onScroll()">
+    <div class="section-head-nav d-flex justify-content-center align-items-center w-100 mt-3 z-index2">
+        <div class="sn-left text-center hl-mid d-flex gap-3 align-items-center">
+            <h1 class="f-30 fw-700 text-white m-0 spaceGrotesk text-center px-8">{{type?.slice(0,-1) +":" + " "+ text}}</h1>
+            <button class=""
+                data-bs-toggle="modal" data-toggle="tooltip" title="Editorial Authors" data-bs-target="#author-modal" style="text-align: center;
+                    font-family: 'manrope-medium';
+                    font-style: normal;
+                    font-weight: 700;
+                    background: unset;
+                    border: 0;
+                    ">
+                <img class="author-icon" src="../../../../../assets/news-img/author-icon2.png" alt="">
+            </button>
+        </div>
+    </div>
+    <div class="scard-wraper d-flex flex-wrap pd-32">
+        <div class="source-card pd-10" *ngFor="let res of desiredList">
+            <div class="card-shell d-flex flex-column gap-2 pd-10 border rounded"
+                (click)="viewDetails(res._id)">
+                <div class="source-img position-relative">
+                    <img class="" [src]="res._source?.data?.thumbnail"
+                        onerror='this.src="../../../../../assets/images/noimg.png"'>
+                        <img  src="../../../../../assets/news-img/link-icon.png" alt="" 
+                            class="redirect-img mouse position-absolute" 
+                                (click)="gotoLink($event,res._source?.data?.link)" style="">
+                </div>
+                <div class="source-desc d-flex flex-column gap-1">
+                    <p class="source-title text-truncate1">{{res._source?.data?.title}}</p>
+                    <!-- <p>Description : {{res._source?.data?.description}}</p> -->
+                    <div class="source-date d-flex align-items-center justify-content-between flex-wrap cg-5">
+                        <p class="text-nowrap">{{res._source?.data?.source}}</p>
+                        <p class="text-nowrap">{{api.formatDate(res._source?.data?.published_date)}}</p>
+                    </div>
+
+                    <!-- <p>link : {{res._source?.data?.link}}</p> -->
+
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="!desiredList.length">
+            <div class="source-card pd-16 placeholder-glow" *ngFor="let l of [1,1,1,1,1,1,1,1,1,1]">
+                <div class="card-shell placeholder placeholder-secondary d-flex flex-column gap-2 pd-10 border rounded">
+                    <div class="source-img ">
+                        <img class="placeholder">
+                    </div>
+                    <div class="source-desc d-flex flex-column gap-1">
+                        <p class="source-title text-truncate2 placeholder col-12"></p>
+                        <!-- <p>Description : {{res._source?.data?.description}}</p> -->
+                        <div class="source-date d-flex align-items-center justify-content-between">
+                            <p class="placeholder col-3"></p>
+                            <p class="placeholder col-3"></p>
+                        </div>
+
+                        <!-- <p>link : {{res._source?.data?.link}}</p> -->
+
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<ngx-ui-loader fgsColor="transparent" bgsColor="red" bgsPosition="bottom-center" logoPosition="center-center" [logoSize]="160" [gap]="20"
+logoUrl="/assets/news-img/main-logo-gif.gif" [attr.bgsOpacity]="0"></ngx-ui-loader>
+
+<!-- <div class="source-card"> 
+     <img [src]="res._source?.data?.thumbnail"></div>
+    <div class="source-desc">
+
+    </div>
+</div> -->
+
+
+<!-- Editorial Author Modal -->
+
+<div class="modal fade" id="author-modal" tabindex="-1" aria-labelledby="author-modalLabel" aria-hidden="true" style="z-index: 99999999 !important;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header d-flex">
+                <div class="modal-head-bg">
+                    <h1 class="modal-title f-20 text-white spaceGrotesk fw-700" id="priority_modalLabel">
+                        Editorial Authors
+                    </h1>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="author-search mt-3 d-flex align-item-end">
+                <div class="search d-flex align-items-center w-fit-content">
+                    <input class="header-search f-16 no-bg-color w-100" type="text" placeholder="Search"
+                        [(ngModel)]="auth_search_keyword">
+                    <img class="hs-image mouse" src="../../../../../assets/news-img/search-icon.svg" alt=""
+                        >
+                </div>
+            </div>
+            <div class="modal-body mt-3 es-modal-body">
+                <!-- modal content here -->
+               <app-editorial-modal [origin]="this.origin" [keyword]="auth_search_keyword"></app-editorial-modal>
+        </div>
+    </div>
+</div>

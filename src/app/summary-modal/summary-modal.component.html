@@ -1,0 +1,58 @@
+<div class="modal" [class.modal-show]="modalVisiblity">
+  <div class="modal-dialog" role="document" cdkDrag>
+    <div class="modal-content">
+      <div class="modal-header" cdkDragHandle>
+        <h5 class="modal-title" id="exampleModalLabel" >Summary</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="showModal()"
+        >
+          <img
+            src="../../../../../assets/images/modal_closeIcon.png"
+            alt="Close"
+            style="width: 32px; height: 32px"
+          />
+        </button>
+      </div>
+      <div class="modal-body scrollbar-news scrollbar-news-2" >
+        <ngx-ui-loader
+          fgsColor="transparent"
+          bgsColor="red"
+          bgsPosition="bottom-center"
+          logoPosition="center-center"
+          [logoSize]="160"
+          [gap]="20"
+          logoUrl="../../../../../assets/images/zulonIconAnimation.gif"
+          [attr.bgsOpacity]="0"
+        ></ngx-ui-loader>
+
+        <ul *ngIf="summary && summaryObj['bulletPoints'].length" >
+          <li *ngFor="let bulletPoint of summaryObj['bulletPoints']">
+            {{ bulletPoint }}
+          </li>
+        </ul>
+
+        <div *ngIf="summary && summaryObj['keyAreas'].length">
+          <b>Key Areas: </b>
+          <ul>
+            <li *ngFor="let bulletPoint of summaryObj['keyAreas']">
+              {{ bulletPoint }}
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="summary && summaryObj['keyPeople'].length">
+          <b>Key People: </b>
+          <ul>
+            <li *ngFor="let bulletPoint of summaryObj['keyPeople']">
+              {{ bulletPoint }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

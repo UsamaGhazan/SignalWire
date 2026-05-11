@@ -1,0 +1,1608 @@
+<!--///// News Header //////-->
+
+<app-news-header></app-news-header>
+
+<!-- ///// News Header End ///// -->
+
+<!-- ///// News catagory MIL body ///// -->
+<div class="container-big news-body scrollbar-news overflow-visible">
+  <!-- <div
+    class="back-button w-max d-flex align-items-center cg-8 mt-3 mouse"
+    (click)="goBack()"
+  >
+    <i class="fa-solid fa-arrow-left fade-text f-22"></i>
+    <p class="fade-text f-20 fw-600">Back</p>
+  </div> -->
+  <!-- <div class="background-lines back-position1"></div> -->
+  <!-- <div class="background-lines back-position2"></div> -->
+  <!-- <div class="background-lines back-position3"></div> -->
+  <!-- MIL Body -->
+  <div class="explore-body">
+    <!-- sections head -->
+    <!-- ################## INTL / M2M Section ############### -->
+    <!-- sections head -->
+    <ng-container
+      *ngIf="
+        country === 'iran' || (cat !== 'internalEnvmt' && cat !== 'diplomacy')
+      "
+    >
+      <div
+        class="section-head-nav d-flex justify-content-between align-items-center pd-32 w-100 z-index2 mt-3"
+      >
+        <div class="sn-left d-flex cg-16 change-direction">
+          <div class="m2m d-flex align-center justify-content-center hl-head">
+            <p class="me-2 f-20 fw-700 text-center">
+              {{
+                country === "afghanistan"
+                  ? api.getCatName(arr[0], true)
+                  : api.getCatName(arr[0])
+              }} 
+            </p>
+          </div>
+        </div>
+        <div
+          class="sn-right d-flex flex-reverse-row justify-content-between cg-24"
+        >
+          <div class="sn-bottom d-flex align-items-center cg-24">
+            <!-- fILTER INLAND ACTIVITIES  -->
+            <div class="form-check">
+              <app-news-filter
+                [context]="arr[0]"
+                [date]="Dates[arr[0]]"
+                (onChange)="changeFilter($event)"
+              ></app-news-filter>
+            </div>
+            <div class="position-relative">
+              <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+              <p-calendar
+                class="position-absolute right-0 top-0 z-index3"
+                [(ngModel)]="multiselect_date[arr[0]]"
+                (ngModelChange)="fetch_methods(arr[0])"
+                [showButtonBar]="true"
+                (onClearClick)="
+                  multiselect_date[arr[0]] = '';
+                  Dates[arr[0]] = 'latest';
+                  fetch_methods(arr[0])
+                "
+                [showIcon]="true"
+                [showTime]="false"
+              >
+              </p-calendar>
+            </div>
+          </div>
+          <div class="sn-top">
+            <div class="search d-flex align-items-center w-fit-content ms-auto">
+              <input
+                class="header-search f-16 no-bg-color"
+                type="text"
+                placeholder="Search"
+                [(ngModel)]="keywords[arr[0]]"
+                (keyup.enter)="fetch_methods(arr[0])"
+                (keyup)="!keywords[arr[0]] ? fetch_methods(arr[0]) : ''"
+              />
+              <img
+                class="hs-image mouse"
+                src="../../../../../assets/news-img/search-icon.svg"
+                alt=""
+                (click)="fetch_methods(arr[0])"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section
+        class="editorial-hub redish-gradient position-relative z-index2 pd-layout2 hide_left"
+        [class.activeSlide]="editorialSliderCount"
+      >
+        <div
+          class="custom-skeleton"
+          *ngIf="!api.newsList[arr[0]]?.length && !loader_flag.editorial"
+        >
+          <div
+            class="col-12 d-flex gap-3 p-0 placeholder-glow overflow-hidden"
+            style="height: 466px"
+          >
+            <div
+              class="flex-shrink-0 placeholder p-0 placeholder-secondary h-full rounded-4"
+              style="width: 45% !important"
+            ></div>
+            <div
+              class="h-full gap-3 esmCard-wraper"
+              style="
+                display: grid;
+                width: max-content;
+                grid-template-rows: 1fr 1fr;
+                grid-template-columns: repeat(5, auto);
+              "
+            >
+              <div
+                class="h-full placeholder placeholder-secondary rounded-4 curvy-image"
+                *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="d-flex align-items-center justify-content-center"
+          style="height: 466px"
+          *ngIf="!api.newsList[arr[0]]?.length && loader_flag.editorial"
+        >
+          <p class="text-center p-3 w-full bg-light rounded-3 w-max">
+            No Data Found
+          </p>
+        </div>
+        <ng-container [ngClass]="api.newsList[arr[0]]?.length ? '' : 'd-none'">
+          <img
+            *ngIf="api.newsList[arr[0]]?.length > 5"
+            class="next-arrow mouse"
+            src="../../../../../assets/news-img/next-arrow.png"
+            alt=""
+            (click)="scrollX(editorial_scroller, 500, 1)"
+          />
+          <img
+            *ngIf="api.newsList[arr[0]]?.length > 5 && editorialSliderCount"
+            class="previous-arrow mouse"
+            src="../../../../../assets/news-img/prev-arrow.png"
+            alt=""
+            (click)="scrollX(editorial_scroller, -500, 0)"
+          />
+
+          <div
+            class="eCard-wraper d-flex cg-16 overflow-x-auto"
+            id="editorial_scroller"
+            #editorial_scroller
+            (scroll)="
+              api.newsList[arr[0]]?.length > 5 &&
+                scrollEdges(editorial_scroller, 'horizontalNews')
+            "
+          >
+            <div class="big-smCard w-45">
+              <div
+                class="curvy-image position-relative"
+                (click)="readMore('/news-details',api.newsList[arr[0]]?.[0]?.id)"
+              >
+                <img
+                  [src]="api.newsList[arr[0]]?.[0]?.image"
+                  onerror='this.src="../../../../../assets/images/noimg.png"'
+                  alt=""
+                />
+                <p
+                  class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1"
+                  [innerHTML]="api.newsList[arr[0]]?.[0]?.title"
+                ></p>
+
+                <p
+                  class="pasted-text f-12 manrope fw-700 p-text p-text--source text-white text-gradient1 mouse"
+                  [innerHTML]="api.newsList[arr[0]]?.[0]?.source"
+                >
+                  <!-- {{ ed.source }} -->
+                </p>
+
+                <p
+                  class="pasted-text f-12 manrope fw-700 p-text text-white text-gradient1 mouse"
+                  [innerHTML]="api.newsList[arr[0]]?.[0]?.published_date"
+                >
+                  <!-- {{ ed.published_date }} -->
+                </p>
+                <img
+                  class="link-icon mouse"
+                  src="../../../../../assets/news-img/link-icon.png"
+                  alt=""
+                  (click)="gotoLink(api.newsList[arr[0]]?.[0]?.link,$event)"
+                />
+              </div>
+            </div>
+            <div
+              class="esmCard-wraper"
+              [style]="
+                'display:grid;width: max-content;grid-template-rows:1fr 1fr;grid-template-columns: repeat(' +
+                getColumns(api.newsList[arr[0]]?.length - 1) +
+                ',auto);'
+              "
+            >
+              <ng-container *ngFor="let ed of api.newsList[arr[0]]; index as i">
+                <div
+                  #news_div
+                  class="curvy-image position-relative"
+                  *ngIf="i != 0"
+                  (click)="readMore('/news-details', ed.id)"
+                  (contextmenu)="
+                    this.api.genContext($event, news_div, {
+                      id: ed?.id,
+                      title: ed?.title,
+                      content: ed,
+                      corner:
+                        corner !== 'west_corner'
+                          ? corner
+                          : data.getCurrentWestTab() == 0
+                          ? corner
+                          : 'west_corner_iran',
+                      cat: cat,
+                      subCat: ed?.sub_cat,
+                      type: 'news'
+                    })
+                  "
+                >
+                  <img
+                    #imageElement
+                    [src]="ed.image"
+                    onerror='this.src="../../../../../assets/images/noimg.png"'
+                    alt=""
+                  />
+                  <p
+                    class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1 mouse"
+                  >
+                    {{ ed.title }}
+                  </p>
+                  <br />
+                  <p
+                    class="pasted-text f-12 manrope fw-700 p-text p-text--source text-white text-gradient1 mouse"
+                  >
+                    {{ ed.source }}
+                  </p>
+
+                  <p
+                    class="pasted-text f-12 manrope fw-700 p-text text-white text-gradient1 mouse"
+                  >
+                    {{ ed.published_date }}
+                  </p>
+                  <img
+                    class="link-icon mouse"
+                    src="../../../../../assets/news-img/link-icon.png"
+                    alt=""
+                    (click)="gotoLink(ed.link, $event)"
+                  />
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </section>
+    </ng-container>
+    <!-- Carousels Afghanistan -- Domestic -->
+    <ng-container *ngIf="country === 'afghanistan' && cat === 'internalEnvmt'">
+      <ng-container
+        *ngFor="
+          let newCat of [
+            'society_culture_welfare',
+            'governance_politics_law',
+            'infrastructure_env_domestic'
+          ];
+          let i = index
+        "
+      >
+        <div
+          class="section-head-nav d-flex justify-content-between align-items-center pd-32 w-100 z-index2 mt-3"
+        >
+          <div class="sn-left d-flex cg-16 change-direction">
+            <div class="m2m d-flex align-center justify-content-center hl-head">
+              <p class="me-2 f-20 fw-700 text-center">
+                {{ api.getCatName(newCat) }}
+              </p>
+            </div>
+          </div>
+          <div
+            class="sn-right d-flex flex-reverse-row justify-content-between cg-24"
+          >
+            <div class="sn-bottom d-flex align-items-center cg-24">
+              <!-- fILTER INLAND ACTIVITIES  -->
+              <div class="form-check">
+                <app-news-filter
+                  [context]="newCat"
+                  [date]="Dates[newCat]"
+                  (onChange)="changeFilter($event)"
+                ></app-news-filter>
+              </div>
+              <div class="position-relative">
+                <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+                <p-calendar
+                  class="position-absolute right-0 top-0 z-index3"
+                  [(ngModel)]="multiselect_date[newCat]"
+                  (ngModelChange)="fetch_methods(newCat)"
+                  [showButtonBar]="true"
+                  (onClearClick)="
+                    multiselect_date[newCat] = '';
+                    Dates[newCat] = 'latest';
+                    fetch_methods(newCat)
+                  "
+                  [showIcon]="true"
+                  [showTime]="false"
+                >
+                </p-calendar>
+              </div>
+            </div>
+            <div class="sn-top">
+              <div
+                class="search d-flex align-items-center w-fit-content ms-auto"
+              >
+                <input
+                  class="header-search f-16 no-bg-color"
+                  type="text"
+                  placeholder="Search"
+                  [(ngModel)]="keywords[newCat]"
+                  (keyup.enter)="fetch_methods(newCat)"
+                  (keyup)="!keywords[newCat] ? fetch_methods(newCat) : ''"
+                />
+                <img
+                  class="hs-image mouse"
+                  src="../../../../../assets/news-img/search-icon.svg"
+                  alt=""
+                  (click)="fetch_methods(newCat)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section
+          class="editorial-hub redish-gradient position-relative z-index2 pd-layout2 hide_left"
+          [class.activeSlide]="sliderCount['editorialSliderCount' + i]"
+        >
+          <div
+            class="custom-skeleton"
+            *ngIf="!api.newsList[newCat]?.length && !loader_flag.editorial"
+          >
+            <div
+              class="col-12 d-flex gap-3 p-0 placeholder-glow overflow-hidden"
+              style="height: 466px"
+            >
+              <div
+                class="flex-shrink-0 placeholder p-0 placeholder-secondary h-full rounded-4"
+                style="width: 45% !important"
+              ></div>
+              <div
+                class="h-full gap-3 esmCard-wraper"
+                style="
+                  display: grid;
+                  width: max-content;
+                  grid-template-rows: 1fr 1fr;
+                  grid-template-columns: repeat(5, auto);
+                "
+              >
+                <div
+                  class="h-full placeholder placeholder-secondary rounded-4 curvy-image"
+                  *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="d-flex align-items-center justify-content-center"
+            style="height: 466px"
+            *ngIf="!api.newsList[newCat]?.length && loader_flag.editorial"
+          >
+            <p class="text-center p-3 w-full bg-light rounded-3 w-max">
+              No Data Found
+            </p>
+          </div>
+          <ng-container *ngIf="api.newsList[newCat]?.length">
+            <img
+              *ngIf="api.newsList[newCat]?.length > 5"
+              class="next-arrow mouse"
+              src="../../../../../assets/news-img/next-arrow.png"
+              alt=""
+              (click)="scrollX(editorial_scroller, 500, 1, newCat, i)"
+            />
+            <img
+              *ngIf="
+                api.newsList[newCat]?.length > 5 &&
+                sliderCount['editorialSliderCount' + i]
+              "
+              class="previous-arrow mouse"
+              src="../../../../../assets/news-img/prev-arrow.png"
+              alt=""
+              (click)="scrollX(editorial_scroller, -500, 0, newCat, i)"
+            />
+
+            <div
+              class="eCard-wraper d-flex cg-16 overflow-x-auto"
+              id="editorial_scroller"
+              #editorial_scroller
+              (scroll)="
+                api.newsList[newCat]?.length > 5 &&
+                  scrollEdges(editorial_scroller, 'horizontalNews')
+              "
+            >
+              <div class="big-smCard w-45">
+                <div
+                  class="curvy-image position-relative"
+                  (click)="readMore('/news-details',api.newsList[newCat]?.[0]?.id)"
+                >
+                  <img
+                    [src]="api.newsList[newCat]?.[0]?.image"
+                    onerror='this.src="../../../../../assets/images/noimg.png"'
+                    alt=""
+                  />
+                  <p
+                    class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1"
+                    [innerHTML]="api.newsList[newCat]?.[0]?.title"
+                  ></p>
+
+                  <p
+                    class="pasted-text f-12 manrope fw-700 p-text p-text--source text-white text-gradient1 mouse"
+                    [innerHTML]="api.newsList[newCat]?.[0]?.source"
+                  >
+                    <!-- {{ ed.source }} -->
+                  </p>
+
+                  <p
+                    class="pasted-text f-12 manrope fw-700 p-text text-white text-gradient1 mouse"
+                    [innerHTML]="api.newsList[newCat]?.[0]?.published_date"
+                  >
+                    <!-- {{ ed.published_date }} -->
+                  </p>
+                  <img
+                    class="link-icon mouse"
+                    src="../../../../../assets/news-img/link-icon.png"
+                    alt=""
+                    (click)="gotoLink(api.newsList[newCat]?.[0]?.link,$event)"
+                  />
+                </div>
+              </div>
+              <div
+                class="esmCard-wraper"
+                [style]="
+                  'display:grid;width: max-content;grid-template-rows:1fr 1fr;grid-template-columns: repeat(' +
+                  getColumns(api.newsList[newCat]?.length - 1) +
+                  ',auto);'
+                "
+              >
+                <ng-container
+                  *ngFor="let ed of api.newsList[newCat]; index as i"
+                >
+                  <div
+                    #news_div
+                    class="curvy-image position-relative"
+                    *ngIf="i != 0"
+                    (click)="readMore('/news-details', ed.id)"
+                    (contextmenu)="
+                      this.api.genContext($event, news_div, {
+                        id: ed?.id,
+                        title: ed?.title,
+                        content: ed,
+                        corner:
+                          corner !== 'west_corner'
+                            ? corner
+                            : data.getCurrentWestTab() == 0
+                            ? corner
+                            : 'west_corner_iran',
+                        cat: cat,
+                        subCat: ed?.sub_cat,
+                        type: 'news'
+                      })
+                    "
+                  >
+                    <img
+                      #imageElement
+                      [src]="ed.image"
+                      onerror='this.src="../../../../../assets/images/noimg.png"'
+                      alt=""
+                    />
+                    <p
+                      class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1 mouse"
+                    >
+                      {{ ed.title }}
+                    </p>
+                    <br />
+                    <p
+                      class="pasted-text f-12 manrope fw-700 p-text p-text--source text-white text-gradient1 mouse"
+                    >
+                      {{ ed.source }}
+                    </p>
+
+                    <p
+                      class="pasted-text f-12 manrope fw-700 p-text text-white text-gradient1 mouse"
+                    >
+                      {{ ed.published_date }}
+                    </p>
+                    <img
+                      class="link-icon mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      (click)="gotoLink(ed.link, $event)"
+                    />
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </section>
+      </ng-container>
+    </ng-container>
+    <!-- Carousel Afghanistan -- Domestic end -->
+
+    <!-- Carousels Afghanistan--- Diplo & Eco  -->
+    <ng-container *ngIf="country === 'afghanistan' && cat === 'diplomacy'">
+      <ng-container
+        *ngFor="
+          let newCat of [
+            'bilateral_multilateral',
+            'economic_diaspora_external'
+          ];
+          let i = index
+        "
+      >
+        <div
+          class="section-head-nav d-flex justify-content-between align-items-center pd-32 w-100 z-index2 mt-3"
+        >
+          <div class="sn-left d-flex cg-16 change-direction">
+            <div class="m2m d-flex align-center justify-content-center hl-head">
+              <p class="me-2 f-20 fw-700 text-center">
+                {{ api.getCatName(newCat) }}
+              </p>
+            </div>
+          </div>
+          <div
+            class="sn-right d-flex flex-reverse-row justify-content-between cg-24"
+          >
+            <div class="sn-bottom d-flex align-items-center cg-24">
+              <!-- fILTER INLAND ACTIVITIES  -->
+              <div class="form-check">
+                <app-news-filter
+                  [context]="newCat"
+                  [date]="Dates[newCat]"
+                  (onChange)="changeFilter($event)"
+                ></app-news-filter>
+              </div>
+              <div class="position-relative">
+                <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+                <p-calendar
+                  class="position-absolute right-0 top-0 z-index3"
+                  [(ngModel)]="multiselect_date[newCat]"
+                  (ngModelChange)="fetch_methods(newCat)"
+                  [showButtonBar]="true"
+                  (onClearClick)="
+                    multiselect_date[newCat] = '';
+                    Dates[newCat] = 'latest';
+                    fetch_methods(newCat)
+                  "
+                  [showIcon]="true"
+                  [showTime]="false"
+                >
+                </p-calendar>
+              </div>
+            </div>
+            <div class="sn-top">
+              <div
+                class="search d-flex align-items-center w-fit-content ms-auto"
+              >
+                <input
+                  class="header-search f-16 no-bg-color"
+                  type="text"
+                  placeholder="Search"
+                  [(ngModel)]="keywords[newCat]"
+                  (keyup.enter)="fetch_methods(newCat)"
+                  (keyup)="!keywords[newCat] ? fetch_methods(newCat) : ''"
+                />
+                <img
+                  class="hs-image mouse"
+                  src="../../../../../assets/news-img/search-icon.svg"
+                  alt=""
+                  (click)="fetch_methods(newCat)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section
+          class="editorial-hub redish-gradient position-relative z-index2 pd-layout2 hide_left"
+          [class.activeSlide]="sliderCount['editorialSliderCount' + i]"
+        >
+          <div
+            class="custom-skeleton"
+            *ngIf="!api.newsList[newCat]?.length && !loader_flag.editorial"
+          >
+            <div
+              class="col-12 d-flex gap-3 p-0 placeholder-glow overflow-hidden"
+              style="height: 466px"
+            >
+              <div
+                class="flex-shrink-0 placeholder p-0 placeholder-secondary h-full rounded-4"
+                style="width: 45% !important"
+              ></div>
+              <div
+                class="h-full gap-3 esmCard-wraper"
+                style="
+                  display: grid;
+                  width: max-content;
+                  grid-template-rows: 1fr 1fr;
+                  grid-template-columns: repeat(5, auto);
+                "
+              >
+                <div
+                  class="h-full placeholder placeholder-secondary rounded-4 curvy-image"
+                  *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="d-flex align-items-center justify-content-center"
+            style="height: 466px"
+            *ngIf="!api.newsList[newCat]?.length && loader_flag.editorial"
+          >
+            <p class="text-center p-3 w-full bg-light rounded-3 w-max">
+              No Data Found
+            </p>
+          </div>
+          <ng-container *ngIf="api.newsList[newCat]?.length">
+            <img
+              *ngIf="api.newsList[newCat]?.length > 5"
+              class="next-arrow mouse"
+              src="../../../../../assets/news-img/next-arrow.png"
+              alt=""
+              (click)="scrollX(editorial_scroller, 500, 1, newCat, i)"
+            />
+            <img
+              *ngIf="
+                api.newsList[newCat]?.length > 5 &&
+                sliderCount['editorialSliderCount' + i]
+              "
+              class="previous-arrow mouse"
+              src="../../../../../assets/news-img/prev-arrow.png"
+              alt=""
+              (click)="scrollX(editorial_scroller, -500, 0, newCat, i)"
+            />
+
+            <div
+              class="eCard-wraper d-flex cg-16 overflow-x-auto"
+              id="editorial_scroller"
+              #editorial_scroller
+              (scroll)="
+                api.newsList[newCat]?.length > 5 &&
+                  scrollEdges(editorial_scroller, 'horizontalNews')
+              "
+            >
+              <div class="big-smCard w-45">
+                <div
+                  class="curvy-image position-relative"
+                  (click)="readMore('/news-details',api.newsList[newCat]?.[0]?.id)"
+                >
+                  <img
+                    [src]="api.newsList[newCat]?.[0]?.image"
+                    onerror='this.src="../../../../../assets/images/noimg.png"'
+                    alt=""
+                  />
+                  <p
+                    class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1"
+                    [innerHTML]="api.newsList[newCat]?.[0]?.title"
+                  ></p>
+
+                  <p
+                    class="pasted-text f-12 manrope fw-700 p-text p-text--source text-white text-gradient1 mouse"
+                    [innerHTML]="api.newsList[newCat]?.[0]?.source"
+                  >
+                    <!-- {{ ed.source }} -->
+                  </p>
+
+                  <p
+                    class="pasted-text f-12 manrope fw-700 p-text text-white text-gradient1 mouse"
+                    [innerHTML]="api.newsList[newCat]?.[0]?.published_date"
+                  >
+                    <!-- {{ ed.published_date }} -->
+                  </p>
+                  <img
+                    class="link-icon mouse"
+                    src="../../../../../assets/news-img/link-icon.png"
+                    alt=""
+                    (click)="gotoLink(api.newsList[newCat]?.[0]?.link,$event)"
+                  />
+                </div>
+              </div>
+              <div
+                class="esmCard-wraper"
+                [style]="
+                  'display:grid;width: max-content;grid-template-rows:1fr 1fr;grid-template-columns: repeat(' +
+                  getColumns(api.newsList[newCat]?.length - 1) +
+                  ',auto);'
+                "
+              >
+                <ng-container
+                  *ngFor="let ed of api.newsList[newCat]; index as i"
+                >
+                  <div
+                    #news_div
+                    class="curvy-image position-relative"
+                    *ngIf="i != 0"
+                    (click)="readMore('/news-details', ed.id)"
+                    (contextmenu)="
+                      this.api.genContext($event, news_div, {
+                        id: ed?.id,
+                        title: ed?.title,
+                        content: ed,
+                        corner:
+                          corner !== 'west_corner'
+                            ? corner
+                            : data.getCurrentWestTab() == 0
+                            ? corner
+                            : 'west_corner_iran',
+                        cat: cat,
+                        subCat: ed?.sub_cat,
+                        type: 'news'
+                      })
+                    "
+                  >
+                    <img
+                      #imageElement
+                      [src]="ed.image"
+                      onerror='this.src="../../../../../assets/images/noimg.png"'
+                      alt=""
+                    />
+                    <p
+                      class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1 mouse"
+                    >
+                      {{ ed.title }}
+                    </p>
+                    <br />
+                    <p
+                      class="pasted-text f-12 manrope fw-700 p-text p-text--source text-white text-gradient1 mouse"
+                    >
+                      {{ ed.source }}
+                    </p>
+
+                    <p
+                      class="pasted-text f-12 manrope fw-700 p-text text-white text-gradient1 mouse"
+                    >
+                      {{ ed.published_date }}
+                    </p>
+                    <img
+                      class="link-icon mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      (click)="gotoLink(ed.link, $event)"
+                    />
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </section>
+      </ng-container>
+    </ng-container>
+    <!-- Carousels Afghanistan--- Diplo & Eco end  -->
+
+    <!-- sections head -->
+    <div
+      class="section-head-nav d-flex justify-content-between align-items-center pd-32 w-100 z-index2 mt-3"
+      *ngIf="arr[1] && this.arr[1] != 'inCorner_temp'"
+    >
+      <div class="sn-left d-flex cg-16 change-direction">
+        <div class="m2m d-flex align-center justify-content-center hl-head">
+          <p class="me-2 f-20 fw-700 text-center">
+            {{ api.getCatName(arr[1]) }}
+          </p>
+        </div>
+        <!-- <div
+          type="button"
+          class="z-index-upper"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          (click)="
+            map_context = arr[1];
+            loadmap.inland ? this.getMap(null, arr[1]) : '';
+            loadmap.inland = false
+          "
+        >
+          <img class="" src="/assets/news-img/view-map-icon.png" alt="" />
+        </div> -->
+      </div>
+      <div
+        class="sn-right d-flex flex-reverse-row justify-content-between cg-24"
+      >
+        <div class="sn-bottom d-flex align-items-center cg-24">
+          <!-- fILTER INLAND ACTIVITIES  -->
+          <div class="form-check">
+            <app-news-filter
+              [context]="arr[1]"
+              [date]="Dates[arr[1]]"
+              (onChange)="changeFilter($event)"
+            ></app-news-filter>
+          </div>
+          <div class="position-relative">
+            <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+            <p-calendar
+              class="position-absolute right-0 top-0 z-index3"
+              [(ngModel)]="multiselect_date[arr[1]]"
+              (ngModelChange)="fetch_sub_news(arr[1])"
+              [showButtonBar]="true"
+              (onClearClick)="
+                multiselect_date[arr[1]] = '';
+                Dates[arr[1]] = 'latest';
+                fetch_sub_news(arr[1])
+              "
+              [showIcon]="true"
+              [showTime]="false"
+            >
+            </p-calendar>
+          </div>
+        </div>
+        <div class="sn-top">
+          <div class="search d-flex align-items-center w-fit-content ms-auto">
+            <input
+              class="header-search f-16 no-bg-color"
+              type="text"
+              placeholder="Search"
+              [(ngModel)]="keywords[arr[1]]"
+              (keyup.enter)="fetch_sub_news(arr[1])"
+              (keyup)="!keywords[arr[1]] ? fetch_sub_news(arr[1]) : ''"
+            />
+            <img
+              class="hs-image mouse"
+              src="../../../../../assets/news-img/search-icon.svg"
+              alt=""
+              (click)="fetch_sub_news(arr[1])"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ex & trgs(AI), conf & visits, PMF Corner, IAF, IN, ICG -->
+    <section
+      class="inland-activities d-flex inland-gradient pd-32 position-relative z-index2"
+      *ngIf="arr[1] && this.arr[1] != 'inCorner_temp'"
+    >
+      <div class="m2m-card pd-10 d-flex flex-column justify-content-between">
+        <div class="ia-top">
+          <div class="mcard-head d-flex w-100 justify-content-between">
+            <!-- <a class="f-24 spacegrotesk fw-700 text-black text-center" href=""
+              >Ex & trgs (IA)</a
+            > -->
+            <!-- <div
+                            class="search d-flex align-items-center justify-content-between w-35 w-fit-content ms-auto">
+                            <input class="header-search w-80 f-16 no-bg-color" type="text" placeholder="Search">
+                            <img class="hs-image w-20" src="/assets/news-img/search-icon.svg" alt="">
+                        </div> -->
+          </div>
+        </div>
+        <p
+          *ngIf="!api.newsList[arr[1]]?.length && !loading[arr[1]]"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+        >
+          No Data Found
+        </p>
+        <div
+          class="ia-body ia-body--temp mt-auto cg-16 rg-16 w-100 scrollbar-news"
+          (scroll)="checkScrolled($event, arr[1], arr[1])"
+        >
+          <ng-container
+            *ngIf="!api.newsList[arr[1]]?.length && loading[arr[1]]"
+          >
+            <div
+              class="placeholder-glow"
+              *ngFor="let a of [1, 1, 1, 1, 1, 1, 1]"
+            >
+              <div
+                class="d-flex gap-3 px-2 py-3 placeholder rounded-3 image-card-placeholder"
+                style="background-color: #b1b1b1"
+              >
+                <div class="w-full d-flex flex-column justify-content-between">
+                  <div class="d-flex justify-content-between">
+                    <div class="placeholder col-3 rounded bg-secondary"></div>
+                    <div class="placeholder col-3 rounded bg-secondary"></div>
+                  </div>
+                  <div class="w-full d-flex flex-column">
+                    <div
+                      class="placeholder bg-secondary rounded p-0"
+                      style="height: 1.5rem"
+                    ></div>
+                    <div
+                      class="placeholder bg-secondary mt-2 rounded p-0"
+                      style="min-height: 0.6rem"
+                    ></div>
+                    <div
+                      class="placeholder bg-secondary mt-1 rounded p-0"
+                      style="min-height: 0.6rem"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let news of api.newsList[arr[1]]">
+            <app-mm-card
+              [cat]="cat"
+              [news]="news"
+              [corner]="corner"
+              type="image"
+              [textGradientVariable]="true"
+            ></app-mm-card>
+          </ng-container>
+          <app-spinner
+            hideText="true"
+            *ngIf="lazy_loader[arr[1]]"
+          ></app-spinner>
+        </div>
+      </div>
+    </section>
+    <!-- Section 3 pakistan corner, Indo-china Standoff, R&D  -->
+
+    <!-- Other News -->
+    <section class="section-last d-flex cg-16 pd-32 position-relative z-index2">
+      <div class="articles-left d-flex flex-column rg-10">
+        <div class="article-head">
+          <div class="ia-top">
+            <div class="mcard-head d-flex w-100 justify-content-between">
+              <div
+                class="section-head-nav d-flex flex-column rg-10 justify-content-between align-items-center w-100 position-relative"
+              >
+                <div class="sn-left d-flex justify-content-between cg-16 w-100">
+                  <div
+                    class="m2m d-flex align-center justify-content-center hl-head"
+                  >
+                    <p class="me-2 f-20 fw-700 text-center">Articles</p>
+                  </div>
+                </div>
+
+                <!-- Search Row -->
+
+                <div
+                  class="d-flex flex-reverse-row justify-content-end cg-24 w-100"
+                >
+                  <!-- Search bar ####################  -->
+                  <!-- <div class="sn-top w-25">
+                    
+                  </div> -->
+
+                  <div
+                    class="search d-flex align-items-center w-fit-content w-100"
+                  >
+                    <input
+                      class="header-search f-16 no-bg-color w-80"
+                      type="text"
+                      placeholder="Search"
+                      [(ngModel)]="keywords_['editorial']"
+                      (keyup.enter)="getEditorials()"
+                      (keyup)="!keywords_['editorial'] ? getEditorials() : ''"
+                    />
+                    <img
+                      class="hs-image mouse"
+                      src="../../../../../assets/news-img/search-icon.svg"
+                      alt=""
+                      (click)="getEditorials()"
+                    />
+                  </div>
+
+                  <!-- Filters ################# -->
+                  <div
+                    class="sn-bottom d-flex justify-content-end align-items-center cg-24 width-100"
+                  >
+                    <div class="form-check">
+                      <app-news-filter
+                        context="editorial"
+                        [date]="Dates_['editorial']"
+                        (onChange)="changeFilter_($event)"
+                      ></app-news-filter>
+                    </div>
+                    <div class="position-relative">
+                      <img
+                        src="../../../../../assets/news-img/calendar.svg"
+                        alt=""
+                      />
+                      <p-calendar
+                        class="position-absolute right-0 top-0 z-index3"
+                        [(ngModel)]="multiselect_date_['editorial']"
+                        (ngModelChange)="filter_report_date('editorial')"
+                        [showButtonBar]="true"
+                        (onClearClick)="
+                          multiselect_date_['editorial'] = '';
+                          Dates_['editorial'] = 'latest';
+                          getEditorials()
+                        "
+                        [showIcon]="true"
+                        [showTime]="false"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article-body d-flex cg-12">
+          <div class="al-right w-100">
+            <div class="card1 story-card w-100 no-border">
+              <!-- custom loader -->
+              <!-- <div class="custom-skeleton" aria-hidden="true" >
+                            <div class="placeholder-glow mt-2" *ngFor="let l of [1,1,1,1,1,1,1,1,1,1]">
+                                <h4 class="bg-secondary placeholder col-12 mb-0"></h4>
+                                <p class="d-flex justify-content-between col-12 p-0 mt-2">
+                                    <span class="placeholder col-5 p-0" style="min-height:auto;height:8px;"></span>
+                                    <span class="placeholder col-2 p-0" style="min-height:auto;height:8px;"></span>
+                                </p>
+                            </div>
+                        </div> -->
+              <!-- custom loader -->
+
+              <div
+                class="shashka-bottom mt-2 scrollbar-news overflow-y-auto"
+                style="height: 31rem"
+              >
+                <div
+                  class="custom-skeleton"
+                  aria-hidden="true"
+                  *ngIf="!editorialList.length && !loader_flag.editorial"
+                >
+                  <div
+                    class="placeholder-glow mt-2"
+                    *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+                  >
+                    <h4 class="bg-secondary placeholder col-12 mb-0"></h4>
+                    <p class="d-flex justify-content-between col-12 p-0 mt-2">
+                      <span
+                        class="placeholder col-5 p-0"
+                        style="min-height: auto; height: 8px"
+                      ></span>
+                      <span
+                        class="placeholder col-2 p-0"
+                        style="min-height: auto; height: 8px"
+                      ></span>
+                    </p>
+                  </div>
+                </div>
+                <ul class="shashka-list pe-1 ps-0">
+                  <div
+                    class="overflow-hidden"
+                    *ngFor="let news of editorialList; index as i"
+                  >
+                    <li style="list-style-type: none">
+                      <div class="shashka-mid d-flex flex-column rg-8 mt-3">
+                        <div
+                          class="curvy-image position-relative overflow-hidden rounded-4 news-custom-div"
+                          (click)="
+                            navigate('/editorial-details', corner, news.id)
+                          "
+                        >
+                          <img
+                            [src]="news.image"
+                            onerror='this.src="../../../../../assets/images/noimg.png"'
+                            alt=""
+                          />
+                          <p
+                            class="pasted-text f-12 manrope truncate-text2 fw-700 text-white text-gradient1 mouse"
+                            [innerHTML]="news.title"
+                          ></p>
+                          <img
+                            class="link-icon mouse"
+                            src="../../../../../assets/news-img/link-icon.png"
+                            alt=""
+                            (click)="gotoLink(news.link, $event)"
+                          />
+                          <p class="shashka-d-time f-12 manrope fw-600">
+                            {{ news.published_date }}
+                          </p>
+                          <p class="shashka-news-source f-12 manrope fw-600">
+                            Source: {{ news.source }}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                    <!-- <li class="pe-1 ms-4" *ngIf="!news.image">
+                                            <p class="manrope f-17 fw-700 text-black text-truncate w-full mouse"
+                                                (click)="navigate('/editorial-details',corner,news.id)" [innerHTML]="news.title"></p>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="f-12 manrope fw-500 text-black text-opacity"> {{news.published_date}}</p>
+                                                <p class="f-12 manrope fw-500 text-black text-opacity">{{news.source}}</p>
+                                            </div>
+                                        </li> -->
+                  </div>
+                </ul>
+                <p
+                  *ngIf="!editorialList.length && loader_flag.editorial"
+                  id="army_notfound"
+                  class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+                >
+                  No Data Found
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Removing other news temporarily just for afghanistan and iran -->
+      <div
+        *ngIf="country !== 'afghanistan' && country !== 'iran'"
+        class="pakistan-corner other-news ia-right1 d-flex flex-column rg-16"
+      >
+        <div class="w-100">
+          <div class="ia-top">
+            <div class="mcard-head d-flex w-100 justify-content-between">
+              <div
+                class="section-head-nav d-flex flex-column rg-10 justify-content-between align-items-center w-100 position-relative"
+              >
+                <div class="sn-left d-flex justify-content-between cg-16 w-100">
+                  <div
+                    class="w-100 m2m d-flex align-center justify-content-center hl-head"
+                  >
+                    <p class="me-2 f-20 fw-700 text-center">Other News</p>
+                  </div>
+                </div>
+                <div
+                  class="d-flex flex-reverse-row justify-content-end cg-24 w-100"
+                >
+                  <div
+                    class="search d-flex align-items-center w-fit-content w-100"
+                  >
+                    <input
+                      class="header-search f-16 no-bg-color w-100"
+                      type="text"
+                      placeholder="Search"
+                      [(ngModel)]="keywords['other_' + cat]"
+                      (keyup.enter)="fetch_sub_news('other_' + cat)"
+                      (keyup)="
+                        !keywords['other_' + cat]
+                          ? fetch_sub_news('other_' + cat)
+                          : ''
+                      "
+                    />
+                    <img
+                      class="hs-image mouse"
+                      src="../../../../../assets/news-img/search-icon.svg"
+                      alt=""
+                      (click)="fetch_sub_news('other_' + cat)"
+                    />
+                  </div>
+                  <div
+                    class="sn-bottom d-flex justify-content-end align-items-center cg-24 width-100"
+                  >
+                    <div class="form-check w-80 m-0 p-0">
+                      <div class="form-check p-0">
+                        <app-news-filter
+                          [context]="'other_' + cat"
+                          [date]="Dates['other_' + cat]"
+                          (onChange)="changeFilter($event)"
+                        ></app-news-filter>
+                      </div>
+                    </div>
+                    <div class="position-relative">
+                      <img
+                        src="../../../../../assets/news-img/calendar.svg"
+                        alt=""
+                      />
+                      <p-calendar
+                        class="position-absolute right-0 top-0 z-index3"
+                        [(ngModel)]="multiselect_date['other_' + cat]"
+                        (ngModelChange)="fetch_sub_news('other_' + cat)"
+                        [showButtonBar]="true"
+                        (onClearClick)="
+                          multiselect_date['other_' + cat] = '';
+                          Dates['other_' + cat] = 'latest';
+                          fetch_sub_news('other_' + cat)
+                        "
+                        [showIcon]="true"
+                        [showTime]="false"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pc-body gradient-pod3-bold mt-3">
+            <div class="m2m-card pb-3">
+              <div
+                class="pd-10 layout-changer rg-16 overflow-y-auto scrollbar-news"
+                style="height: 30.1rem"
+                (scroll)="checkScrolled($event, 'other_' + cat, 'other_' + cat)"
+              >
+                <ng-container
+                  *ngIf="!api.newsList['other_'+cat]?.length 
+                                    && loading?.['other_'+cat]"
+                >
+                  <div
+                    class="placeholder-glow mb-2"
+                    *ngFor="let a of [1, 1, 1, 1, 1, 1, 1]"
+                  >
+                    <div
+                      class="d-flex gap-3 px-2 py-3 placeholder rounded-3"
+                      style="background-color: #b1b1b1"
+                    >
+                      <div
+                        class="col-3 placeholder bg-secondary p-0 rounded-3"
+                        style="height: 5rem"
+                      ></div>
+                      <div class="w-full d-flex flex-column">
+                        <div
+                          class="placeholder bg-secondary rounded p-0"
+                          style="height: 1.5rem"
+                        ></div>
+                        <div
+                          class="placeholder bg-secondary mt-2 rounded p-0"
+                          style="min-height: 0.6rem"
+                        ></div>
+                        <div
+                          class="placeholder bg-secondary mt-1 rounded p-0"
+                          style="min-height: 0.6rem"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <p
+                  *ngIf="!api.newsList['other_'+cat]?.length 
+                                    && !loading?.['other_'+cat]"
+                  class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+                >
+                  No Data Found
+                </p>
+                <ng-container *ngFor="let news of api.newsList['other_' + cat]">
+                  <app-mm-card
+                    [cat]="cat"
+                    [news]="news"
+                    [corner]="corner"
+                    buttonStyle="round"
+                  ></app-mm-card>
+                </ng-container>
+                <app-spinner
+                  hideText="true"
+                  *ngIf="lazy_loader['other_' + cat]"
+                ></app-spinner>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Last section Articles, X-up corner(Tweets and trending now)  -->
+    <!-- Removing Xup corner for afghanistan and iran and east_corner -->
+
+    <section
+      class="x-up-section section-last w-100 pb-3"
+      *ngIf="
+        country !== 'afghanistan' &&
+        country !== 'iran' &&
+        corner !== 'east_corner'
+      "
+    >
+      <div
+        class="x-up-right d-flex flex-column justify-content-between pd-32 rg-10 w-100"
+      >
+        <div class="x-up-head">
+          <div class="ia-top">
+            <div class="mcard-head d-flex w-100 justify-content-between">
+              <div
+                class="section-head-nav d-flex flex-column rg-10 justify-content-between align-items-center w-100 position-relative"
+              >
+                <div
+                  class="d-flex flex-reverse-row justify-content-end cg-24 w-100"
+                >
+                  <div
+                    class="sn-left d-flex justify-content-between cg-16 w-100"
+                  >
+                    <div
+                      class="m2m d-flex align-center justify-content-center hl-head"
+                    >
+                      <p class="me-2 f-20 fw-700 text-center">X-UP Corner</p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="sn-bottom d-flex justify-content-end align-items-center cg-24"
+                  >
+                    <div class="form-check p-0">
+                      <app-news-filter
+                        context="tweet"
+                        [date]="Dates_['tweet']"
+                        (onChange)="changeFilter_($event)"
+                      ></app-news-filter>
+                    </div>
+                    <div class="position-relative">
+                      <img
+                        src="../../../../../assets/news-img/calendar.svg"
+                        alt=""
+                      />
+                      <p-calendar
+                        class="position-absolute right-0 top-0 z-index3"
+                        [(ngModel)]="multiselect_date_['tweet']"
+                        (ngModelChange)="filter_report_date('tweet')"
+                        [showButtonBar]="true"
+                        (onClearClick)="
+                          multiselect_date_['tweet'] = '';
+                          Dates_['tweet'] = 'latest';
+                          fetch_twitter_data()
+                        "
+                        [showIcon]="true"
+                        [showTime]="false"
+                      >
+                      </p-calendar>
+                    </div>
+                  </div>
+
+                  <div class="sn-top">
+                    <div
+                      class="search d-flex align-items-center w-fit-content w-100"
+                    >
+                      <input
+                        class="header-search f-16 no-bg-color w-100"
+                        type="text"
+                        placeholder="Search"
+                        [(ngModel)]="keywords_['tweet']"
+                        (keyup.enter)="fetch_twitter_data()"
+                        (keyup)="
+                          !keywords_['tweet'] ? fetch_twitter_data() : ''
+                        "
+                      />
+                      <img
+                        class="hs-image mouse"
+                        src="../../../../../assets/news-img/search-icon.svg"
+                        alt=""
+                        (click)="fetch_twitter_data()"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="x-up-body d-flex cg-12 bluish-gradient pd-8 rg-10">
+          <div class="xc-left w-50">
+            <div class="xc-head d-flex justify-content-center">
+              <a
+                class="text-black text-center f-24 sapceGrotesk fw-700 text-capitalize"
+                >Tweets
+              </a>
+            </div>
+            <div
+              class="xc-body blury-bg mt-3 pd-8 d-flex flex-column height-28"
+            >
+              <div class="xc-tabs h-100 overflow-hidden">
+                <div class="tab-content h-100" id="pills-tabContent">
+                  <ng-container>
+                    <div
+                      [classList]="'h-100 overflow-y-auto scrollbar-news '"
+                      (scroll)="
+                        checkScrolled_($event, 'tweet', 'tweetsCombined')
+                      "
+                    >
+                      <div class="card1 story-card w-100 no-border pb-4">
+                        <div
+                          class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+                        >
+                          <ng-container
+                            *ngIf="
+                              !api.tweetList['tweetsCombined']?.length &&
+                              !loader_flag.tweet
+                            "
+                          >
+                            <div
+                              class="placeholder-glow mb-1"
+                              *ngFor="let l of [1, 1, 1, 1]"
+                            >
+                              <div
+                                class="placeholder col-12 bg-light rounded-3 p-2"
+                              >
+                                <div class="d-flex align-items-center gap-3">
+                                  <div
+                                    class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                                    style="width: 41px; height: 41px"
+                                  ></div>
+                                  <div class="d-flex flex-column w-full">
+                                    <div
+                                      class="placeholder col-5 bg-secondary p-0 m-0"
+                                      style="min-height: 10px"
+                                    ></div>
+                                    <div
+                                      class="placeholder col-4 bg-secondary p-0 mt-1"
+                                      style="min-height: 5px"
+                                    ></div>
+                                  </div>
+                                </div>
+                                <div class="mt-3 d-flex flex-column gap-2">
+                                  <div
+                                    class="placeholder col-12 p-0 bg-secondary"
+                                    style="min-height: 8px"
+                                  ></div>
+                                  <div
+                                    class="placeholder col-11 py-0 bg-secondary"
+                                    style="min-height: 8px"
+                                  ></div>
+                                  <div
+                                    class="placeholder col-12 py-0 bg-secondary"
+                                    style="min-height: 8px"
+                                  ></div>
+                                  <div
+                                    class="d-flex justify-content-between mt-1"
+                                  >
+                                    <div
+                                      class="placeholder col-6 p-0 bg-secondary"
+                                      style="min-height: 9px"
+                                    ></div>
+                                    <div
+                                      class="placeholder col-1 p-0 bg-secondary"
+                                      style="min-height: 9px"
+                                    ></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                          <p
+                            *ngIf="
+                              !api.tweetList['tweetsCombined']?.length &&
+                              loader_flag.tweet
+                            "
+                            class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+                          >
+                            No Data Found
+                          </p>
+                          <ng-container
+                            *ngFor="
+                              let tweet of api.tweetList['tweetsCombined']
+                            "
+                          >
+                            <app-twitter-card
+                              [cat]="cat"
+                              subCat="tweetsCombined"
+                              [tweet]="tweet"
+                              [corner]="corner"
+                            ></app-twitter-card>
+                          </ng-container>
+                          <app-spinner
+                            hideText="true"
+                            *ngIf="lazy_loader_['tweetsCombined']"
+                          ></app-spinner>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="xc-right w-50">
+            <div class="xc-head d-flex justify-content-center">
+              <a
+                class="text-black text-center f-24 sapceGrotesk fw-700 text-capitalize"
+                >Trending Now
+              </a>
+            </div>
+            <div class="xc-body blury-bg mt-3 overflow-y-auto scrollbar-news">
+              <div class="xc-nav pd-8">
+                <ul
+                  class="nav nav-pills mb-3 cg-8 flex-nowrap justify-content-center"
+                  id="pills-tab"
+                  role="tablist"
+                >
+                  <li class="nav-item column-3 w-max" role="presentation">
+                    <img src="/assets/news-img/twitter-icon.png" />
+                  </li>
+                </ul>
+              </div>
+              <div class="xc-tabs">
+                <div class="tab-content" id="pills-tabContent">
+                  <div
+                    class="tab-pane fade show active"
+                    id="pills-home"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="left-mid-top w-100 d-flex justify-content-between twitterTrends"
+                    >
+                      <p class="f-14 fw-700 text-black">Top Trends</p>
+                      <p class="f-14 fw-700 text-black">Top Words</p>
+                    </div>
+                    <div class="w-full d-flex scrollbar-news overflow-y-auto">
+                      <ul class="hashtags-list w-60">
+                        <li
+                          *ngFor="let hash of trendingHashtagList; index as i"
+                          style="height: 45px"
+                        >
+                          <div
+                            class="list-left d-flex justify-content-between align-items-center"
+                          >
+                            <div
+                              class="d-flex flex-column rg-5 overflow-hidden"
+                            >
+                              <p class="f-10 fw-500 text-black trending-text">
+                                {{ i + 1 }} Trending
+                              </p>
+                              <p
+                                class="f-16 fw-700 text-black hashtag-text text-truncate w-full mouse"
+                                (click)="
+                                  gotoLink(
+                                    'https://twitter.com/search?q=' +
+                                      hash.name?.replace('#', '%23')
+                                  )
+                                "
+                              >
+                                {{ hash.name }}
+                              </p>
+                            </div>
+                            <i class="fa-solid fa-ellipsis"></i>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul class="hashtags-list w-40">
+                        <li
+                          class="d-flex align-items-center"
+                          *ngFor="let word of trendingwordsList"
+                          style="height: 45px"
+                        >
+                          <div class="list-right overflow-hidden">
+                            <p
+                              class="lr-text f-16 fw-500 text-black text-center w-full text-truncate mouse"
+                              (click)="
+                                gotoLink(
+                                  'https://twitter.com/search?q=' + word.name
+                                )
+                              "
+                            >
+                              {{ word.name }}
+                            </p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade map-modal"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-head-bg">
+          <h1
+            class="modal-title f-20 text-white spaceGrotesk fw-700"
+            id="exampleModalLabel"
+          >
+            World Map
+          </h1>
+        </div>
+        <div class="modal-filter m-auto">
+          <app-news-filter
+            [context]="'map'"
+            [date]="map_date[map_context]"
+            (onChange)="getMap($event, map_context)"
+          ></app-news-filter>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body mt-3 d-flex flex-column rg-10">
+        <app-news-map
+          [corner]="corner"
+          [cat]="cat"
+          [loading]="map_loading[map_context]"
+          [locations]="news_locations[map_context]"
+        ></app-news-map>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-ui-loader
+  fgsColor="transparent"
+  bgsColor="red"
+  bgsPosition="bottom-center"
+  logoPosition="center-center"
+  [logoSize]="160"
+  [gap]="20"
+  logoUrl="/assets/news-img/main-logo-gif.gif"
+  [attr.bgsOpacity]="0"
+></ngx-ui-loader>

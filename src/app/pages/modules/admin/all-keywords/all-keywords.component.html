@@ -1,0 +1,188 @@
+<div class="col-12 mb-2 px-0">
+  <div class="row d-flex justify-content-between m-0">
+    <div class="col-md-9 p-0">
+      <div class="d-flex align-items-center gap-3">
+        <div class="">
+          <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+          <label  (click)="selected_cat='east_corner';filterKeywordByCat('east_corner')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault1">
+            East Corner
+          </label>
+        </div>
+        <div class="" >
+          <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+          <label (click)="selected_cat='west_corner';filterKeywordByCat('west_corner')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault2">
+            West Corner
+          </label>
+        </div>
+        <div class="" >
+          <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+          <label (click)="selected_cat='internal_security';filterKeywordByCat('internal_security')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault3">
+            Internal Security
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 p-0">
+      <button type="submit" class="btn btn-primary w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#keywordsModal"
+        (click)="updateflag=false;keyword.text='';keyword.cat=''"><a class="dashboard-nav-dropdown-item">+ Add
+          keyword</a></button>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-pills mb-3 d-flex flex-nowrap gap-2 w-100" id="profilerListing-tab" role="tablist">
+
+  <li class="nav-item w-100" role="presentation" (click)="tabStatus='primary'">
+    <button class="nav-link active w-100" id="pills-profiles-tab" data-bs-toggle="pill" data-bs-target="#pills-profiles"
+      type="button" role="tab" aria-controls="pills-profiles" aria-selected="true">
+      Primary Keywords
+    </button>
+  </li>
+  <li class="nav-item w-100" role="presentation" (click)="tabStatus='secondry'">
+    <button class="nav-link w-100" id="pills-Monitorprofiles-tab" data-bs-toggle="pill"
+      data-bs-target="#pills-Monitorprofiles" type="button" role="tab" aria-controls="pills-Monitorprofiles"
+      aria-selected="false">
+      Seconadry Keywords
+    </button>
+  </li>
+  <li class="nav-item w-100" role="presentation" (click)="tabStatus='abbrv'">
+    <button class="nav-link w-100" id="pills-Abbrivations-tab" data-bs-toggle="pill"
+      data-bs-target="#pills-Abbrivations" type="button" role="tab" aria-controls="pills-Abbrivations"
+      aria-selected="false">
+      Abbreviations
+    </button>
+  </li>
+</ul>
+
+
+
+<div class="tab-content" id="profilerListing-tabContent" style="height: 75vh; overflow: scroll;">
+  <div class="tab-pane fade show active" id="pills-profiles" role="tabpanel" aria-labelledby="pills-profiles-tab">
+    <table class="table table-striped pt-2" datatable *ngIf="primarykeywordList.length>0" [dtOptions]="{pageLength: 100}">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Keyword</th>
+          <th scope="col">Category</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let keyword of primarykeywordList;index as i">
+          <th scope="row">{{i+1}}</th>
+          <td>{{keyword.keyword}}</td>
+          <td class="capitaliz-first">{{keyword.category.replace("_"," ")}}</td>
+          <td><i class="fas fa-edit px-1 mouse text-primary" (click)="updatekeyword(keyword)"></i> <i
+              class="fas fa-trash px-2 mouse  text-danger" (click)="deletekeywords(keyword.id)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="pills-Monitorprofiles" role="tabpanel" aria-labelledby="pills-Monitorprofiles-tab">
+    <table class="table table-striped pt-2" datatable *ngIf="SecondarykeywordList.length>0" [dtOptions]="{pageLength: 100}">
+      <thead>
+        <tr>
+          <th class="hash-n" scope="col">#</th>
+          <th class="keyword-n" scope="col">Keyword</th>
+          <th class="category-n" scope="col">Category</th>
+          <th class="action-n" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let keyword of SecondarykeywordList;index as i">
+          <th scope="row">{{i+1}}</th>
+          <td>{{keyword.keyword}}</td>
+          <td class="capitaliz-first">{{keyword.category.replace("_"," ")}}</td>
+          <td><i class="fas fa-edit px-1 mouse text-primary" (click)="updatekeyword(keyword)"></i> <i
+              class="fas fa-trash px-2 mouse  text-danger" (click)="deletekeywords(keyword.id)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="pills-Abbrivations" role="tabpanel" aria-labelledby="pills-Abbrivations-tab">
+    <table class="table table-striped pt-2" datatable *ngIf="abbrvkeywordList.length>0" [dtOptions]="{pageLength: 100}">
+      <thead>
+        <tr>
+          <th class="hash-n" scope="col">#</th>
+          <th class="keyword-n" scope="col">Keyword</th>
+          <th class="category-n" scope="col">Category</th>
+          <th class="action-n" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let keyword of abbrvkeywordList;index as i">
+          <th scope="row">{{i+1}}</th>
+          <td>{{keyword.keyword}}</td>
+          <td class="capitaliz-first">{{keyword.category.replace("_"," ")}}</td>
+          <td><i class="fas fa-edit px-1 mouse text-primary" (click)="updatekeyword(keyword)"></i> <i
+              class="fas fa-trash px-2 mouse  text-danger" (click)="deletekeywords(keyword.id)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+
+<!-- The Modal -->
+<div class="modal fade map-modal" id="keywordsModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content p-0 border-0">
+      <!-- Modal Header -->
+      <div class="modal-header p-3">
+        <h4 class="modal-title">{{updateflag?'Update':'Add'}} keyword</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body p-3">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="exampleInputEmail1" class="form-label">keyword</label>
+            <input type="text" class="form-control rounded blured-text-grp" placeholder="Enter keywords"
+              [(ngModel)]="keyword.text" aria-label="text" aria-describedby="search-addon" />
+          </div>
+          <div class="col-md-6">
+            <label for="exampleInputEmail1" class="form-label">Category</label>
+            <select class="form-select form-select-sm p-2 border-0 " style="border: 1px solid #cbc9c9 !important;"
+              aria-label=".form-select-sm example" [(ngModel)]="keyword.cat">
+              <option value="" selected>All</option>
+              <ng-container *ngFor="let cat of category; index as i">
+                <option [value]="cat" class="capitaliz-first">{{cat.replace("_"," ")}}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="d-flex" style="column-gap: 8px;">
+            <div class="d-flex gap-2">
+              <input id="primary" name="cat" type="radio" (click)="keyword.cattype='primary'" [checked]="true" />
+              <label class="w-100 f-16 text-truncate2" [attr.for]="'primary'">Primary</label>
+            </div>
+            <div class="d-flex gap-2">
+              <input id="secondary" name="cat" type="radio" (click)="keyword.cattype='scondry'" />
+              <label class="w-100 f-16 text-truncate2" [attr.for]="'secondary'">Secondary</label>
+            </div>
+            <div class="d-flex gap-2">
+              <input id="abbrv" name="cat" type="radio" (click)="keyword.cattype='abbrv'" />
+              <label class="w-100 f-16 text-truncate2" [attr.for]="'abbrv'">Abbreviation</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary w-25" data-bs-dismiss="modal"
+          (click)="updateflag?addkeywords('update'):addkeywords()">{{updateflag?'Update':'Create'}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-ui-loader></ngx-ui-loader>

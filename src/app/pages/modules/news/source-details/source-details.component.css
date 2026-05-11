@@ -1,0 +1,78 @@
+.container-big{
+    height: 100vh;
+    overflow-y: auto;
+}
+.source-card{
+    width: 25%;
+}
+.source-img > img{
+    width: 100%;
+    object-fit: cover;
+    height: 350px;
+}
+.source-title{
+    font-size: 16px;
+    font-weight: 600;
+}
+.hl-mid{
+    background-image: url(/assets/news-img/multi-diverse.png);
+    background-size: cover;
+    min-width: 25rem;
+    background-position: center;
+    background-repeat-y: no-repeat;
+    position: relative;
+}
+.hl-mid h1{
+    color: black;
+    position: relative;
+    text-transform: capitalize;
+}
+p{
+    text-transform: capitalize;
+}
+
+.source-desc{
+    height: 64px;
+}
+.source-date{
+    margin-top: auto;
+}
+.source-date > p{
+    font-size: 14px;
+}
+.card-shell{
+    background-color: #f9f9f9;
+}
+@media (max-width:1540px){
+    .source-card{
+        width: 33.333%;
+    }
+}
+@media (max-width:1200px){
+.source-date > p{
+    font-size: 12px;
+}
+}
+@media (max-width:900px){
+    .source-card{
+        width: 50%;
+    }
+    .source-desc{
+        height: 60px;
+    }
+    .source-img > img{
+        height: 250px;
+    }
+
+}
+@media (max-width:600px){
+    .source-card{
+        width: 100%;
+    }
+}
+.redirect-img {
+    right: 5px;
+    width: 18px !important;
+    height: auto !important;
+    top: 5px;
+}

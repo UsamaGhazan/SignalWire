@@ -1,0 +1,74 @@
+<div #custom_menu class="custom-context-menu newsPage-gradient"
+    [id]="api.current_context_menu?.cat+'_news_'+api.current_context_menu?.id"
+    [style]="'left:'+(api.current_context_menu?.bounds.left)+'px;top:'+(api.current_context_menu?.bounds.top)+'px'">
+    <div class="context-menu-header pe-2">
+        <div class="d-flex flex-column overflow-hidden">
+            Move {{api.current_context_menu?.type=='tweet'?'Tweet':'News'}} to Another Section
+            <span class="f-16 w-100 text-truncate" style="max-height: 1.4rem;"
+                [innerHTML]="'&#x28;'+api.current_context_menu?.title+'&#x29;'"></span>
+        </div>
+        <i class="fa fa-times fa-20" id="closemodal" (click)="this.api.current_context_menu['menuOpen']=false"></i>
+    </div>
+    <ul class="f-18">
+        <ng-container *ngFor="let cats of api.subCats">
+            <li (mouseenter)="popSublist($event,sub_list)" (mouseleave)="sub_list.classList.remove('active')">
+                <div class="d-flex justify-content-between align-items-center">
+                    {{cats.title}}
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+                <ul #sub_list class="custom-context-sublist newsPage-gradient scrollbar-news overflow-y-auto">
+                    <ng-container *ngFor="let sub_cat of cats.value">
+                        <li class="w-100 text-truncate" *ngIf="sub_cat.key!=api.current_context_menu.subCat || api.current_context_menu.cat!=cats.key"
+                            (click)="moveContent(cats.key,sub_cat.key)">{{sub_cat.title}}</li>
+                    </ng-container>
+                </ul>
+            </li>
+        </ng-container>
+        <li *ngIf="api.current_context_menu.type=='news' || api.current_context_menu.type=='tweet'"
+            (click)="moveContent(api.current_context_menu.corner,'trash_it')">
+            <div class="d-flex justify-content-between align-items-center text-danger">
+                Move to Trash
+                <i class="fa fa-trash text-danger"></i>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- Modal  Prioritize news-->
+<div class="modal fade" style="z-index: 999999 !important;" id="setDate_modal" tabindex="-1"
+    aria-labelledby="setDate_modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-head-bg">
+                    <h1 class="modal-title f-20 text-white spaceGrotesk fw-700">
+                        Published News Date
+                    </h1>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mt-3">
+                <label class="px-1">Change Date: <small>(below is recommended date)</small></label>
+                <!-- modal content here -->
+                <div class="d-flex gap-2 border rounded newsPage-gradient">
+                    <div class="position-relative w-100">
+                        <!-- <img src="../../../../../assets/news-img/calendar.svg" alt=""> -->
+                        <p-calendar class="" [(ngModel)]="genNewsDate" (ngModelChange)="onchange()"
+                            [showButtonBar]="true" (onClearClick)="genNewsDate=''" [showIcon]="true" [showTime]="false"
+                            [placeholder]="!genNewsDate?'Write Date':''">
+                        </p-calendar>
+                        <div class="date-show" style="position: absolute;top: 9px;left: 7px;">
+                            {{genNewsDate}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer p-0 border-0 mt-3 justify-content-center">
+                <button type="button" class="custom-news-button" (click)="updateGenNews()" data-bs-dismiss="modal">
+                    Apply
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

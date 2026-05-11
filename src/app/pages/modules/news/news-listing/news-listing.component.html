@@ -1,0 +1,174 @@
+<div class="container-big position-relative m-0">
+  <div class="news-home pd-32">
+    <div
+      class="listing-head d-flex position-relative justify-content-between align-items-center"
+    >
+      <div class="head-mid d-flex flex-column" style="width: 355px">
+        <div class="caution pd-8">
+          <div class="red-text" style="width: max-content">
+            <p class="mb-0 f-20 fw-800">CAUTION!</p>
+          </div>
+          <p class="mb-0 ms-auto me-auto f-18 fw-600 d-block">
+            Be Aware! You are connected to the internet!
+          </p>
+        </div>
+      </div>
+      <div class="head-left mouse" style="width: 355px">
+        <img
+          class="listingimg"
+          [src]="
+            system == 'Zambeel'
+              ? '../../../../../assets/news-img/zambeel-black-grp.svg'
+              : '../../../../../assets/images/zulon_Logo.svg'
+          "
+          alt=""
+          (click)="api.gotoHome()"
+        />
+      </div>
+      <div
+        class="head-right d-flex justify-content-center"
+        style="width: 355px"
+      >
+        <div
+          class="d-flex align-items-center justify-content-center fit-content cg-16"
+        >
+          <div class="date-time d-flex align-items-center">
+            <span class="nl-date nldt f-16 fw-600">{{ now_d }}</span>
+            <span class="vertical-line"></span>
+            <span class="nl-time nldt f-16 fw-600">{{ now_t }}</span>
+          </div>
+
+          <div class="nl-switch mouse" (click)="logout()">
+            <img
+              class="power-off"
+              src="../../../../../assets/news-img/power-off.svg"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+      <hr class="" />
+    </div>
+
+    <!-- <div class="selectCorners"> -->
+    <div class="category-btn d-flex justify-content-between">
+      <div
+        class="east spotlights f-24 fw-700 mouse"
+        (click)="explore('east_corner')"
+      >
+        EAST spotlight
+        <i class="fa-solid fa-arrow-right f-16"></i>
+      </div>
+      <div
+        class="internal sit f-24 fw-700 mouse"
+      
+      >
+        Internal
+        <span class="site-arrows">
+          <i class="fa-solid fa-arrow-left f-16"></i>
+          <i class="fa-solid fa-arrow-right f-16"></i>
+        </span>
+      </div>
+      <div
+        class="west spotlights f-24 position-relative fw-700 mouse"
+        (click)="explore('west_corner', 'afghanistan')"
+      >
+        WEST spotlight
+        <i class="fa-solid fa-arrow-right f-16"></i>
+      </div>
+    </div>
+    <!-- </div> -->
+    <div class="listing-body d-flex mt-4 flex-column">
+      <div class="listing-body-right">
+        <div
+          id="carouselExampleSlidesOnly"
+          class="carousel slide h-100"
+          data-bs-ride="carousel"
+          data-bs-interval="5000"
+          data-bs-touch="true"
+        >
+          <div class="carousel-inner h-100">
+            <ng-container *ngFor="let flash of flashNewsList; index as i">
+              <div class="carousel-item" [ngClass]="i == 0 ? 'active' : ''">
+                <img
+                  class="d-block w-100 carousel-image"
+                  [src]="flash.image"
+                  (error)="removeItem(flash)"
+                  alt="First slide"
+                />
+                <div class="carousel-caption d-md-block">
+                  <!-- <p class="carousel-head m-0">X-Up:</p> -->
+                  <p
+                    class="carousel-desc m-0 mouse"
+                    [innerHTML]="flash.title"
+                    (click)="globalService.gotoLink(flash.news_link)"
+                  ></p>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="listing-body-left w-100">
+        <div
+          class="side-card-wraper d-flex justify-content-between h-100 gap-custom"
+        >
+          <div class="side-card flash-news">
+            <div class="scard-body">
+              <a class="text-black" href="">
+                <h3 class="f-18 fw-700 scb-head m-0 text-black">Flash news</h3>
+              </a>
+              <p class="f-14 fw-500 scb-desc m-0 text-black w-75">
+                Unveiling the world through the eyes of AI.
+              </p>
+            </div>
+          </div>
+          <div class="side-card x-up">
+            <div class="scard-body">
+              <a class="text-white" href="">
+                <h3 class="f-18 fw-700 scb-head m-0 text-white">X-Up</h3>
+              </a>
+              <p class="f-14 fw-500 scb-desc m-0 text-white w-75">
+                Trending insights on Twitter
+              </p>
+            </div>
+          </div>
+          <div class="side-card trending-now">
+            <div class="scard-body">
+              <a class="text-black" href="">
+                <h3 class="f-18 fw-700 scb-head m-0 text-black">
+                  Trending now
+                </h3>
+              </a>
+              <p class="f-14 fw-500 scb-desc m-0 text-black w-75">
+                Unlocking the SMN Pulse
+              </p>
+            </div>
+          </div>
+          <div class="side-card editorial-hub">
+            <div class="scard-body">
+              <a class="text-black" href="">
+                <h3 class="f-18 fw-700 scb-head m-0 text-black">
+                  Editorial hub
+                </h3>
+              </a>
+              <p class="f-14 fw-500 scb-desc m-0 text-black w-75">
+                Exciting news and reviews
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-ui-loader
+  fgsColor="transparent"
+  bgsColor="red"
+  bgsPosition="bottom-center"
+  logoPosition="center-center"
+  [logoSize]="160"
+  [gap]="20"
+  logoUrl="/assets/news-img/main-logo-gif.gif"
+  [attr.bgsOpacity]="0"
+></ngx-ui-loader>

@@ -1,0 +1,141 @@
+/* news summarty text formatiting  */
+.newsSummary {
+  font-family: "manrope-medium";
+  /* text-indent: revert-layer; */
+  text-align: left !important;
+  white-space: pre-line;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: linear-gradient(180deg, #ccd8e3, #94a8d3);
+  border-radius: 20px !important;
+  width: 800px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100000232;
+  box-shadow: 0px 15px 20px #00000066;
+  border: 3px solid #00000047;
+  /* background-image: url(../../../../../assets/images/modal_BG2.jpg); */
+  color: white;
+  /* background-size: cover; */
+  /* opacity: 0.95; */
+  /* background-size: cover; */
+  /* backdrop-filter: blur(34px) !important;*/
+}
+
+.modal-header {
+  padding: 16px;
+  border-bottom: 1px solid #808080;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-dialog.touch-device {
+  pointer-events: auto;
+  touch-action: pan-y;
+}
+.modal-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  touch-action: pan-y; /* Allow vertical scrolling */
+    font-family: "adelle";
+
+  ul {
+    padding: 4px;
+  }
+  ul,
+  li {
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: justify !important;
+    white-space: pre-line;
+    font-family: inherit;
+    line-height: 1.4 !important;
+  }
+
+  b {
+    font-size: 19px;
+    color: #000;
+    font-family: inherit;
+  }
+}
+
+.modal-footer {
+  padding: 16px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.modal-show {
+  display: block !important;
+  font-family: imperial !important;
+  z-index: 10000 !important;
+}
+.modal-dialog {
+  cursor: move;
+}
+
+.modal-header {
+}
+.close {
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+}
+.loader {
+  width: 50%;
+  height: 100%;
+  margin: auto;
+}
+
+.modal-body ngx-ui-loader .ngx-overlay.loading-foreground {
+  background-color: rgba(40, 40, 40, 0) !important;
+  border-radius: 13px !important;
+}
+
+/* For the scrollbar */
+
+.scrollbar-news::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #ccd8e3;
+  background: linear-gradient(180deg, #ccd8e3, #94a8d3) !important;
+  border-radius: 10px;
+}
+
+.scrollbar-news::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  background: linear-gradient(180deg, #ccd8e3, #94a8d3) !important;
+}
+
+.scrollbar-news::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 29%);
+  background: #9b9b9b;
+}
+.scrollbar-news-2::-webkit-scrollbar-thumb {
+  background:  #cc4e1d;
+}

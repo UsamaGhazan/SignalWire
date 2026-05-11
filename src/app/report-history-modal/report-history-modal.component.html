@@ -1,0 +1,54 @@
+<div
+  class="report d-flex w-60px customhehe"
+  style="border: 1px solid #8080801f; padding: 5px; border-radius: 7px"
+>
+  <button
+    class="report-btn position-relative d-flex flex-column align-items-center"
+    data-bs-toggle="modal"
+    data-bs-target="#reportHistory_modal"
+    (click)="toggleModal()"
+  >
+    <img
+      class="h-30px"
+      src="../../../../../assets/images/reportHistory.svg"
+      alt=""
+      title="Report History"
+    />
+    <p class="f-12 fw-700 manrope text-black" >Archive</p>
+  </button>
+</div>
+
+<!-- History Modal -->
+<!-- Custom Modal -->
+<div id="customModal" class="custom-modal" *ngIf="showModal" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Report History</div>
+        <span class="close" (click)="toggleModal()"><img src="../../assets/images/closereport.svg" alt=""></span>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th >Ser.</th>
+              <th>File Name</th>
+              <th style=" text-align: center;">Date</th>
+              <th style=" text-align: center;">Download</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let filePath of filePaths;let i=index">
+              <td  >{{i+1}}</td>
+              <!-- For getting filename from path -->
+              <td  >{{filePath.path.split('/').pop()}}</td>
+              <td  style=" text-align: center;"> {{parseDate(filePath.date)}}</td>
+              <td style=" text-align: center;" ><img (click)="downloadFile(filePath.path)" src="../../assets/images/downloadReport.png" style="height: 28px; width: 28px;" alt=""></td>
+            </tr>
+          
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+  </div>

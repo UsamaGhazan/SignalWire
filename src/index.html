@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zulon AI</title>
+    <!-- <title>Zambeel</title> -->
+    <base href="./" />
+
+    <!-- leaflet maps css -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+
+    <!-- highcharts map -->
+    <script src="assets/js/highchart-map.js" defer></script>
+    <script src="assets/js/highchart-map-support.js" defer></script>
+    <script src="assets/js/lottie.js" defer></script>
+
+    <!-- Compromise Package -->
+    <script src="https://unpkg.com/compromise"></script>
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css"
+    />
+    <script src="//cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+
+    <!-- font awesome 6.2.0 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Icon compatilbility  -->
+   <!-- 76 X 72 -->
+   <link data-rh="true" rel="shortcut icon" href="./assets/images/iPad/76x72.jpg">
+   <!-- 192 X 192 -->
+   <link data-rh="true" rel="apple-touch-icon" href="./assets/images/iPad/192x192.jpg">
+   <!-- 144 X 144 -->
+   <link data-rh="true" rel="apple-touch-icon-precomposed" sizes="144×144" href="./assets/images/iPad/144x144.jpg">
+   <!-- 57 X 57 -->
+   <link data-rh="true" rel="apple-touch-icon-precomposed" href="./assets/images/iPad/58x58.jpg">
+    <!-- font awesome 4.7 -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
+
+    <!-- bootstrap 5.1 -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <!-- bootstrap 4.0 -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    /> -->
+
+    <!-- jquery ui components
+  <link href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/1.10.1/css/jquery.dataTables.css" rel="stylesheet" />
+  <link href="https://cdn.datatables.net/responsive/1.0.0/css/dataTables.responsive.css" rel="stylesheet" />
+   -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      id="changeicon"
+      href="./assets/images/favicon.jpg"
+    />
+    <link
+      rel="manifest"
+      href="https://myfitnesscoach.fit/borrow/manifest.json"
+    />
+  </head>
+
+  <body class="scrollbar scrollbar-danger">
+    <!-- mat-typography removed from body -->
+    <app-root></app-root>
+    <!-- jquery 3.6 -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- bootstrap 5.1 -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      if (
+        window.location.href.includes("osint") ||
+        window.location.href.includes("localhost")
+      ) {
+        document.querySelector("title").text = "Zulon AI";
+        var linkElement = document.getElementById("changeicon");
+        // Check if the element exists
+        if (linkElement) {
+          linkElement.href = "./assets/images/ZULON-Logo-Icon.svg";
+        }
+      } else {
+        document.querySelector("title").text = "Zulon AI";
+      }
+    </script>
+    <script>
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("body").tooltip({ selector: "[data-toggle=tooltip]" });
+      });
+    </script>
+
+    <!-- bootstrap 4.0 -->
+    <!-- <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script> -->
+
+    <!-- highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js "></script>
+    <!-- <script src="https://code.highcharts.com/modules/solid-gauge.js"></script> -->
+    <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=[REMOVED_API_KEY]&libraries=places&callback=initMap"></script>
+
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=drawing&extension=.js"></script> -->
+    <!-- apexcharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- zoomcharts -->
+    <script src="https://cdn.zoomcharts-cloud.com/1/latest/zoomcharts.js"></script>
+
+    <!-- json to csv -->
+    <script src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script>
+    <!-- apex charts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- json to csv -->
+    <!-- <script src="https://cdn.jsdelivr.net/alasql/0.3/alasql.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.12/xlsx.core.min.js"></script> -->
+
+    <!-- chart js 3.9.1 -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+      integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <!-- Bootstrap poper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        const codeBlock = document.getElementById("json");
+        hljs.highlightBlock(codeBlock);
+      });
+    </script>
+
+    <!-- translator popup -->
+    <style>
+      ctranslator {
+        position: fixed;
+        z-index: 9999999;
+        display: block;
+        padding: 0.3rem;
+        padding-top: 0;
+        background: #f4f4f4;
+        border-radius: 4px;
+        box-shadow: 2px 4px 14px rgba(15, 15, 15, 0.45);
+      }
+
+      #c_translator_text {
+        display: inline-block;
+        max-width: 400px;
+        min-width: 200px;
+        max-height: calc(300px - 24px);
+      }
+    </style>
+    <script>
+      var custom_tselection_flag = false;
+      var custom_tselection_text = "";
+      var custom_translated_text = "";
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add an event listener to the document body for various events
+        document.body.addEventListener(
+          "mouseup",
+          (e) => {
+            if (
+              e.target.classList.contains("ctb_") ||
+              window.location.href.includes("/admin")
+            )
+              return;
+            var selection;
+            if (window.getSelection) {
+              selection = window.getSelection();
+            } else if (document.selection) {
+              selection = document.selection.createRange();
+            }
+            if (
+              selection.toString() &&
+              selection.toString()?.trim()?.replaceAll(" ", "") !== ""
+            ) {
+              custom_tselection_flag = true;
+              custom_tselection_text = selection.toString();
+            } else {
+              custom_tselection_flag = false;
+              custom_tselection_text = selection.toString();
+              return;
+            }
+            window.document.querySelectorAll("ctranslator").forEach((x) => {
+              x.remove();
+            });
+            var popup = document.createElement("ctranslator");
+            popup.id = "translator_popup";
+            popup.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center bg-secondary text-white gap-2 py-1 px-2" 
+          style="margin-left: -0.3rem; margin-right: -0.3rem;">
+          <div class="d-flex">
+            ${
+              !isEnglish(selection.toString())
+                ? `<i id="c_translator_trigger" class="f-16 fa fa-language hovered_btn ctb_" title="translate" data-toggle="tooltip" onclick="translateByCustomApi()"></i>`
+                : ""
+            }
+          </div>
+          <div class="d-flex gap-3 align-items-center">
+            <i class="ctb_ f-16 fa fa-copy hovered_btn" onclick="copy_translated_text()"></i>
+            <i class="ctb_ fa fa-times hovered_btn" onclick="clearSelection();this.parentElement.parentElement.parentElement.remove()"></i>
+          </div>
+        </div>
+        <div class="mt-2">
+          <span class="scrollbar-danger w-100 overflow-y-auto f-16" id="c_translator_text">${selection.toString()}</span>
+        </div>`;
+            let p_w = 400;
+            let p_h = 330;
+            let left =
+              e.pageX >= window.innerWidth - p_w
+                ? window.innerWidth - p_w
+                : e.pageX;
+            let top =
+              e.pageY >= window.innerHeight - p_h
+                ? window.innerHeight - p_h
+                : e.pageY;
+            popup.setAttribute("style", `left:${left}px;top: ${top}px;`);
+            window.document.body.appendChild(popup);
+          },
+          true
+        );
+
+        document.body.addEventListener("click", preventDefaultHandler, true);
+        document.body.addEventListener(
+          "contextmenu",
+          preventDefaultHandler,
+          true
+        );
+        document.body.addEventListener(
+          "mousedown",
+          (e) => {
+            if (event.target.nodeName == "INPUT")
+              event.target.classList.add("ctb_");
+            if (
+              event.target.classList.contains("ctb_") ||
+              window.location.href.includes("/admin")
+            )
+              return;
+            custom_tselection_flag = false;
+            document
+              .querySelectorAll("ctranslator")
+              ?.forEach((x) => x.remove());
+            clearSelection();
+          },
+          true
+        );
+   
+        function preventDefaultHandler(event) {
+          if (
+            event.target.classList.contains("ctb_") ||
+            window.location.href.includes("/admin")
+          )
+            return;
+          var selection;
+          if (window.getSelection) {
+            selection = window.getSelection();
+          } else if (document.selection) {
+            selection = document.selection.createRange();
+          }
+          if (
+            selection.toString() &&
+            selection.toString()?.trim()?.replaceAll(" ", "") != ""
+          ) {
+            custom_tselection_flag = true;
+          } else {
+            custom_tselection_flag = false;
+          }
+          !custom_tselection_flag &&
+            document
+              .querySelectorAll("ctranslator")
+              ?.forEach((x) => x.remove());
+          if (custom_tselection_flag) {
+            // Prevent the default behavior of the event
+            event.preventDefault();
+            // Stop the event from propagating up or down the DOM
+            event.stopPropagation();
+          }
+        }
+      });
+      function copy_translated_text(e) {
+        var body = window.document.body;
+        var el = window.document.createElement("input");
+        el.style.width = "0";
+        el.style.height = "0";
+        el.value = custom_tselection_text;
+        el.focus();
+        let flag = navigator.clipboard.writeText(el.value);
+        el.remove();
+      }
+
+      function clearSelection() {
+        if (window.getSelection) {
+          // Get the current selection
+          var selection = window.getSelection();
+
+          // Check if there is any selection
+          if (selection.rangeCount > 0) {
+            // Remove all ranges from the selection
+            selection.removeAllRanges();
+          }
+        } else if (document.selection) {
+          // For Internet Explorer 8 and earlier
+          document.selection.empty();
+        }
+        custom_tselection_flag = false;
+        custom_tselection_text = "";
+      }
+
+      function isEnglish(text) {
+        // Regular expression to match English letters and common punctuation
+        var englishRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>_#\s]*$/;
+
+        // Check if the text matches the English regex
+        return englishRegex.test(text);
+      }
+  function translateByCustomApi() {
+        let text = $("#c_translator_text").html();
+        $("#c_translator_text").html(`
+    <div class="w-100 placeholder-glow">
+      <div class="col-12 placeholder bg-secondary"></div>
+    </div>
+  `);
+        const apiUrl = "https://zulon.ai/get_translation";
+        const requestBody = {
+          text: text,
+        };
+
+        fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Use only translated text from response
+            let translatedText = data.translated;
+
+            console.log("Translated:", translatedText);
+
+            custom_translated_text = translatedText;
+            custom_tselection_text = custom_translated_text;
+
+            $("#c_translator_text")?.html(custom_translated_text);
+            $("#c_translator_trigger")?.hide();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+     
+    </script>
+  </body>
+</html>

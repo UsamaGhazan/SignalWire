@@ -1,0 +1,116 @@
+ <!-- Button trigger modal -->
+ <button
+ type="button"
+ class="btn btn-primary"
+ data-bs-toggle="modal"
+ data-bs-target="#exampleModal"
+ style="
+    background-color: #d3c5c5;
+    color: black;
+    border: 1px solid #910a0b;
+    font-weight: bold;
+    font-family: 'manrope-medium';
+    display: flex;
+    gap: 10px;
+    align-items: center;
+"
+>
+<img src="../../assets/images/customyoutubesummary.png" alt="">
+<p>
+
+    Youtube Summary
+</p>
+</button>
+
+<!-- Modal -->
+<div
+ class="modal fade"
+ id="exampleModal"
+ tabindex="-1"
+ role="dialog"
+ aria-labelledby="exampleModalLabel"
+ aria-hidden="true"
+>
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header" style="justify-content: space-between;">
+       <h5 class="modal-title" id="exampleModalLabel" style="
+       color: #910a0b;
+       font-weight: bold;
+   ">Summary</h5>
+     <img data-bs-dismiss="modal" style="width: 26px; height: 26px;"
+ class="closebtn"
+      aria-label="Close" src="../../assets/images/closereport.svg"  alt="">
+     </div>
+     <div class="modal-body">
+        <div  style="
+        display: flex;
+        gap: 8px;
+        margin: 18px 0;
+    ">
+      
+       <input
+       placeholder="Enter URL"
+       style="
+    height: 42px;
+    width: 85%;
+    font-family: 'manrope-medium';
+    border-radius: 5px;
+    border-style: none;
+    padding: 10px;
+    border: 1px solid #a1a1a1;
+"
+         type="url"
+         id="youtubelink"
+         name="youtubelink"
+         [(ngModel)]="youtubeLink"
+       />
+       <button class="submitBtn" (click)="getCustomSummary()">Submit</button>
+</div>
+       <div class="modal-text" style="
+       font-family: 'manrope-medium';
+   ">
+   <div class="loaderdiv" *ngIf="isLoading">
+
+     <div class="lds-ripple"><div></div><div></div></div>
+   </div >
+   <div *ngIf='customSummary  else initialText'>
+    <ul *ngIf="customSummary && customSummary['bulletPoints'].length" >
+      <li *ngFor="let bulletPoint of customSummary['bulletPoints']">
+        {{ bulletPoint }}
+      </li>
+    </ul>
+
+    <div *ngIf="customSummary && customSummary['keyAreas'].length">
+      <b>Key Areas: </b>
+      <ul>
+        <li *ngFor="let bulletPoint of customSummary['keyAreas']">
+          {{ bulletPoint }}
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="customSummary && customSummary['keyPeople'].length">
+      <b>Key People: </b>
+      <ul>
+        <li *ngFor="let bulletPoint of customSummary['keyPeople']">
+          {{ bulletPoint }}
+        </li>
+      </ul>
+
+   </div>
+       </div>
+     </div>
+    
+   </div>
+ </div>
+</div>
+
+
+<ng-template #initialText>
+  <p style="
+  margin: auto;
+  margin-top: 14%;
+" *ngIf="!isLoading">Enter video link you want to summarize</p>
+
+</ng-template>

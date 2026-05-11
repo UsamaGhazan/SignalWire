@@ -1,0 +1,43 @@
+.sm-round {
+  border-radius: 41.88px;
+  width: 41.516px;
+  height: 41.88px;
+}
+
+/* Twitter card */
+.twitter-card {
+  border-radius: 11.275px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.54);
+  backdrop-filter: blur(2.416175365447998px);
+}
+.tweet-pic {
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.25) !important;
+}
+.order0 {
+  order: 0;
+}
+.order0 {
+  order: 0;
+}
+.order0 {
+  order: 0;
+}
+.order0 {
+  order: 0;
+}
+.tweet-pic {
+  margin-top: auto;
+}
+.border {
+}
+
+@media (max-width: 700px) {
+  .twitter-card {
+    width: 312px !important;
+    height: 22rem;
+  }
+}

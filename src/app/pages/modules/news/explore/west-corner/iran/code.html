@@ -1,0 +1,555 @@
+<section
+  class="vlogs-podcasts position-relative z-index2 gradient-red-green pd-layout"
+>
+  <div class="tab-content" id="myTabContent">
+    <div
+      class="tab-pane fade mt-5 show active"
+      id="podcasts"
+      role="tabpanel"
+      aria-labelledby="podcasts-tab"
+    >
+      <div class="pod-wraper rg-16 d-flex podcastWest gap-2">
+        <div
+          class="pod-card d-flex flex-column card1 story-card w-20 no-border-e pd-16 gradient-pod1"
+        >
+          <div
+            class="shashka-top position-relative d-flex align-items-center justify-content-center"
+          >
+            <img
+              class="w-100"
+              src="../../../../../assets/images/eastMil.png"
+              alt=""
+            />
+            <!-- src="../../../../../assets/news-img/govt-icon.png" -->
+            <img
+              class="position-absolute head-badge"
+              [src]="getImageSource('Internal Envmt')"
+              alt=""
+            />
+            <p
+              class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+            >
+              IS
+            </p>
+          </div>
+          <div
+            class="scrollbar-news overflow-y-auto"
+            style="height: 35rem"
+            infiniteScroll
+            [scrollWindow]="false"
+            (scrolled)="loadMore('mil', 'podcast')"
+          >
+            <ng-container *ngIf="!prodList.length && !loader_flag.podcast">
+              <div class="placeholder-glow mt-4 px-1" *ngFor="let l of [1, 1]">
+                <div
+                  class="placeholder bg-secondary col-12 rounded-3 p-0"
+                  style="height: 314px"
+                ></div>
+                <div class="placeholder bg-secondary col-12 py-4 mt-2"></div>
+                <div class="d-flex justify-content-between mt-2">
+                  <div class="placeholder bg-secondary col-2"></div>
+                  <div class="placeholder bg-secondary col-4"></div>
+                </div>
+              </div>
+            </ng-container>
+            <p
+              *ngIf="
+                !api.podcastList_explore['Internal Envmt'].length &&
+                loader_flag.podcast
+              "
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+            >
+              No Data Found
+            </p>
+            <ng-container
+              *ngFor="
+                let prod of api.podcastList_explore['Internal Envmt'];
+                let i = index
+              "
+            >
+              <div
+                [class]="'my-2 py-3 px-1 ' + (i != 0 ? 'border-top' : '')"
+                (click)="readMore('/youtube-details', prod.id)"
+              >
+                <div class="pod-mid mouse position-relative">
+                  <img
+                    [src]="
+                      'https://img.youtube.com/vi/' + prod.video_id + '/0.jpg'
+                    "
+                  />
+                  <img
+                    class="play-button"
+                    src="../../../../../assets/news-img/Play-button.png"
+                    alt=""
+                  />
+                </div>
+                <div class="pod-bottom d-flex flex-column rg-8 mt-2 h-100">
+                  <div class="d-flex align-items-end">
+                    <p
+                      class="f-16 spaceGrotesk fw-500 text-capitalize text-black truncate-text2"
+                    >
+                      {{ prod.title }}
+                    </p>
+                    <img
+                      class="mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      style="width: 15px"
+                      (click)="gotoLink(prod.link, $event)"
+                    />
+                  </div>
+                  <div
+                    class="name-views d-flex justify-content-between align-items-center mt-0"
+                  >
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.channel_handle }}
+                    </p>
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.published_date }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <app-spinner
+              hideText="true"
+              *ngIf="lazy_loader_p['Internal Envmt']"
+            ></app-spinner>
+          </div>
+        </div>
+        <div
+          class="pod-card d-flex flex-column card2 story-card w-20 no-border-e pd-16 gradient-pod2"
+        >
+          <div
+            class="shashka-top position-relative d-flex align-items-center justify-content-center"
+          >
+            <img
+              class="w-100"
+              src="../../../../../assets/images/govt.png"
+              alt=""
+            />
+            <!-- src="../../../../../assets/news-img/diplo-icon.png" -->
+            <img
+              class="position-absolute head-badge"
+              [src]="getImageSource('Diplo Overtures')"
+              alt=""
+            />
+            <p
+              class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+            >
+              Diplo
+            </p>
+          </div>
+          <div
+            class="scrollbar-news overflow-y-auto"
+            style="height: 35rem"
+            infiniteScroll
+            [scrollWindow]="false"
+            (scrolled)="loadMore('Diplo Overtures', 'podcast')"
+          >
+            <ng-container *ngIf="!prodList.length && !loader_flag.podcast">
+              <div class="placeholder-glow mt-4 px-1" *ngFor="let l of [1, 1]">
+                <div
+                  class="placeholder bg-secondary col-12 rounded-3 p-0"
+                  style="height: 314px"
+                ></div>
+                <div class="placeholder bg-secondary col-12 py-4 mt-2"></div>
+                <div class="d-flex justify-content-between mt-2">
+                  <div class="placeholder bg-secondary col-2"></div>
+                  <div class="placeholder bg-secondary col-4"></div>
+                </div>
+              </div>
+            </ng-container>
+            <p
+              *ngIf="
+                !api.podcastList_explore['Diplo Overtures'].length &&
+                loader_flag.podcast
+              "
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+            >
+              No Data Found
+            </p>
+            <ng-container
+              *ngFor="
+                let prod of api.podcastList_explore['Diplo Overtures'];
+                let i = index
+              "
+            >
+              <div
+                [class]="'my-2 py-3 px-1 ' + (i != 0 ? 'border-top' : '')"
+                (click)="readMore('/youtube-details', prod.id)"
+              >
+                <div class="pod-mid mouse position-relative">
+                  <img
+                    [src]="
+                      'https://img.youtube.com/vi/' + prod.video_id + '/0.jpg'
+                    "
+                  />
+                  <img
+                    class="play-button"
+                    src="../../../../../assets/news-img/Play-button.png"
+                    alt=""
+                  />
+                </div>
+                <div class="pod-bottom d-flex flex-column rg-8 mt-2 h-100">
+                  <div class="d-flex align-items-end">
+                    <p
+                      class="f-16 spaceGrotesk fw-500 text-capitalize text-black truncate-text2"
+                    >
+                      {{ prod.title }}
+                    </p>
+                    <img
+                      class="mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      style="width: 15px"
+                      (click)="gotoLink(prod.link, $event)"
+                    />
+                  </div>
+                  <div
+                    class="name-views d-flex justify-content-between align-items-center mt-0"
+                  >
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.channel_handle }}
+                    </p>
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.published_date }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <app-spinner
+              hideText="true"
+              *ngIf="lazy_loader_p['Diplo Overtures']"
+            ></app-spinner>
+          </div>
+        </div>
+        <div
+          class="pod-card d-flex flex-column card3 story-card w-20 no-border-e pd-16 gradient-pod3"
+        >
+          <div
+            class="shashka-top position-relative d-flex align-items-center justify-content-center"
+          >
+            <img
+              class="w-100"
+              src="../../../../../assets/images/pakMil.png"
+              alt=""
+            />
+            <!-- src="../../../../../assets/news-img/isct-icon.png" -->
+            <img
+              class="position-absolute head-badge"
+              [src]="getImageSource('Pakistan Corner')"
+              alt=""
+            />
+            <p
+              class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+            >
+              Pak Corner
+            </p>
+          </div>
+          <div
+            class="scrollbar-news overflow-y-auto"
+            style="height: 35rem"
+            infiniteScroll
+            [scrollWindow]="false"
+            (scrolled)="loadMore('Pakistan Corner', 'podcast')"
+          >
+            <ng-container *ngIf="!prodList.length && !loader_flag.podcast">
+              <div class="placeholder-glow mt-4 px-1" *ngFor="let l of [1, 1]">
+                <div
+                  class="placeholder bg-secondary col-12 rounded-3 p-0"
+                  style="height: 314px"
+                ></div>
+                <div class="placeholder bg-secondary col-12 py-4 mt-2"></div>
+                <div class="d-flex justify-content-between mt-2">
+                  <div class="placeholder bg-secondary col-2"></div>
+                  <div class="placeholder bg-secondary col-4"></div>
+                </div>
+              </div>
+            </ng-container>
+            <p
+              *ngIf="
+                !api.podcastList_explore['Pakistan Corner'].length &&
+                loader_flag.podcast
+              "
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+            >
+              No Data Found
+            </p>
+            <ng-container
+              *ngFor="
+                let prod of api.podcastList_explore['Pakistan Corner'];
+                let i = index
+              "
+            >
+              <div
+                [class]="'my-2 py-3 px-1 ' + (i != 0 ? 'border-top' : '')"
+                (click)="readMore('/youtube-details', prod.id)"
+              >
+                <div class="pod-mid mouse position-relative">
+                  <img
+                    [src]="
+                      'https://img.youtube.com/vi/' + prod.video_id + '/0.jpg'
+                    "
+                  />
+                  <img
+                    class="play-button"
+                    src="../../../../../assets/news-img/Play-button.png"
+                    alt=""
+                  />
+                </div>
+                <div class="pod-bottom d-flex flex-column rg-8 mt-2 h-100">
+                  <div class="d-flex align-items-end">
+                    <p
+                      class="f-16 spaceGrotesk fw-500 text-capitalize text-black truncate-text2"
+                    >
+                      {{ prod.title }}
+                    </p>
+                    <img
+                      class="mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      style="width: 15px"
+                      (click)="gotoLink(prod.link, $event)"
+                    />
+                  </div>
+                  <div
+                    class="name-views d-flex justify-content-between align-items-center mt-0"
+                  >
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.channel_handle }}
+                    </p>
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.published_date }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <app-spinner
+              hideText="true"
+              *ngIf="lazy_loader_p['Pakistan Corner']"
+            ></app-spinner>
+          </div>
+        </div>
+        <div
+          class="pod-card d-flex flex-column card4 story-card w-20 no-border-s pd-16 gradient-pod4"
+        >
+          <div
+            class="shashka-top position-relative d-flex align-items-center justify-content-center"
+          >
+            <img
+              class="w-100"
+              src="../../../../../assets/images/domestic.png"
+              alt=""
+            />
+            <!-- src="../../../../../assets/news-img/domestic-icon.svg" -->
+            <img
+              class="position-absolute head-badge"
+              [src]="getImageSource('India Corner')"
+              alt=""
+            />
+            <p
+              class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+            >
+              Ind Corner
+            </p>
+          </div>
+          <div
+            class="scrollbar-news overflow-y-auto"
+            style="height: 35rem"
+            infiniteScroll
+            [scrollWindow]="false"
+            (scrolled)="loadMore('India Corner', 'podcast')"
+          >
+            <ng-container *ngIf="!prodList.length && !loader_flag.podcast">
+              <div class="placeholder-glow mt-4 px-1" *ngFor="let l of [1, 1]">
+                <div
+                  class="placeholder bg-secondary col-12 rounded-3 p-0"
+                  style="height: 314px"
+                ></div>
+                <div class="placeholder bg-secondary col-12 py-4 mt-2"></div>
+                <div class="d-flex justify-content-between mt-2">
+                  <div class="placeholder bg-secondary col-2"></div>
+                  <div class="placeholder bg-secondary col-4"></div>
+                </div>
+              </div>
+            </ng-container>
+            <p
+              *ngIf="
+                !api.podcastList_explore['India Corner'].length &&
+                loader_flag.podcast
+              "
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+            >
+              No Data Found
+            </p>
+            <ng-container
+              *ngFor="
+                let prod of api.podcastList_explore['India Corner'];
+                let i = index
+              "
+            >
+              <div
+                [class]="'my-2 py-3 px-1 ' + (i != 0 ? 'border-top' : '')"
+                (click)="readMore('/youtube-details', prod.id)"
+              >
+                <div class="pod-mid mouse position-relative">
+                  <img
+                    [src]="
+                      'https://img.youtube.com/vi/' + prod.video_id + '/0.jpg'
+                    "
+                  />
+                  <img
+                    class="play-button"
+                    src="../../../../../assets/news-img/Play-button.png"
+                    alt=""
+                  />
+                </div>
+                <div class="pod-bottom d-flex flex-column rg-8 mt-2 h-100">
+                  <div class="d-flex align-items-end">
+                    <p
+                      class="f-16 spaceGrotesk fw-500 text-capitalize text-black truncate-text2"
+                    >
+                      {{ prod.title }}
+                    </p>
+                    <img
+                      class="mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      style="width: 15px"
+                    />
+                  </div>
+                  <div
+                    class="name-views d-flex justify-content-between align-items-center mt-0"
+                  >
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.channel_handle }}
+                    </p>
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.published_date }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <app-spinner
+              hideText="true"
+              *ngIf="lazy_loader_p['India Corner']"
+            ></app-spinner>
+          </div>
+        </div>
+
+        <div
+          class="pod-card d-flex flex-column card4 story-card w-20 no-border-s pd-16 gradient-pod4"
+        >
+          <div
+            class="shashka-top position-relative d-flex align-items-center justify-content-center"
+          >
+            <img
+              class="w-100"
+              src="../../../../../assets/images/iiojk.png"
+              alt=""
+            />
+            <!-- src="../../../../../assets/news-img/domestic-icon.svg" -->
+            <img
+              class="position-absolute head-badge"
+              [src]="getImageSource('X-Hairs')"
+              alt=""
+            />
+            <p
+              class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+            >
+              X-Hair
+            </p>
+          </div>
+          <div
+            class="scrollbar-news overflow-y-auto"
+            style="height: 35rem"
+            infiniteScroll
+            [scrollWindow]="false"
+            (scrolled)="loadMore('x-hairs', 'podcast')"
+          >
+            <ng-container *ngIf="!prodList.length && !loader_flag.podcast">
+              <div class="placeholder-glow mt-4 px-1" *ngFor="let l of [1, 1]">
+                <div
+                  class="placeholder bg-secondary col-12 rounded-3 p-0"
+                  style="height: 314px"
+                ></div>
+                <div class="placeholder bg-secondary col-12 py-4 mt-2"></div>
+                <div class="d-flex justify-content-between mt-2">
+                  <div class="placeholder bg-secondary col-2"></div>
+                  <div class="placeholder bg-secondary col-4"></div>
+                </div>
+              </div>
+            </ng-container>
+            <p
+              *ngIf="
+                !api.podcastList_explore['x-hairs'].length &&
+                loader_flag.podcast
+              "
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+            >
+              No Data Found
+            </p>
+            <ng-container
+              *ngFor="
+                let prod of api.podcastList_explore['x-hairs'];
+                let i = index
+              "
+            >
+              <div
+                [class]="'my-2 py-3 px-1 ' + (i != 0 ? 'border-top' : '')"
+                (click)="readMore('/youtube-details', prod.id)"
+              >
+                <div class="pod-mid mouse position-relative">
+                  <img
+                    [src]="
+                      'https://img.youtube.com/vi/' + prod.video_id + '/0.jpg'
+                    "
+                  />
+                  <img
+                    class="play-button"
+                    src="../../../../../assets/news-img/Play-button.png"
+                    alt=""
+                  />
+                </div>
+                <div class="pod-bottom d-flex flex-column rg-8 mt-2 h-100">
+                  <div class="d-flex align-items-end">
+                    <p
+                      class="f-16 spaceGrotesk fw-500 text-capitalize text-black truncate-text2"
+                    >
+                      {{ prod.title }}
+                    </p>
+                    <img
+                      class="mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      style="width: 15px"
+                      (click)="gotoLink(prod.link, $event)"
+                    />
+                  </div>
+                  <div
+                    class="name-views d-flex justify-content-between align-items-center mt-0"
+                  >
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.channel_handle }}
+                    </p>
+                    <p class="text-white f-12 fw-800 manrope">
+                      {{ prod.published_date }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <app-spinner
+              hideText="true"
+              *ngIf="lazy_loader_p['x-hairs']"
+            ></app-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

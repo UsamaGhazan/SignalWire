@@ -1,0 +1,1635 @@
+<!-- Catrgory switcher  -->
+
+<!-- <div
+  class="cat-switcher mouse"
+  (click)="explore('west_corner', 'iran')"
+  title="Switch to Iran"
+>
+  <p>Iran</p>
+  <img
+    class="cat-flag"
+    src="../../../../../assets/news-img/iran-flag.png"
+    alt=""
+  />
+</div> -->
+<!-- sections head -->
+<div
+  class="section-head-nav d-flex justify-content-between align-items-center w-100 z-index2"
+>
+  <div class="sn-left">
+    <img
+      class="section-banner"
+      src="../../../../../assets/news-img/top-stories-banner.png"
+      alt=""
+    />
+  </div>
+  <div class="sn-right d-flex flex-column justify-content-between rg-24">
+    <div class="sn-top d-flex justify-content-between">
+      <button
+        class="btn me-3 rounded-5 pinki-gradient priority-btn d-flex align-items-center gap-2"
+        data-bs-toggle="modal"
+        data-bs-target="#priority_modal"
+        style="
+          text-align: center;
+          font-family: 'manrope-medium';
+          font-style: normal;
+          font-weight: 700;
+        "
+      >
+        <i class="fa f-16 fa-layer-group"></i>
+        Set Priorities
+      </button>
+      <div class="search d-flex align-items-center w-fit-content">
+        <input
+          class="header-search f-16 no-bg-color"
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="keyword['news']"
+          (keyup.enter)="getNews()"
+          (keyup)="!keyword['news'] ? getNews() : ''"
+        />
+        <img
+          class="hs-image mouse"
+          src="../../../../../assets/news-img/search-icon.svg"
+          alt=""
+          (click)="getNews()"
+        />
+      </div>
+    </div>
+    <div class="sn-bottom d-flex align-items-center justify-content-end cg-24">
+      <div class="form-check">
+        <app-news-filter
+          context="news"
+          [date]="Dates['news']"
+          (onChange)="changeFilter($event)"
+        ></app-news-filter>
+      </div>
+      <div class="position-relative">
+        <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+        <p-calendar
+          class="position-absolute right-0 top-0 z-index3"
+          [(ngModel)]="multiselect_date['news']"
+          (ngModelChange)="filter_report_date('news')"
+          [showButtonBar]="true"
+          (onClearClick)="
+            multiselect_date['news'] = ''; Dates['news'] = 'latest'; getNews()
+          "
+          [showIcon]="true"
+          [showTime]="false"
+        >
+        </p-calendar>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Top stories -->
+<!-- Copyright 2019 Google Inc. All Rights Reserved.
+            Use of this source code is governed by an MIT-style license that
+            can be found in the LICENSE file at http://angular.io/license -->
+
+<section
+  class="top-stories pinki-gradient position-relative z-index2 pd-layout"
+>
+  <div class="card-wraper4 d-flex align-items-center w-100 rg-16 gap-2">
+    <!-- Internal Evnmt Card -->
+    <div
+      class="card1 story-card w-25 skini-gradient no-border-e pd-16"
+      *ngFor="let cat of sub_cats['all']"
+      
+      >
+      <!-- [class.d-none]="cat == 'India Corner'" -->
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center headingBar"
+        [ngClass]="getheadingBarClass(cat)"
+      >
+        <img
+          class="position-absolute head-badge"
+          [src]="getImageSource(cat)"
+          [alt]="cat"
+        />
+        <p class="f-28 fw-700 spaceGrotesk text-center text-white m-0">
+          {{ tranformCatName(cat) }}
+        </p>
+      </div>
+
+      <!-- custom loader -->
+      <div
+        class="custom-skeleton"
+        aria-hidden="true"
+        *ngIf="!api.NewsList_explore[cat].length && loader_flag.news"
+      >
+        <div
+          class="placeholder-glow mt-2"
+          *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+        >
+          <h4 class="bg-secondary placeholder col-12 mb-0"></h4>
+          <p class="d-flex justify-content-between col-12 p-0 mt-2">
+            <span
+              class="placeholder col-5 p-0"
+              style="min-height: auto; height: 8px"
+            ></span>
+            <span
+              class="placeholder col-2 p-0"
+              style="min-height: auto; height: 8px"
+            ></span>
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="shashka-bottom mt-2 scrollbar-news overflow-y-auto"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore(cat, 'news')"
+      >
+        <ul class="shashka-list pe-1 ps-0">
+          <div>
+            <div
+              #news_div
+              *ngFor="let news of api.NewsList_explore[cat]; index as i"
+              class="cdk-drag"
+              (contextmenu)="
+                this.api.genContext($event, news_div, {
+                  id: news?.id,
+                  title: news?.title,
+                  corner: origin,
+                  content: news,
+                  cat: cat,
+                  subCat: news?.sub_cat,
+                  type: 'news'
+                })
+              "
+            >
+              <li style="list-style-type: none">
+                <div class="shashka-mid d-flex flex-column rg-8 mt-3">
+                  <div
+                    class="curvy-image position-relative overflow-hidden rounded-4 news-custom-div"
+                    (click)="newsDetails(news.id, cat)"
+                  >
+                    <img
+                      [src]="news.image"
+                      onerror='this.src="../../../../../assets/images/noimg.png"'
+                      alt=""
+                    />
+                    <p
+                      class="pasted-text f-12 manrope truncate-text2 fw-700 text-white text-gradient1 mouse"
+                      [ngStyle]="{ background: setStripColor(news.cat_hits) }"
+                    >
+                      {{ news.title }}
+                    </p>
+                    <img
+                      class="link-icon mouse"
+                      src="../../../../../assets/news-img/link-icon.png"
+                      alt=""
+                      (click)="gotoLink(news.news_link, $event)"
+                    />
+                    <p class="shashka-d-time f-12 manrope fw-600">
+                      {{ news.published_date }}
+                    </p>
+                    <p class="shashka-news-source f-12 manrope fw-600">
+                      Source: {{ news.source }}
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <!-- <li class="pe-1 ms-4" *ngIf="!news.image">
+                                    <p class="manrope f-17 fw-700 text-black text-truncate w-full mouse"
+                                        (click)="newsDetails(news.id)" [innerHTML]="news.title"
+                                        (click)="gotoLink(news.news_link)"></p>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="f-12 manrope fw-500 text-black text-opacity"> {{news.published_date}}
+                                        </p>
+                                        <p class="f-12 manrope fw-500 text-black text-opacity">{{news.source}}</p>
+                                    </div>
+                                </li> -->
+            </div>
+            <p
+              *ngIf="!api.NewsList_explore[cat].length && loader_flag.news"
+              id="army_notfound"
+              class="custom-nodatafound text-center p-3 w-full bg-light rounded-3 mt-4"
+            >
+              No Data Found
+            </p>
+            <app-spinner hideText="true" *ngIf="lazy_loader[cat]"></app-spinner>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- sections head -->
+<!-- <div
+  class="section-head-nav d-flex justify-content-between align-items-center w-100 z-index2 mt-4"
+>
+  <div class="sn-left">
+    <img
+      class="section-banner"
+      src="../../../../../assets/news-img/xup-banner.png"
+      alt=""
+      style="margin-left: -14px"
+    />
+  </div>
+  <div
+    class="sn-right d-flex flex-column justify-content-between align-items-end rg-24"
+  >
+    <div class="sn-top">
+      <div class="search d-flex align-items-center w-fit-content ms-auto">
+        <input
+          class="header-search f-16 no-bg-color"
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="keyword['tweet']"
+          (keyup.enter)="getTweets()"
+          (keyup)="!keyword['tweet'] ? getTweets() : ''"
+        />
+        <img
+          class="hs-image mouse"
+          src="../../../../../assets/news-img/search-icon.svg"
+          alt=""
+          (click)="getTweets()"
+        />
+      </div>
+    </div>
+    <div class="sn-bottom d-flex align-items-center cg-24">
+      <div class="form-check">
+        <app-news-filter
+          context="tweet"
+          [date]="Dates['tweet']"
+          (onChange)="changeFilter($event)"
+        ></app-news-filter>
+      </div>
+      <div class="position-relative">
+        <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+        <p-calendar
+          class="position-absolute right-0 top-0 z-index3"
+          [(ngModel)]="multiselect_date['tweet']"
+          (ngModelChange)="filter_report_date('tweet')"
+          [showButtonBar]="true"
+          (onClearClick)="
+            multiselect_date['tweet'] = '';
+            Dates['tweet'] = 'latest';
+            getTweets()
+          "
+          [showIcon]="true"
+          [showTime]="false"
+        >
+        </p-calendar>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- X-Up section -->
+<!-- <section
+  class="x-up-section bluish-gradient position-relative z-index2 pd-layout"
+>
+  <div class="card-wraper4 d-flex align-items-center w-100 rg-16">
+    <div class="card1 story-card w-25 skini-gradient no-border-e pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/mil-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/govt-icon.png"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          Govt
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('mil', 'tweet')"
+      >
+        <ng-container
+          *ngIf="!api.tweetList_explore['mil'].length && !loader_flag.tweet"
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['mil'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['mil']">
+          <app-twitter-card
+            cat="mil"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner hideText="true" *ngIf="lazy_loader_['mil']"></app-spinner>
+      </div>
+    </div>
+    <div class="card2 story-card w-25 conic-gradient no-border-e pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/intl-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/diplo-icon.png"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          Diplo
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('intl', 'tweet')"
+      >
+        <ng-container
+          *ngIf="!api.tweetList_explore['intl'].length && !loader_flag.tweet"
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['intl'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['intl']">
+          <app-twitter-card
+            cat="intl"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner hideText="true" *ngIf="lazy_loader_['intl']"></app-spinner>
+      </div>
+    </div>
+    <div class="card3 story-card w-25 blue-gradient no-border-e pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/iiojk-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/isct-icon.png"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          IS & CT
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('iiojk', 'tweet')"
+      >
+        <ng-container
+          *ngIf="!api.tweetList_explore['iiojk'].length && !loader_flag.tweet"
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['iiojk'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['iiojk']">
+          <app-twitter-card
+            cat="iiojk"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner
+          hideText="true"
+          *ngIf="lazy_loader_['iiojk']"
+        ></app-spinner>
+      </div>
+    </div>
+    <div class="card4 story-card w-25 angular-gradient pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/domestic-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/domestic-icon.svg"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          DOMESTIC
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('domestic', 'tweet')"
+      >
+        <ng-container
+          *ngIf="
+            !api.tweetList_explore['domestic'].length && !loader_flag.tweet
+          "
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['domestic'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['domestic']">
+          <app-twitter-card
+            cat="domestic"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner
+          hideText="true"
+          *ngIf="lazy_loader_['domestic']"
+        ></app-spinner>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- sections head -->
+<div
+  class="section-head-nav d-flex justify-content-between align-items-center w-100 z-index2 mt-4"
+>
+  <div class="sn-left">
+    <img
+      class="section-banner"
+      src="../../../../../assets/news-img/xup-banner.png"
+      alt=""
+      style="margin-left: -14px"
+    />
+  </div>
+  <div
+    class="sn-right d-flex flex-column justify-content-between align-items-end rg-24"
+  >
+    <div class="sn-top">
+      <div class="search d-flex align-items-center w-fit-content ms-auto">
+        <input
+          class="header-search f-16 no-bg-color"
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="keyword['tweet']"
+          (keyup.enter)="getTweets()"
+          (keyup)="!keyword['tweet'] ? getTweets() : ''"
+        />
+        <img
+          class="hs-image mouse"
+          src="../../../../../assets/news-img/search-icon.svg"
+          alt=""
+          (click)="getTweets()"
+        />
+      </div>
+    </div>
+    <div class="sn-bottom d-flex align-items-center cg-24">
+      <div class="form-check">
+        <app-news-filter
+          context="tweet"
+          [date]="Dates['tweet']"
+          (onChange)="changeFilter($event)"
+        ></app-news-filter>
+      </div>
+      <div class="position-relative">
+        <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+        <p-calendar
+          class="position-absolute right-0 top-0 z-index3"
+          [(ngModel)]="multiselect_date['tweet']"
+          (ngModelChange)="filter_report_date('tweet')"
+          [showButtonBar]="true"
+          (onClearClick)="
+            multiselect_date['tweet'] = '';
+            Dates['tweet'] = 'latest';
+            getTweets()
+          "
+          [showIcon]="true"
+          [showTime]="false"
+        >
+        </p-calendar>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- X-Up section -->
+<section
+  class="x-up-section bluish-gradient position-relative z-index2 pd-layout"
+>
+  <div class="card-wraper4 d-flex align-items-center w-100 rg-16 gap-2">
+    <div
+      class="card1 story-card w-25 skini-gradient no-border-e pb-4"
+      *ngFor="let cat of sub_cats_temp['all']"
+      [class.d-none]="cat == 'iran_india_corner'"
+    >
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img class="w-100" [src]="getXUpBannerImageSource(cat)" alt="" />
+        <img
+          class="position-absolute head-badge"
+          [src]="getXUpImageSource(cat)"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          {{ tranformXUpCatName(cat) }}
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore(cat, 'tweet')"
+      >
+        <ng-container
+          *ngIf="!api.tweetList_explore[cat].length && !loader_flag.tweet"
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!sub_cats_temp[cat].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of sub_cats_temp[cat]">
+          <app-twitter-card
+            [cat]="cat"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner hideText="true" *ngIf="sub_cat_loading[cat]"></app-spinner>
+      </div>
+    </div>
+    <!-- <div class="card2 story-card w-25 conic-gradient no-border-e pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/intl-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/diplo-icon.png"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          Diplo
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('intl', 'tweet')"
+      >
+        <ng-container
+          *ngIf="!api.tweetList_explore['intl'].length && !loader_flag.tweet"
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['intl'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['intl']">
+          <app-twitter-card
+            cat="intl"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner hideText="true" *ngIf="lazy_loader_['intl']"></app-spinner>
+      </div>
+    </div>
+    <div class="card3 story-card w-25 blue-gradient no-border-e pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/iiojk-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/isct-icon.png"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          IS & CT
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('iiojk', 'tweet')"
+      >
+        <ng-container
+          *ngIf="!api.tweetList_explore['iiojk'].length && !loader_flag.tweet"
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['iiojk'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['iiojk']">
+          <app-twitter-card
+            cat="iiojk"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner
+          hideText="true"
+          *ngIf="lazy_loader_['iiojk']"
+        ></app-spinner>
+      </div>
+    </div>
+    <div class="card4 story-card w-25 angular-gradient pb-4">
+      <div
+        class="shashka-top position-relative d-flex align-items-center justify-content-center pd-16"
+      >
+        <img
+          class="w-100"
+          src="../../../../../assets/news-img/domestic-head.png"
+          alt=""
+        />
+        <img
+          class="position-absolute head-badge"
+          src="../../../../../assets/news-img/domestic-icon.svg"
+          alt=""
+        />
+        <p
+          class="f-28 fw-700 spaceGrotesk text-center text-white m-0 position-absolute"
+        >
+          DOMESTIC
+        </p>
+      </div>
+      <div
+        class="shashka-mid d-flex flex-column rg-8 scrollbar-news pd-16"
+        infiniteScroll
+        [scrollWindow]="false"
+        (scrolled)="loadMore('domestic', 'tweet')"
+      >
+        <ng-container
+          *ngIf="
+            !api.tweetList_explore['domestic'].length && !loader_flag.tweet
+          "
+        >
+          <div class="placeholder-glow mb-1" *ngFor="let l of [1, 1, 1, 1]">
+            <div class="placeholder col-12 bg-light rounded-3 p-2">
+              <div class="d-flex align-items-center gap-3">
+                <div
+                  class="placeholder bg-secondary rounded-circle flex-shrink-0"
+                  style="width: 41px; height: 41px"
+                ></div>
+                <div class="d-flex flex-column w-full">
+                  <div
+                    class="placeholder col-5 bg-secondary p-0 m-0"
+                    style="min-height: 10px"
+                  ></div>
+                  <div
+                    class="placeholder col-4 bg-secondary p-0 mt-1"
+                    style="min-height: 5px"
+                  ></div>
+                </div>
+              </div>
+              <div class="mt-3 d-flex flex-column gap-2">
+                <div
+                  class="placeholder col-12 p-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-11 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div
+                  class="placeholder col-12 py-0 bg-secondary"
+                  style="min-height: 8px"
+                ></div>
+                <div class="d-flex justify-content-between mt-1">
+                  <div
+                    class="placeholder col-6 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                  <div
+                    class="placeholder col-1 p-0 bg-secondary"
+                    style="min-height: 9px"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <p
+          *ngIf="!api.tweetList_explore['domestic'].length && loader_flag.tweet"
+          class="custom-nodatafound text-center p-3 w-full bg-light rounded-3"
+        >
+          No Data Found
+        </p>
+        <ng-container *ngFor="let tweet of api.tweetList_explore['domestic']">
+          <app-twitter-card
+            cat="domestic"
+            subCat=""
+            [tweet]="tweet"
+            [corner]="origin"
+          ></app-twitter-card>
+        </ng-container>
+        <app-spinner
+          hideText="true"
+          *ngIf="lazy_loader_['domestic']"
+        ></app-spinner>
+      </div>
+    </div> -->
+  </div>
+</section>
+
+<!-- sections head -->
+<div
+  class="section-head-nav d-flex justify-content-between align-items-center w-100 z-index2 mt-4"
+>
+  <div class="sn-left d-flex align-items-center">
+    <img
+      class="section-banner"
+      src="../../../../../assets/news-img/vlogs-podcasts.png"
+      alt=""
+      style="margin-left: -14px"
+    />
+    <app-customyoutubesummarymodal></app-customyoutubesummarymodal>
+
+  </div>
+  <div
+    class="sn-right d-flex flex-column justify-content-between align-items-end rg-24"
+  >
+    <div class="sn-top">
+      <div class="search d-flex align-items-center w-fit-content ms-auto">
+        <input
+          class="header-search f-16 no-bg-color"
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="keyword['podcast']"
+          (keyup.enter)="getProdCasts()"
+          (keyup)="!keyword['podcast'] ? getProdCasts() : ''"
+        />
+        <img
+          class="hs-image mouse"
+          src="../../../../../assets/news-img/search-icon.svg"
+          alt=""
+          (click)="getProdCasts()"
+        />
+      </div>
+    </div>
+    <div class="sn-bottom d-flex align-items-center cg-24">
+      <div class="form-check">
+        <app-news-filter
+          context="podcast"
+          [date]="Dates['podcast']"
+          (onChange)="changeFilter($event)"
+        ></app-news-filter>
+      </div>
+      <div class="position-relative">
+        <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+        <p-calendar
+          class="position-absolute right-0 top-0 z-index3"
+          [(ngModel)]="multiselect_date['podcast']"
+          (ngModelChange)="filter_report_date('podcast')"
+          [showButtonBar]="true"
+          (onClearClick)="
+            multiselect_date['podcast'] = '';
+            Dates['podcast'] = 'latest';
+            getProdCasts()
+          "
+          [showIcon]="true"
+          [showTime]="false"
+        >
+        </p-calendar>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Vlogs and Podcasts -->
+<section
+  class="editorial-hub redish-gradient position-relative z-index2 pd-layout2 hide_left"
+>
+  <div
+    class="custom-skeleton"
+    *ngIf="!this.api.podcastList_explore.length && !loader_flag.podcast"
+  >
+    <div
+      class="col-12 d-flex gap-3 p-0 placeholder-glow overflow-hidden"
+      style="height: 466px"
+    >
+      <div
+        class="flex-shrink-0 placeholder p-0 placeholder-secondary h-full rounded-4"
+        style="width: 45% !important"
+      ></div>
+      <div
+        class="h-full gap-3 esmCard-wraper"
+        style="
+          display: grid;
+          width: max-content;
+          grid-template-rows: 1fr 1fr;
+          grid-template-columns: repeat(5, auto);
+        "
+      >
+        <div
+          class="h-full placeholder placeholder-secondary rounded-4 curvy-image"
+          *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="d-flex align-items-center justify-content-center"
+    style="height: 466px"
+    *ngIf="!this.api.podcastList_explore.length && loader_flag.podcast"
+  >
+    <p class="text-center p-3 w-full bg-light rounded-3 w-max">No Data Found</p>
+  </div>
+  <ng-container *ngIf="this.api.podcastList_explore.length">
+    <img
+      *ngIf="this.api.podcastList_explore.length > 5"
+      class="next-arrow mouse"
+      src="../../../../../assets/news-img/next-arrow.png"
+      alt=""
+      (click)="scrollX(editorial_scroller2, 500)"
+    />
+    <img
+      *ngIf="editorialList.length > 5"
+      class="previous-arrow mouse"
+      src="../../../../../assets/news-img/prev-arrow.png"
+      alt=""
+      (click)="scrollX(editorial_scroller2, -500)"
+    />
+
+    <div
+      class="eCard-wraper d-flex cg-16 overflow-x-auto"
+      id="editorial_scroller"
+      #editorial_scroller2
+      (scroll)="
+        this.api.podcastList_explore.length > 5 &&
+          scrollEdges(editorial_scroller2)
+      "
+    >
+      <div class="big-smCard w-45">
+        <div
+          class="curvy-image position-relative"
+          (click)="readMore('/youtube-details',this.api.podcastList_explore?.[0]?.id)"
+        >
+          <img
+            [src]="
+              'https://img.youtube.com/vi/' +
+              this.api.podcastList_explore?.[0]?.video_id +
+              '/0.jpg'
+            "
+            onerror='this.src="../../../../../assets/images/noimg.png"'
+            alt=""
+          />
+          <p
+            class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1"
+            [innerHTML]="this.api.podcastList_explore?.[0]?.title"
+          ></p>
+          <img
+            class="link-icon mouse"
+            src="../../../../../assets/news-img/link-icon.png"
+            alt=""
+            (click)="gotoLink(this.api.podcastList_explore?.[0]?.link,$event)"
+          />
+        </div>
+      </div>
+      <div
+        class="esmCard-wraper"
+        [style]="
+          'display:grid;width: max-content;grid-template-rows:1fr 1fr;grid-template-columns: repeat(' +
+          getColumns(this.api.podcastList_explore.length - 1) +
+          ',auto);'
+        "
+      >
+        <ng-container
+          *ngFor="let prod of this.api.podcastList_explore; index as i"
+        >
+          <div
+            class="curvy-image position-relative"
+            *ngIf="i != 0"
+            (click)="readMore('/youtube-details', prod.id)"
+          >
+            <img
+              [src]="'https://img.youtube.com/vi/' + prod.video_id + '/0.jpg'"
+              onerror='this.src="../../../../../assets/images/noimg.png"'
+              alt=""
+            />
+            <p
+              class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1 mouse"
+              [innerHTML]="prod.title"
+            ></p>
+            <img
+              class="link-icon mouse"
+              src="../../../../../assets/news-img/link-icon.png"
+              alt=""
+              (click)="gotoLink(prod.link, $event)"
+            />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</section>
+
+<!-- sections head -->
+<div
+  class="section-head-nav d-flex justify-content-between align-items-center w-100 z-index2 mt-4"
+>
+  <div class="sn-left d-flex align-items-center cg-16">
+    <img
+      class="section-banner"
+      src="../../../../../assets/news-img/editorial-banner.png"
+      alt=""
+      style="margin-left: -14px"
+    />
+    <button
+      class=""
+      data-bs-toggle="modal"
+      data-toggle="tooltip"
+      title="Editorial Authors"
+      data-bs-target="#author-modal"
+      style="
+        text-align: center;
+        font-family: 'manrope-medium';
+        font-style: normal;
+        font-weight: 700;
+        background: unset;
+        border: 0;
+      "
+    >
+      <img
+        class="author-icon"
+        src="../../../../../assets/news-img/author-icon2.png"
+        alt=""
+      />
+    </button>
+  </div>
+  <div
+    class="sn-right d-flex flex-column justify-content-between align-items-end rg-24"
+  >
+    <div class="sn-top">
+      <div class="search d-flex align-items-center w-fit-content ms-auto">
+        <input
+          class="header-search f-16 no-bg-color"
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="keyword['editorial']"
+          (keyup.enter)="getEditorials()"
+          (keyup)="!keyword['editorial'] ? getEditorials() : ''"
+        />
+        <img
+          class="hs-image mouse"
+          src="../../../../../assets/news-img/search-icon.svg"
+          alt=""
+          (click)="getEditorials()"
+        />
+      </div>
+    </div>
+    <div class="sn-bottom d-flex align-items-center cg-24">
+      <div class="form-check">
+        <app-news-filter
+          context="editorial"
+          [date]="Dates['editorial']"
+          (onChange)="changeFilter($event)"
+        ></app-news-filter>
+      </div>
+      <div class="position-relative">
+        <img src="../../../../../assets/news-img/calendar.svg" alt="" />
+        <p-calendar
+          class="position-absolute right-0 top-0 z-index3"
+          [(ngModel)]="multiselect_date['editorial']"
+          (ngModelChange)="filter_report_date('editorial')"
+          [showButtonBar]="true"
+          (onClearClick)="
+            multiselect_date['editorial'] = '';
+            Dates['editorial'] = 'latest';
+            getEditorials()
+          "
+          [showIcon]="true"
+          [showTime]="false"
+        >
+        </p-calendar>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section
+  class="editorial-hub redish-gradient position-relative z-index2 pd-layout2 hide_left"
+>
+  <div
+    class="custom-skeleton"
+    *ngIf="!editorialList.length && !loader_flag.editorial"
+  >
+    <div
+      class="col-12 d-flex gap-3 p-0 placeholder-glow overflow-hidden"
+      style="height: 466px"
+    >
+      <div
+        class="flex-shrink-0 placeholder p-0 placeholder-secondary h-full rounded-4"
+        style="width: 45% !important"
+      ></div>
+      <div
+        class="h-full gap-3 esmCard-wraper"
+        style="
+          display: grid;
+          width: max-content;
+          grid-template-rows: 1fr 1fr;
+          grid-template-columns: repeat(5, auto);
+        "
+      >
+        <div
+          class="h-full placeholder placeholder-secondary rounded-4 curvy-image"
+          *ngFor="let l of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="d-flex align-items-center justify-content-center"
+    style="height: 466px"
+    *ngIf="!editorialList.length && loader_flag.editorial"
+  >
+    <p class="text-center p-3 w-full bg-light rounded-3 w-max">No Data Found</p>
+  </div>
+  <ng-container *ngIf="editorialList.length">
+    <img
+      *ngIf="editorialList.length > 5"
+      class="next-arrow mouse"
+      src="../../../../../assets/news-img/next-arrow.png"
+      alt=""
+      (click)="scrollX(editorial_scroller, 500)"
+    />
+    <img
+      *ngIf="editorialList.length > 5"
+      class="previous-arrow mouse"
+      src="../../../../../assets/news-img/prev-arrow.png"
+      alt=""
+      (click)="scrollX(editorial_scroller, -500)"
+    />
+
+    <div
+      class="eCard-wraper d-flex cg-16 overflow-x-auto"
+      id="editorial_scroller"
+      #editorial_scroller
+      (scroll)="editorialList.length > 5 && scrollEdges(editorial_scroller)"
+    >
+      <div class="big-smCard w-45">
+        <div
+          class="curvy-image position-relative"
+          (click)="readMore('/editorial-details',editorialList?.[0]?.id)"
+        >
+          <img
+            [src]="editorialList?.[0]?.image"
+            onerror='this.src="../../../../../assets/images/noimg.png"'
+            alt=""
+          />
+          <p
+            class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1"
+            [innerHTML]="editorialList?.[0]?.title"
+          ></p>
+          <img
+            class="link-icon mouse"
+            src="../../../../../assets/news-img/link-icon.png"
+            alt=""
+            (click)="gotoLink(editorialList?.[0]?.link,$event)"
+          />
+        </div>
+      </div>
+      <div
+        class="esmCard-wraper"
+        [style]="
+          'display:grid;width: max-content;grid-template-rows:1fr 1fr;grid-template-columns: repeat(' +
+          getColumns(editorialList.length - 1) +
+          ',auto);'
+        "
+      >
+        <ng-container *ngFor="let ed of editorialList; index as i">
+          <div
+            class="curvy-image position-relative"
+            *ngIf="i != 0"
+            (click)="readMore('/editorial-details', ed.id)"
+          >
+            <img
+              [src]="ed.image"
+              onerror='this.src="../../../../../assets/images/noimg.png"'
+              alt=""
+            />
+            <p
+              class="pasted-text f-12 manrope fw-700 truncate-text2 text-white text-gradient1 mouse"
+              [innerHTML]="ed.title"
+            ></p>
+            <img
+              class="link-icon mouse"
+              src="../../../../../assets/news-img/link-icon.png"
+              alt=""
+              (click)="gotoLink(ed.link, $event)"
+            />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</section>
+
+<!-- ///// News detail body end ///// -->
+
+<!-- Modal  Prioritize news-->
+<!-- <div
+  class="modal fade"
+  id="priority_modal"
+  tabindex="-1"
+  aria-labelledby="priority_modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-head-bg">
+          <h1
+            class="modal-title f-20 text-white spaceGrotesk fw-700"
+            id="priority_modalLabel"
+          >
+            Prioritize News
+          </h1>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body mt-3">
+        <div class="d-flex gap-2 border rounded newsPage-gradient">
+          <div class="p-2 flex-shrink-0" style="width: calc(50% - 0.25rem)">
+            <div class="p-1" style="font-weight: 500">Channels List</div>
+            <div
+              class="example-list2 overflow-y-auto scrollbar-news pe-2 w-full"
+            >
+              <div
+                class="dark1 example-box2 mouse"
+                *ngFor="let channel of all_channels"
+              >
+                <span [innerHTML]="channel.name"> </span>
+                <span class="p-2 mouse" (click)="addPriority(channel)">
+                  <i class="fa fa-add font-bold cursor-pointer"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="p-2 flex-shrink-0" style="width: calc(50% - 0.25rem)">
+            <div class="p-1" style="font-weight: 500">
+              Prioritize Channels
+              <span style="font-weight: normal"
+                >(drag channels to re-order)</span
+              >
+            </div>
+            <div
+              cdkDropList
+              class="example-list overflow-y-auto scrollbar-news pe-2 w-full h-full"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div
+                class="example-box dark1"
+                *ngFor="let channel of selected_priorities"
+                cdkDrag
+              >
+                <span [innerHTML]="channel.name"> </span>
+                <span class="p-2 mouse" (click)="removePriority(channel)">
+                  <i class="fa font-bold fa-minus cursor-pointer"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer p-0 border-0 mt-3 justify-content-center">
+        <button
+          type="button"
+          class="custom-news-button"
+          [disabled]="!priority_flag"
+          (click)="applyFilter($event)"
+          data-bs-dismiss="modal"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Editorial Author Modal -->
+
+<div
+  class="modal fade"
+  id="author-modal"
+  tabindex="-1"
+  aria-labelledby="author-modalLabel"
+  aria-hidden="true"
+  style="z-index: 99999999 !important"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header d-flex">
+        <div class="modal-head-bg">
+          <h1
+            class="modal-title f-20 text-white spaceGrotesk fw-700"
+            id="priority_modalLabel"
+          >
+            Editorial Authors
+          </h1>
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="author-search mt-3 d-flex align-item-end">
+        <div class="search d-flex align-items-center w-fit-content">
+          <input
+            class="header-search f-16 no-bg-color w-100"
+            type="text"
+            placeholder="Search"
+            [(ngModel)]="auth_search_keyword"
+          />
+          <img
+            class="hs-image mouse"
+            src="../../../../../assets/news-img/search-icon.svg"
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="modal-body mt-3 es-modal-body">
+        <app-editorial-modal
+          [origin]="this.origin"
+          [keyword]="auth_search_keyword"
+        ></app-editorial-modal>
+      </div>
+    </div>
+  </div>
+</div>

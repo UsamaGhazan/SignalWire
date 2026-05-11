@@ -1,0 +1,117 @@
+
+<div class="col-12 mb-2 px-0">
+    <div class="row d-flex justify-content-between m-0 rg-16">
+      <div class="col-md-8 p-0">
+        <div class="d-flex align-items-center gap-3">
+          <div class="">
+            <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+            <label  (click)="filterKeywordByCat('east_corner')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault1">
+              East Corner
+            </label>
+          </div>
+          <div class="" >
+            <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+            <label (click)="filterKeywordByCat('west_corner')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault2">
+              West Corner
+            </label>
+          </div>
+          <div class="" >
+            <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+            <label (click)="filterKeywordByCat('internal_security')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault3">
+              Internal Security
+            </label>
+          </div>
+          <div class="" >
+            <input hidden class="form-check-input btn-check" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
+            <label (click)="filterKeywordByCat('west_corner_iran')" class="btn form-check-label btn-outline-primary" for="flexRadioDefault4">
+              West Corner Iran
+            </label>
+          </div>
+        </div>
+      </div>
+        <!-- <div class="col-md-4 p-0">
+            <input type="text" class="form-control rounded blured-text-grp" placeholder="Search" [(ngModel)]="searchtext" 
+                        aria-label="text" aria-describedby="search-addon" />
+        </div> -->
+        <div class="col-md-3 p-0">
+            <button type="submit" class="btn btn-primary w-100 fw-bold"  data-bs-toggle="modal" data-bs-target="#YThandlerModal" (click)="updateflag=false;handle.text='';handle.cat=''"
+             ><a  class="dashboard-nav-dropdown-item" >+ Add Youtube Handler</a></button>
+          </div>
+    </div>
+</div>
+  <table class="table table-striped pt-2" datatable *ngIf="allhandleList.length>0">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Category</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let handle of allhandleList | filter:searchtext;index as i">
+            <th scope="row">{{i+1}}</th>
+            <td>{{handle.handle_screen_name}}</td>
+            <td class="capitaliz-first">{{handle.category.replace("_"," ")}}</td>
+            <td><i class="fas fa-edit px-1 mouse text-primary" (click)="updateYTHandle(handle)"></i> <i class="fas fa-trash px-2 mouse  text-danger" (click)="deleteYTHandler(handle.id)"></i></td>
+          </tr>
+    </tbody>
+  </table>
+
+
+  <!-- The Modal -->
+  <div class="modal fade map-modal" id="YThandlerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content p-0 border-0">
+            <!-- Modal Header -->
+            <div class="modal-header p-3">
+                <h4 class="modal-title">{{updateflag?'Update':'Add'}} YT Handle</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-3">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="exampleInputEmail1" class="form-label">Handle</label>
+                        <input type="text" class="form-control rounded blured-text-grp" placeholder="Enter handler" [(ngModel)]="handle.text"
+                        aria-label="text" aria-describedby="search-addon" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="exampleInputEmail1" class="form-label">Category</label>
+                        <select class="form-select form-select-sm p-2 border-0 " style="border: 1px solid #cbc9c9 !important;"  aria-label=".form-select-sm example" [(ngModel)]="handle.cat" (change)="changeSelect()"
+                        >
+                        <option value="" selected>All</option>
+                        <ng-container *ngFor="let cat of category; index as i">
+                          <option [value]="cat" class="capitaliz-first">{{cat.replace("_"," ")}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                      <div class="col-md-3">
+                    <label for="exampleInputEmail1" class="form-label text-nowrap ">Specific Category</label>
+                    <select class="form-select form-select-sm p-2 border-0 " 
+                      style="border: 1px solid #cbc9c9 !important;"  
+                        aria-label=".form-select-sm example" [(ngModel)]="handle.cat_specific"
+                    >
+                    <option value="all" selected>All</option>
+                    <ng-container *ngFor="let cat of cat_specific; index as i">
+                      <option [value]="cat" class="capitaliz-first">{{api.resolveCatName(cat)}}</option>
+                    </ng-container>
+                  </select>
+                </div>
+                </div>
+              
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary w-25" data-bs-dismiss="modal"
+                    (click)="updateflag?addYTHandler('update'):addYTHandler()">{{updateflag?'Update':'Create'}}</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<ngx-ui-loader ></ngx-ui-loader>
